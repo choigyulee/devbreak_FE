@@ -1,5 +1,5 @@
 ---
-name: 이슈 생성 탬플릿
+name: feature
 about: 해당 이슈 생성 탬플릿으로 이슈를 생성해 주세요
 title: 이슈 제목 !
 labels: ''
