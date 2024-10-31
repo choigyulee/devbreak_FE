@@ -33,10 +33,10 @@ const globalStyles = css`
   form,
   label,
   table {
-    margin: 0;
+    margin: 0.5rem; /* 5vh를 rem으로 변환 (예시) */
     padding: 0;
     border: 0;
-    font-size: 10px;
+    font-size: 1rem; /* 10px를 rem으로 변환 */
     vertical-align: baseline;
   }
 
@@ -44,7 +44,7 @@ const globalStyles = css`
     line-height: 1;
     font-family: "Pretendard", "Urbanist", sans-serif; /* 기본 폰트 설정 */
     background-color: #181c22;
-    margin-bottom: 100px;
+    margin-bottom: 10rem; /* 100px를 rem으로 변환 (예시) */
   }
 
   ol,
