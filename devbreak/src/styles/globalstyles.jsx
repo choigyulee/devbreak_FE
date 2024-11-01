@@ -37,6 +37,7 @@ const globalStyles = css`
   table {
     margin: 0;
     padding: 0;
+    border: 0;
     font-size: 1vw;
   }
 
@@ -45,8 +46,8 @@ const globalStyles = css`
     padding: 0;
     font-family: "Pretendard", "Urbanist", sans-serif; /* 기본 폰트 설정 */
     background-color: #181c22;
-    overflow-y: auto;
-    overflow-x: auto;
+    overflow-y: hidden; /* 수직 스크롤 가능 */
+    overflow-x: hidden; /* 수평 스크롤은 숨김 */
   }
 
   ol,
