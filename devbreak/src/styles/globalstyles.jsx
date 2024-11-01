@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 const globalStyles = css`
   * {
-    margin: 2rem 5rem; /* '4srem'에서 '4rem'으로 수정 */
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
@@ -33,7 +33,7 @@ const globalStyles = css`
   form,
   label,
   table {
-    margin: 0.5rem; /* 5vh를 rem으로 변환 (예시) */
+    margin: 0;
     padding: 0;
     border: 0;
     font-size: 1vw;
@@ -42,7 +42,7 @@ const globalStyles = css`
   body {
     margin: 0;
     padding: 0;
-    font-family: "Pretendard", "Urbanist", sans-serif; /* 기본 폰트 설정 */
+    font-family: "Pretendard", "Urbanist", sans-serif;
     background-color: #181c22;
     overflow-y: hidden; /* 수직 스크롤 가능 */
     overflow-x: hidden; /* 수평 스크롤은 숨김 */
