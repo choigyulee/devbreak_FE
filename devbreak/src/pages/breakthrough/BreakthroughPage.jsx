@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
+import NavBar from "../../components/NavBar";
 function BreakthroughPage() {
   return (
     <>
+      <NavBar></NavBar>
       <Container>BreakthroughPage</Container>
     </>
   );

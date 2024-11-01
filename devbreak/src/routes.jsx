@@ -32,7 +32,7 @@ const routes = [
     name: "03. 홈 메인 페이지",
   },
   {
-    path: "/contents",
+    path: "/breakthrough/contents",
     element: <ContentsPage />,
     name: "04. breakthrough 열람 페이지",
   },
@@ -47,17 +47,17 @@ const routes = [
     name: "06.워크스페이스 메인 페이지",
   },
   {
-    path: "/makeblog",
+    path: "/workspace/makeblog",
     element: <MakeBlogPage />,
     name: "07. 블로그 작성 페이지",
   },
   {
-    path: "/myblog",
+    path: "/workspace/myblog",
     element: <MyBolgPage />,
     name: "08. 내 블로그 열람 페이지",
   },
   {
-    path: "/write",
+    path: "/workspace/myblog/write",
     element: <WritePage />,
     name: "09. 브레잌스루 작성 페이지",
   },
