@@ -18,7 +18,9 @@ const NavBar = () => {
           <Link to="/workspace">Workspace</Link>
         </NavItem>
       </NavItems>
-      <LoginButton>Login</LoginButton>
+      <LoginButton>
+        <Link to="/Login">Login</Link>
+      </LoginButton>
     </NavContainer>
   );
 };
@@ -29,13 +31,14 @@ const NavContainer = styled.nav`
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 10vw;
-  justify-content: space-between;
+  gap: 15vw;
+  padding: 3vw 10vw;
+  justify-content: space-between; // 양쪽 끝으로 요소 배치
   width: 100%;
 `;
 
 const Logo = styled.img`
-  height: 1.3vw; // 로고 높이
+  height: 1.5vw; // 로고 높이
 `;
 
 const NavItems = styled.ul`
@@ -44,7 +47,7 @@ const NavItems = styled.ul`
   height: 5vw; // 고정 높이 설정
   padding: 0 2vw; // 좌우 패딩 추가
   list-style: none;
-  justify-content: space-between;
+  justify-content: center; // 중앙 정렬
   margin: 0;
   padding: 0;
   flex: 1; // NavItems가 가능한 공간을 차지하도록 설정
@@ -61,7 +64,7 @@ const NavItem = styled.li`
 
   a {
     text-decoration: none; // 링크의 기본 밑줄 제거
-    font-size: 1.5vw;
+    font-size: 1.2vw;
     color: inherit; // 부모 요소의 색상 상속
   }
 

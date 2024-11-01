@@ -42,7 +42,7 @@ const globalStyles = css`
 
   body {
     margin: 0;
-    padding: 3vw 15vw;
+    padding: 0;
     font-family: "Pretendard", "Urbanist", sans-serif; /* 기본 폰트 설정 */
     background-color: #181c22;
     overflow-y: auto;
