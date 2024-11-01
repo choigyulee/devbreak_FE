@@ -9,7 +9,7 @@ const NavBar = () => {
       <Logo src="/image/logo.svg" alt="logo" />
       <NavItems>
         <NavItem active={location.pathname.startsWith("/home")}>
-          <Link to="/home">Home</Link>
+          <Link to="/">Home</Link>
         </NavItem>
         <NavItem active={location.pathname.startsWith("/breakthrough")}>
           <Link to="/breakthrough">Breakthrough</Link>
@@ -31,6 +31,7 @@ const NavContainer = styled.nav`
   display: flex;
   align-items: center;
   flex-direction: row;
+<<<<<<< HEAD
   padding: 3vw 13vw;
   justify-content: space-between; // 양쪽 끝으로 요소 배치
   width: 100%;
@@ -39,32 +40,42 @@ const NavContainer = styled.nav`
 const Logo = styled.img`
   height: 1.3vw; // 로고 높이
   margin-right: 12vw;
+=======
+  justify-content: space-between;
+`;
+
+const Logo = styled.img`
+  height: 2rem; // 로고 높이
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
 `;
 
 const NavItems = styled.ul`
-  display: flex; // Flexbox 사용
-  align-items: center; // 수직 중앙 정렬
-  height: 5vw; // 고정 높이 설정
-  padding: 0 2vw; // 좌우 패딩 추가
+  display: flex;
   list-style: none;
+<<<<<<< HEAD
   justify-content: center; // 중앙 정렬
+=======
+  gap: 5rem;
+  justify-content: space-between;
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
   margin: 0;
   padding: 0;
-  flex: 1; // NavItems가 가능한 공간을 차지하도록 설정
 `;
 
 const NavItem = styled.li`
-  flex: 1; // 각 NavItem이 동일한 너비를 가지도록 설정
-  margin: 1vw;
+  margin: 1rem;
   font-weight: ${(props) => (props.active ? 700 : 300)}; // active prop에 따라 font-weight 설정
   color: white; // 텍스트 색상
   font-family: "Pretendard";
   cursor: pointer;
-  text-align: center; // 텍스트 중앙 정렬
 
   a {
     text-decoration: none; // 링크의 기본 밑줄 제거
+<<<<<<< HEAD
     font-size: 1.3vw;
+=======
+    font-size: 1.5rem;
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
     color: inherit; // 부모 요소의 색상 상속
   }
 
@@ -75,11 +86,15 @@ const NavItem = styled.li`
 
 const LoginButton = styled.button`
   font-weight: 700;
+<<<<<<< HEAD
   padding: 0.5vw 1vw;
   margin-left: 13vw;
+=======
+  padding: 0.5rem 1rem;
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
   color: white;
-  font-size: 1vw;
-  border-radius: 10vw;
+  font-size: 1rem;
+  border-radius: 30rem;
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(40px);
