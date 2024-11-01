@@ -2,12 +2,14 @@ import { css } from "@emotion/react";
 
 const globalStyles = css`
   * {
-    margin: 2rem 5rem; /* '4srem'에서 '4rem'으로 수정 */
+    margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* 박스 모델 설정 */
   }
 
   a {
+    margin: 0;
+    padding: 0;
     text-decoration: none;
     color: inherit;
   }
@@ -33,20 +35,18 @@ const globalStyles = css`
   form,
   label,
   table {
-    margin: 0.5rem; /* 5vh를 rem으로 변환 (예시) */
+    margin: 0;
     padding: 0;
-    border: 0;
-    font-size: 1rem; /* 10px를 rem으로 변환 */
-    vertical-align: baseline;
+    font-size: 1vw;
   }
 
   body {
-    line-height: 1;
+    margin: 0;
+    padding: 3vw 15vw;
     font-family: "Pretendard", "Urbanist", sans-serif; /* 기본 폰트 설정 */
     background-color: #181c22;
-    margin-bottom: 10rem; /* 100px를 rem으로 변환 (예시) */
-    overflow-y: auto; /* 수직 스크롤 가능 */
-    overflow-x: hidden; /* 수평 스크롤은 숨김 */
+    overflow-y: auto;
+    overflow-x: auto;
   }
 
   ol,
