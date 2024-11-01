@@ -36,16 +36,15 @@ const globalStyles = css`
     margin: 0.5rem; /* 5vh를 rem으로 변환 (예시) */
     padding: 0;
     border: 0;
-    font-size: 1rem; /* 10px를 rem으로 변환 */
-    vertical-align: baseline;
+    font-size: 1vw;
   }
 
   body {
-    line-height: 1;
+    margin: 0;
+    padding: 0;
     font-family: "Pretendard", "Urbanist", sans-serif; /* 기본 폰트 설정 */
     background-color: #181c22;
-    margin-bottom: 10rem; /* 100px를 rem으로 변환 (예시) */
-    overflow-y: auto; /* 수직 스크롤 가능 */
+    overflow-y: hidden; /* 수직 스크롤 가능 */
     overflow-x: hidden; /* 수평 스크롤은 숨김 */
   }
 

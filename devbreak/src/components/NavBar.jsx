@@ -18,7 +18,9 @@ const NavBar = () => {
           <Link to="/workspace">Workspace</Link>
         </NavItem>
       </NavItems>
-      <LoginButton>Login</LoginButton>
+      <LoginButton>
+        <Link to="/login">Login</Link>
+      </LoginButton>
     </NavContainer>
   );
 };
@@ -29,18 +31,33 @@ const NavContainer = styled.nav`
   display: flex;
   align-items: center;
   flex-direction: row;
+<<<<<<< HEAD
+  padding: 3vw 13vw;
+  justify-content: space-between; // 양쪽 끝으로 요소 배치
+  width: 100%;
+`;
+
+const Logo = styled.img`
+  height: 1.3vw; // 로고 높이
+  margin-right: 12vw;
+=======
   justify-content: space-between;
 `;
 
 const Logo = styled.img`
   height: 2rem; // 로고 높이
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
 `;
 
 const NavItems = styled.ul`
   display: flex;
   list-style: none;
+<<<<<<< HEAD
+  justify-content: center; // 중앙 정렬
+=======
   gap: 5rem;
   justify-content: space-between;
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
   margin: 0;
   padding: 0;
 `;
@@ -54,7 +71,11 @@ const NavItem = styled.li`
 
   a {
     text-decoration: none; // 링크의 기본 밑줄 제거
+<<<<<<< HEAD
+    font-size: 1.3vw;
+=======
     font-size: 1.5rem;
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
     color: inherit; // 부모 요소의 색상 상속
   }
 
@@ -65,7 +86,12 @@ const NavItem = styled.li`
 
 const LoginButton = styled.button`
   font-weight: 700;
+<<<<<<< HEAD
+  padding: 0.5vw 1vw;
+  margin-left: 13vw;
+=======
   padding: 0.5rem 1rem;
+>>>>>>> cad2256ea84407ec9d5f36475c789358ed13f572
   color: white;
   font-size: 1rem;
   border-radius: 30rem;
