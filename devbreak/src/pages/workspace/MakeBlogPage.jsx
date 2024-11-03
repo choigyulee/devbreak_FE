@@ -89,20 +89,20 @@ const Container = styled.div`
 `
 
 const FormContainer = styled.div`
-  margin: auto 167px;
-  width: 75vw;
+  width: 73vw;
+  margin-top: 60px;
 `;
 
 const Title = styled.h1`
-  font-size: 45px;
-  margin: 108px 0 15px 0;
+  font-size: 38px;
+  margin-bottom: 15px;
   font-weight: 500;
 `;
 
 const Subtitle = styled.div`
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 18px;
+  font-size: 15px;
   line-height: 25px;
   font-weight: 500;
   margin-bottom: 64px;
@@ -120,24 +120,24 @@ const FormField = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 25px;
+  font-size: 23px;
   font-weight: 500;
   margin-left: 0px;
 `;
 
 const Required = styled.span`
   color: #FF0000;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 500;
 `;
 
 const Input = styled.input`
   width: 100%;
-  height: 67px;
+  height: 57px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.05);
-  font-size: 20px;
+  font-size: 17px;
   color :#ffffff;
   padding: 30px;
   margin-left: 0px;
@@ -154,7 +154,7 @@ const TextArea = styled.textarea`
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.05);
-  font-size: 20px;
+  font-size: 18px;
   color: #ffffff;
   padding: 30px;
   margin-left: 0;
