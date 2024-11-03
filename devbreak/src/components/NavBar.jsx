@@ -36,8 +36,8 @@ const NavContainer = styled.nav`
 `;
 
 const Logo = styled.img`
-  height: 1.3vw;
-  margin-right: 12vw;
+  height: 1.7vw;
+  margin-right: 9vw;
 `;
 
 const NavItems = styled.ul`
@@ -59,7 +59,7 @@ const NavItem = styled.li`
 
   a {
     text-decoration: none;
-    font-size: 1.3vw;
+    font-size: 1.7vw;
     color: inherit;
     display: block;
     padding: 1rem; // 패딩을 사용하여 클릭 영역 확대
@@ -72,10 +72,10 @@ const NavItem = styled.li`
 
 const LoginButton = styled.button`
   font-weight: 700;
-  padding: 0.5vw 1vw;
-  margin-left: 13vw;
+  padding: 0.5vw 1.7vw;
+  margin-left: 9vw;
   color: white;
-  font-size: 1.3vw;
+  font-size: 1.5vw;
   border-radius: 3vw;
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -84,5 +84,10 @@ const LoginButton = styled.button`
     color: #02f798;
     border: 1px solid #02f798;
     box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
+  }
+  a {
+    text-decoration: none;
+    color: inherit; // 버튼의 색상과 동일하게 유지
+    font-size: 1.3vw; // 로그인 텍스트의 크기를 조정
   }
 `;
