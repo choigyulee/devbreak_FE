@@ -44,8 +44,8 @@ const globalStyles = css`
     padding: 0;
     font-family: "Pretendard", "Urbanist", sans-serif;
     background-color: #181c22;
-    overflow-y: hidden; /* 수직 스크롤 가능 */
-    overflow-x: hidden; /* 수평 스크롤은 숨김 */
+    overflow-y: auto; /* 수직 스크롤 가능 */
+    overflow-x: auto; /* 수평 스크롤은 숨김 */
   }
 
   ol,
