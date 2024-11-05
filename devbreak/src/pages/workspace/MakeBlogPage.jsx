@@ -108,20 +108,21 @@ const Container = styled.div`
 `;
 
 const FormContainer = styled.div`
-  margin: auto 167px;
-  width: 75vw;
+  width: 73vw;
+  margin-top: 60px;
 `;
 
 const Title = styled.h1`
   font-size: 45px;
   margin: 98px 0 15px 0;
+
   font-weight: 500;
 `;
 
 const Subtitle = styled.div`
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 18px;
+  font-size: 15px;
   line-height: 25px;
   font-weight: 500;
   margin-bottom: 64px;
