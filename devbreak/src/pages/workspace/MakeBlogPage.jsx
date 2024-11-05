@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
+import FormField from "../../components/FormField";
+import Input from "../../components/Input";
+import TextArea from "../../components/TextArea";
+// import axios from 'axios';  // API 호출을 위해 axios를 사용할 수 있습니다.
 
 function MakeBlogPage() {
-
+  // 상태 관리: 블로그 이름, 설명, GitHub 링크
   const [formData, setFormData] = useState({
     blogName: '',
     description: '',
-    githubLink: ''
+    gitRepoUrl: ''
   });
 
+  // 입력 값 변경 시 상태 업데이트
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -19,23 +24,39 @@ function MakeBlogPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // 폼 제출 시 API 요청 
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    const { blogName, description, gitRepoUrl } = formData;
+
+    const requestBody = {
+      blogName,       // 블로그 이름
+      description,    // 블로그 설명
+      gitRepoUrl      // GitHub 리포지토리 링크
+    };
+
+    try {
+      // const response = await axios.post('API_URL', requestBody);
+
+      console.log('Form submitted:', requestBody);
+      // 여기서 response를 처리하거나 알림을 띄울 수 있습니다.
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (
     <>
-      <NavBar></NavBar>
+      <NavBar />
       <Container>
         <FormContainer>
           <Title>Create a new tech blog</Title>
           <Subtitle>A little note: Anyone on the Internet can see this tech blog. <br />
             Please fill out all fields marked with an asterisk (*).</Subtitle>
 
-          <Form>
-            <FormField>
-              <Label>Blog name<Required>*</Required></Label>
+          <Form onSubmit={handleSubmit}>
+            <FormField label="Blog name" required>
               <Input
                 type="text"
                 name="blogName"
@@ -45,8 +66,7 @@ function MakeBlogPage() {
               />
             </FormField>
 
-            <FormField>
-              <Label>Description<Required>*</Required></Label>
+            <FormField label="Description" required>
               <TextArea
                 name="description"
                 value={formData.description}
@@ -55,19 +75,18 @@ function MakeBlogPage() {
               />
             </FormField>
 
-            <FormField>
-              <Label>Github repository link<Required>*</Required></Label>
+            <FormField label="Github repository link" required>
               <Input
                 type="url"
-                name="githubLink"
-                value={formData.githubLink}
+                name="gitRepoUrl"  // 'githubLink'에서 'gitRepoUrl'로 수정
+                value={formData.gitRepoUrl}
                 onChange={handleChange}
                 required
               />
             </FormField>
 
             <ButtonContainer>
-              <GoToButton text="create blog" onClick={handleSubmit} />
+              <GoToButton text="create blog" type="submit" />  {/* type="submit"으로 수정 */}
             </ButtonContainer>
           </Form>
 
@@ -76,8 +95,8 @@ function MakeBlogPage() {
     </>
   );
 }
-export default MakeBlogPage;
 
+export default MakeBlogPage;
 
 const Container = styled.div`
   font-family: "Pretendard";
@@ -86,7 +105,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const FormContainer = styled.div`
   margin: auto 167px;
@@ -95,7 +114,7 @@ const FormContainer = styled.div`
 
 const Title = styled.h1`
   font-size: 45px;
-  margin: 108px 0 15px 0;
+  margin: 98px 0 15px 0;
   font-weight: 500;
 `;
 
@@ -113,68 +132,12 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin-bottom: 100px;
-`
-
-const FormField = styled.div`
-  margin-bottom: 48px;
 `;
 
-const Label = styled.label`
-  font-size: 25px;
-  font-weight: 500;
-  margin-left: 0px;
-`;
-
-const Required = styled.span`
-  color: #FF0000;
-  font-size: 25px;
-  font-weight: 500;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 67px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.05);
-  font-size: 20px;
-  color :#ffffff;
-  padding: 30px;
-  margin-left: 0px;
-  margin-top: 10px;
-  
-  &:focus {
-    outline: none;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  min-height: 190px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.05);
-  font-size: 20px;
-  color: #ffffff;
-  padding: 30px;
-  margin-left: 0;
-  margin-top: 10px;
-  resize: vertical;
-
-  overflow: auto; /* 스크롤 가능하게 설정 */
-  scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
-  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨김 */
-
-  /* 웹킷 브라우저에서 스크롤바 숨기기 */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const ButtonContainer = styled.button`
+const ButtonContainer = styled.div`
   margin-top: 60px;
-`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
