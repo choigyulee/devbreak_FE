@@ -5,7 +5,6 @@ import { BsCaretDownFill } from 'react-icons/bs';
 const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-  // 드롭다운 메뉴 클릭 시 보이기/숨기기 토글
   const toggleDropdown = () => {
     setIsDropdownVisible(prev => !prev);
   };
@@ -69,16 +68,15 @@ const ButtonText = styled.span`
 
 const DropdownMenu = styled.div`
   position: absolute;
-  top: 70px; /* 버튼 바로 아래에 위치 */
-  width: 100%; /* 버튼과 동일한 너비 */
-  background-color: rgba(0, 0, 0, 0.8); /* 배경 색상 */
+  top: 70px;
+  width: 100%; 
+  background-color: rgba(0, 0, 0, 0.8); 
   border-radius: 5px;
   z-index: 100;
-  max-height: 335px; /* 최대 높이 */
+  max-height: 335px; 
   overflow-y: auto;
   padding: 0;
 
-  /* 스크롤바 스타일 */
   ::-webkit-scrollbar {
     width: 8px;
   }

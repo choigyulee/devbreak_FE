@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import PropTypes from "prop-types"; // prop-types 임포트
+import PropTypes from "prop-types";
 
 const GoToButton = ({ text, onClick, width = "280px", height = "58px", borderRadius = "63px" }) => {
   return (
@@ -10,8 +10,8 @@ const GoToButton = ({ text, onClick, width = "280px", height = "58px", borderRad
 };
 
 GoToButton.propTypes = {
-  text: PropTypes.string.isRequired, // text는 필수 문자열
-  onClick: PropTypes.func.isRequired, // onClick은 필수 함수
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default GoToButton;
@@ -21,13 +21,13 @@ const Button = styled.button`
   background-color: rgba(255, 255, 255, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(40px);
-  width: ${({ width }) => width}; /* width prop 사용 */
-  height: ${({ height }) => height}; /* height prop 사용 */
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   color: #ffffff;
   font-family: "Pretendard";
   font-weight: 400;
   font-size: 22px;
-  border-radius: ${({ borderRadius }) => borderRadius}; /* borderRadius prop 사용 */
+  border-radius: ${({ borderRadius }) => borderRadius};
   cursor: pointer;
   transition: color, border 0.3s;
 

@@ -16,9 +16,8 @@ function WritePage() {
   const [selectedProblem, setSelectedProblem] = useState('pick from the Github repository');
   const [selectedSolution, setSelectedSolution] = useState('pick from the Github repository');
 
-  const [issuesAndCommits, setIssuesAndCommits] = useState([]); // 이슈 및 커밋 목록을 합친 배열
+  const [issuesAndCommits, setIssuesAndCommits] = useState([]);
 
-  // 목 데이터 (이슈와 커밋 목록)
   const mockData = [
     { type: 'issue', title: 'Issue 1' },
     { type: 'issue', title: 'Issue 2' },
@@ -28,16 +27,13 @@ function WritePage() {
     { type: 'commit', title: 'Commit 3' },
   ];
 
-  // 이슈와 커밋 목록 합치기 (백엔드에서 합쳐서 보내줄 때)
   useEffect(() => {
-    // 백엔드에서 데이터가 하나로 합쳐져서 오는 경우:
     // setIssuesAndCommits(response.data); // 실제 API 호출 시
 
-    // 목 데이터를 사용하는 경우:
+    // 임시로 목 데이터를 사용
     setIssuesAndCommits(mockData);
   }, []);
 
-  // 제목이나 본문 입력 시 상태 변경
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -46,7 +42,6 @@ function WritePage() {
     }));
   };
 
-  // 폼 제출
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {

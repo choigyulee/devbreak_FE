@@ -46,14 +46,14 @@ const ListItemsContainer = styled.div`
 
 const ListItem = styled.div`
   padding-left: 12px;
-  border-left: 2px solid #ffffff;  // 기본 상태에서는 흰색 선
-  color: #ffffff;  // 기본 텍스트 색은 흰색
+  border-left: 2px solid #ffffff;
+  color: #ffffff;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 
   &:hover {
-    border-left: 4px solid #71FFC9;  // 호버 시 강조된 색상
-    color: #71FFC9;  // 호버 시 텍스트 색상 변경
+    border-left: 4px solid #71FFC9; 
+    color: #71FFC9; 
   }
 `;
 

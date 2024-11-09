@@ -7,7 +7,6 @@ import Input from "../../components/Workspace/Input";
 import TextArea from "../../components/Workspace/TextArea";
 import Dropdown from '../../components/Breakthrough/Dropdown';
 
-// 예시로 사용할 GitHub 리포지토리 목록 (API 호출 대신 사용)
 const githubRepos = [
   { id: 1, title: 'Tech Blog A' },
   { id: 2, title: 'Tech Blog B' },
@@ -20,10 +19,9 @@ function MakeBlogPage() {
   const [formData, setFormData] = useState({
     blogName: '',
     description: '',
-    gitRepoUrl: '', // GitHub 리포지토리 URL을 선택
+    gitRepoUrl: '',
   });
 
-  // 입력 값 변경 시 상태 업데이트
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -32,29 +30,27 @@ function MakeBlogPage() {
     }));
   };
 
-  // 드롭다운에서 선택된 GitHub 리포지토리 URL을 설정
   const handleGitRepoSelection = (repo) => {
     setFormData((prev) => ({
       ...prev,
-      gitRepoUrl: repo, // GitHub 리포지토리 URL을 선택
+      gitRepoUrl: repo, // GitHub 리포지토리 URL 선택
     }));
   };
 
-  // 폼 제출 시 API 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { blogName, description, gitRepoUrl } = formData;
 
     const requestBody = {
-      blogName,       // 블로그 이름
-      description,    // 블로그 설명
-      gitRepoUrl,     // 선택된 GitHub 리포지토리 URL
+      blogName,   
+      description,  
+      gitRepoUrl, 
     };
 
     try {
       // const response = await axios.post('API_URL', requestBody);
       console.log('Form submitted:', requestBody);
-      // 여기서 response를 처리하거나 알림을 띄울 수 있습니다.
+
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -93,7 +89,7 @@ function MakeBlogPage() {
               <Dropdown
                 selectedValue={formData.gitRepoUrl}
                 setSelectedValue={handleGitRepoSelection}
-                items={githubRepos}  // 예시 GitHub 리포지토리 목록
+                items={githubRepos}
               />
             </FormField>
 
