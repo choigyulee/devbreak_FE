@@ -46,15 +46,16 @@ const Container = styled.div`
 `;
 
 const MyBlogContainer = styled.div`
-  margin: 98px 167px;
+  margin: 98px auto;
   width: 75vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
 `;
 
 const MyBlogContainerText = styled.div`
+  margin: 0 auto;
+  min-width: 930px;
   font-size: 25px;
   line-height: 40px;
   margin-bottom: 20px;
@@ -63,6 +64,7 @@ const MyBlogContainerText = styled.div`
 
 const MyBlogItem = styled.div`
   align-items: center;
+  margin: 0 auto;
   min-width: 930px;
   min-height: 155px;
   border-radius: 10px;
@@ -95,6 +97,7 @@ const BlogDescription = styled.div`
 `;
 
 const MyBlogItem2 = styled.div`
+  margin: 0 auto;
   min-width: 930px;
   min-height: 155px;
   border-radius: 10px;

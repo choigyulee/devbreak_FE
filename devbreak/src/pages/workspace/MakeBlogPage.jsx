@@ -111,20 +111,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   margin-bottom: 300px;
 `;
 
 const FormContainer = styled.div`
-  width: 73vw;
-  margin-top: 60px;
+  margin: 60px auto;
+  align-items: center;
+  min-width: 930px;
 `;
 
 const Title = styled.h1`
   font-size: 45px;
-  margin: 98px 0 15px 0;
-
+  margin-bottom: 15px;
   font-weight: 500;
 `;
 

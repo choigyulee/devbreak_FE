@@ -5,10 +5,8 @@ const List = ({
   items = [],
   currentPage = 1,
   itemsPerPage = 15,
-  onPageChange = () => {},
   maxWidth = "933px"
 }) => {
-  const totalPages = Math.ceil(items.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
@@ -36,11 +34,16 @@ const ListContainer = styled.div`
   color: #ffffff;
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth};
+  
 `;
 
 const ListItemsContainer = styled.div`
+  margin: 0 auto;
+  min-width: 930px;
+  width: 75vw;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 42px;
 `;
 
