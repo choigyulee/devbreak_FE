@@ -1,0 +1,62 @@
+[
+  {
+    "blogId": 1,
+    "blogName": "AI Innovations",
+    "description": "Exploring the latest in artificial intelligence.",
+    "favCount": 500
+  },
+  {
+    "blogId": 2,
+    "blogName": "Web Development Trends",
+    "description": "Stay updated with the latest web technologies.",
+    "favCount": 400
+  },
+  {
+    "blogId": 3,
+    "blogName": "Cybersecurity Insights",
+    "description": "Understanding the importance of cybersecurity.",
+    "favCount": 350
+  },
+  {
+    "blogId": 4,
+    "blogName": "Cloud Computing",
+    "description": "The future of cloud technologies.",
+    "favCount": 300
+  },
+  {
+    "blogId": 5,
+    "blogName": "Blockchain Basics",
+    "description": "Introduction to blockchain technology.",
+    "favCount": 250
+  },
+  {
+    "blogId": 6,
+    "blogName": "Data Science Trends",
+    "description": "Latest trends in data science and analytics.",
+    "favCount": 200
+  },
+  {
+    "blogId": 7,
+    "blogName": "Mobile App Development",
+    "description": "Creating apps for mobile platforms.",
+    "favCount": 150
+  },
+  {
+    "blogId": 8,
+    "blogName": "DevOps Practices",
+    "description": "Best practices in DevOps.",
+    "favCount": 100
+  },
+  {
+    "blogId": 9,
+    "blogName": "IoT Innovations",
+    "description": "The rise of the Internet of Things.",
+    "favCount": 75
+  },
+  {
+    "blogId": 10,
+    "blogName": "Software Testing",
+    "description": "Importance of testing in software development.",
+    "favCount": 50
+  }
+]
