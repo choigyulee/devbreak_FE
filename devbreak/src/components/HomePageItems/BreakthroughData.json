@@ -1,0 +1,66 @@
+[
+  {
+    "articleId": 1,
+    "blogId": 101,
+    "title": "Understanding Neural Networks",
+    "blogName": "AI Insights",
+    "createdAt": "2024-01-15",
+    "likeCount": 300
+  },
+  {
+    "articleId": 2,
+    "blogId": 102,
+    "title": "The Rise of Edge Computing",
+    "blogName": "Tech Trends",
+    "createdAt": "2024-02-10",
+    "likeCount": 250
+  },
+  {
+    "articleId": 3,
+    "blogId": 103,
+    "title": "Introduction to Quantum Computing",
+    "blogName": "Future Tech",
+    "createdAt": "2024-03-05",
+    "likeCount": 220
+  },
+  {
+    "articleId": 4,
+    "blogId": 104,
+    "title": "Web Development in 2024: What to Expect",
+    "blogName": "Web Wizards",
+    "createdAt": "2024-04-20",
+    "likeCount": 200
+  },
+  {
+    "articleId": 5,
+    "blogId": 105,
+    "title": "The Future of Augmented Reality",
+    "blogName": "AR & VR World",
+    "createdAt": "2024-05-15",
+    "likeCount": 180
+  },
+  {
+    "articleId": 6,
+    "blogId": 106,
+    "title": "Cybersecurity: Protecting Your Digital Life",
+    "blogName": "Secure Tech",
+    "createdAt": "2024-06-30",
+    "likeCount": 150
+  },
+  {
+    "articleId": 7,
+    "blogId": 107,
+    "title": "Data Science: From Beginner to Expert",
+    "blogName": "Data Dive",
+    "createdAt": "2024-07-25",
+    "likeCount": 120
+  },
+  {
+    "articleId": 8,
+    "blogId": 108,
+    "title": "Exploring the Metaverse",
+    "blogName": "Digital Realms",
+    "createdAt": "2024-08-10",
+    "likeCount": 100
+  }
+]

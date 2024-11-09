@@ -32,7 +32,7 @@ const routes = [
     name: "03. 홈 메인 페이지",
   },
   {
-    path: "/breakthrough/contents",
+    path: "/breakthrough/article/:articleId",
     element: <ContentsPage />,
     name: "04. breakthrough 열람 페이지",
   },
@@ -62,9 +62,19 @@ const routes = [
     name: "09. 브레잌스루 작성 페이지",
   },
   {
-    path: "/blogview",
+    path: "/blog/:blogId",
     element: <BlogPage />,
     name: "10. 블로그 열람 페이지",
+  },
+  {
+    path: "/home/favblog",
+    element: <favBlogListPage />,
+    name: "11. 팔로우한 블로그 열람 페이지",
+  },
+  {
+    path: "/home/favbreakthrough",
+    element: <favBreakthroughPage />,
+    name: "11. 팔로우한 블로그 열람 페이지",
   },
 ];
 
