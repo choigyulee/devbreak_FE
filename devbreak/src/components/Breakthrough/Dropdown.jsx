@@ -90,10 +90,10 @@ const DropdownMenu = styled.div`
 `;
 
 const DropdownItem = styled.div`
-  padding: 10px;
+  padding: 30px;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  height: 67px;
+  height: 50px;
   display: flex;
   align-items: center;
   font-size: 20px;

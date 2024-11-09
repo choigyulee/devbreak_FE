@@ -71,24 +71,33 @@ function WritePage() {
             </FormField>
 
             <FormField label="Add related issue or commit (optional)">
+              <FormItem>
+              <Label>about</Label>
               <Dropdown
                 label="About"
                 selectedValue={selectedAbout}
                 setSelectedValue={setSelectedAbout}
                 items={issuesAndCommits}
               />
+              </FormItem>
+              <FormItem>
+              <Label>problem</Label>
               <Dropdown
                 label="Problem"
                 selectedValue={selectedProblem}
                 setSelectedValue={setSelectedProblem}
                 items={issuesAndCommits}
               />
+              </FormItem>
+              <FormItem>
+              <Label>solution</Label>
               <Dropdown
                 label="Solution"
                 selectedValue={selectedSolution}
                 setSelectedValue={setSelectedSolution}
                 items={issuesAndCommits}
               />
+               </FormItem>
             </FormField>
 
             <FormField label="Body" required>
@@ -123,8 +132,9 @@ const Container = styled.div`
 `;
 
 const FormContainer = styled.div`
-  margin: 98px 167px;
-  width: 75vw;
+  margin: 60px auto;
+  align-items: center;
+  min-width: 930px;
 `;
 
 const Form = styled.form`
@@ -132,6 +142,11 @@ const Form = styled.form`
   flex-direction: column;
   margin-bottom: 100px;
 `;
+
+const FormItem = styled.div`
+  display: flex;
+  flex-direction: row;
+`
 
 const Input = styled.input`
   width: 100%;
@@ -148,6 +163,13 @@ const Input = styled.input`
     outline: none;
   }
 `;
+
+const Label = styled.div`
+  font-size: 25px;
+  height: 67px;
+  width: 150px;
+  padding: 25px 20px 0 0 ;
+`
 
 const ButtonContainer = styled.div`
   margin-top: 60px;

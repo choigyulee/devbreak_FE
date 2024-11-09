@@ -78,17 +78,16 @@ const Container = styled.div`
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
 `;
 
 const BreakthroughContainer = styled.div`
-  margin: 98px 167px;
+  margin: 98px auto;
   width: 75vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   flex-grow: 1; 
 `
 
@@ -96,4 +95,5 @@ const Title = styled.div`
   color: #ffffff;
   font-size: 30px;
   margin-bottom: 40px;
+  min-width: 930px;
 `;
