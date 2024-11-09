@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import PropTypes from "prop-types"; // prop-types 임포트
 
 const GoToButton = ({ text, onClick, width = "280px", height = "58px", borderRadius = "63px" }) => {
   return (
@@ -6,6 +7,11 @@ const GoToButton = ({ text, onClick, width = "280px", height = "58px", borderRad
       {text}
     </Button>
   );
+};
+
+GoToButton.propTypes = {
+  text: PropTypes.string.isRequired, // text는 필수 문자열
+  onClick: PropTypes.func.isRequired, // onClick은 필수 함수
 };
 
 export default GoToButton;
