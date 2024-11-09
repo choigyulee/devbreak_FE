@@ -19,7 +19,7 @@ function MakeBlogPage() {
   const [formData, setFormData] = useState({
     blogName: '',
     description: '',
-    gitRepoUrl: '',
+    gitRepoUrl: 'pick one from your Github account',
   });
 
   const handleChange = (e) => {
