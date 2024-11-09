@@ -2,44 +2,54 @@ import React, { useState } from 'react';
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
-import FormField from "../../components/FormField";
-import Input from "../../components/Input";
-import TextArea from "../../components/TextArea";
-// import axios from 'axios';  // API 호출을 위해 axios를 사용할 수 있습니다.
+import FormField from "../../components/Workspace/FormField";
+import Input from "../../components/Workspace/Input";
+import TextArea from "../../components/Workspace/TextArea";
+import Dropdown from '../../components/Breakthrough/Dropdown';
+
+const githubRepos = [
+  { id: 1, title: 'Tech Blog A' },
+  { id: 2, title: 'Tech Blog B' },
+  { id: 3, title: 'Tech Blog C' },
+  { id: 4, title: 'Tech Blog D' },
+  { id: 5, title: 'Tech Blog E' },
+];
 
 function MakeBlogPage() {
-  // 상태 관리: 블로그 이름, 설명, GitHub 링크
   const [formData, setFormData] = useState({
     blogName: '',
     description: '',
-    gitRepoUrl: ''
+    gitRepoUrl: '',
   });
 
-  // 입력 값 변경 시 상태 업데이트
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  // 폼 제출 시 API 요청 
+  const handleGitRepoSelection = (repo) => {
+    setFormData((prev) => ({
+      ...prev,
+      gitRepoUrl: repo, // GitHub 리포지토리 URL 선택
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { blogName, description, gitRepoUrl } = formData;
 
     const requestBody = {
-      blogName,       // 블로그 이름
-      description,    // 블로그 설명
-      gitRepoUrl      // GitHub 리포지토리 링크
+      blogName,   
+      description,  
+      gitRepoUrl, 
     };
 
     try {
       // const response = await axios.post('API_URL', requestBody);
-
       console.log('Form submitted:', requestBody);
-      // 여기서 response를 처리하거나 알림을 띄울 수 있습니다.
 
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -76,20 +86,17 @@ function MakeBlogPage() {
             </FormField>
 
             <FormField label="Github repository link" required>
-              <Input
-                type="url"
-                name="gitRepoUrl"  // 'githubLink'에서 'gitRepoUrl'로 수정
-                value={formData.gitRepoUrl}
-                onChange={handleChange}
-                required
+              <Dropdown
+                selectedValue={formData.gitRepoUrl}
+                setSelectedValue={handleGitRepoSelection}
+                items={githubRepos}
               />
             </FormField>
 
             <ButtonContainer>
-              <GoToButton text="create blog" type="submit" />  {/* type="submit"으로 수정 */}
+              <GoToButton text="create blog" onClick={handleSubmit} /> 
             </ButtonContainer>
           </Form>
-
         </FormContainer>
       </Container>
     </>
@@ -105,6 +112,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  margin-bottom: 300px;
 `;
 
 const FormContainer = styled.div`
@@ -141,4 +150,3 @@ const ButtonContainer = styled.div`
   justify-content: center;
   width: 100%;
 `;
-

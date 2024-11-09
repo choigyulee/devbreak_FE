@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
-import FormField from "../../components/FormField";
-import GitButton from "../../components/GitButton";
-import TextArea from "../../components/TextArea";
-// import axios from 'axios';
+import FormField from "../../components/Workspace/FormField";
+import Dropdown from "../../components/Breakthrough/Dropdown";
+import TextArea from "../../components/Workspace/TextArea";
 
 function WritePage() {
-  // 상태 관리: 제목, 본문, 선택된 항목들 (About, Problem, Solution)
   const [formData, setFormData] = useState({
     title: '',
     content: ''
@@ -18,42 +16,24 @@ function WritePage() {
   const [selectedProblem, setSelectedProblem] = useState('pick from the Github repository');
   const [selectedSolution, setSelectedSolution] = useState('pick from the Github repository');
 
-  const [issues, setIssues] = useState([]); // Github 이슈 목록
-  const [commits, setCommits] = useState([]); // Github 커밋 목록
+  const [issuesAndCommits, setIssuesAndCommits] = useState([]);
 
-  // Github 이슈 목록 가져오기 (API 호출 예시, 실제 API로 바꿔주세요)
-  // useEffect(() => {
-  //   const fetchIssues = async () => {
-  //     try {
-  //       // 예시: GitHub 이슈 목록을 API에서 가져오기
-  //       const response = await fetch('https://api.github.com/repos/LikeLion-Project-3Team/issues');
-  //       const data = await response.json();
-  //       setIssues(data);
-  //     } catch (error) {
-  //       console.error('Error fetching issues:', error);
-  //     }
-  //   };
+  const mockData = [
+    { type: 'issue', title: 'Issue 1' },
+    { type: 'issue', title: 'Issue 2' },
+    { type: 'issue', title: 'Issue 3' },
+    { type: 'commit', title: 'Commit 1' },
+    { type: 'commit', title: 'Commit 2' },
+    { type: 'commit', title: 'Commit 3' },
+  ];
 
-  //   fetchIssues();
-  // }, []);
+  useEffect(() => {
+    // setIssuesAndCommits(response.data); // 실제 API 호출 시
 
-  // Github 커밋 목록 가져오기 (API 호출 예시, 실제 API로 바꿔주세요)
-  // useEffect(() => {
-  //   const fetchCommits = async () => {
-  //     try {
-  //       // 예시: GitHub 커밋 목록을 API에서 가져오기
-  //       const response = await fetch('https://api.github.com/repos/LikeLion-Project-3Team/commits');
-  //       const data = await response.json();
-  //       setCommits(data);
-  //     } catch (error) {
-  //       console.error('Error fetching commits:', error);
-  //     }
-  //   };
+    // 임시로 목 데이터를 사용
+    setIssuesAndCommits(mockData);
+  }, []);
 
-  //   fetchCommits();
-  // }, []);
-
-  // 제목이나 본문 입력 시 상태 변경
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -62,7 +42,6 @@ function WritePage() {
     }));
   };
 
-  // 폼 제출
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
@@ -71,7 +50,6 @@ function WritePage() {
       about: selectedAbout,
       problem: selectedProblem,
       solution: selectedSolution,
-      blogId: blogId,
     };
     console.log('Form submitted:', payload);
   };
@@ -93,23 +71,23 @@ function WritePage() {
             </FormField>
 
             <FormField label="Add related issue or commit (optional)">
-              <GitButton
+              <Dropdown
                 label="About"
                 selectedValue={selectedAbout}
-                items={issues}
                 setSelectedValue={setSelectedAbout}
+                items={issuesAndCommits}
               />
-              <GitButton
+              <Dropdown
                 label="Problem"
                 selectedValue={selectedProblem}
-                items={commits}
                 setSelectedValue={setSelectedProblem}
+                items={issuesAndCommits}
               />
-              <GitButton
+              <Dropdown
                 label="Solution"
                 selectedValue={selectedSolution}
-                items={commits}
                 setSelectedValue={setSelectedSolution}
+                items={issuesAndCommits}
               />
             </FormField>
 
@@ -123,7 +101,7 @@ function WritePage() {
             </FormField>
 
             <ButtonContainer>
-              <GoToButton text="post" onClick={handleSubmit} />
+              <GoToButton text="Post" onClick={handleSubmit} />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -141,6 +119,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 300px;
 `;
 
 const FormContainer = styled.div`
@@ -163,7 +142,6 @@ const Input = styled.input`
   font-size: 20px;
   color: #ffffff;
   padding: 30px;
-  margin-left: 0px;
   margin-top: 10px;
 
   &:focus {
@@ -177,4 +155,3 @@ const ButtonContainer = styled.div`
   justify-content: center;
   width: 100%;
 `;
-

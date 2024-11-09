@@ -2,54 +2,43 @@ import React, { useState } from 'react';
 import styled from "@emotion/styled";
 import { BsCaretDownFill } from 'react-icons/bs';
 
-const GitButton = ({ label, selectedValue, items, setSelectedValue }) => {
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false); // 드롭다운 메뉴 보이기/숨기기 상태
+const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-  // 드롭다운 메뉴 클릭 시 보이기/숨기기 토글
   const toggleDropdown = () => {
     setIsDropdownVisible(prev => !prev);
   };
 
   return (
-    <GitDiv>
-      <GitLabel>{label}</GitLabel>
+    <DropdownContainer>
       <Button onClick={toggleDropdown}>
         <ButtonText>{selectedValue}</ButtonText>
         <BsCaretDownFill size={20} />
       </Button>
-      
-      {/* 드롭다운 메뉴가 표시되는 경우 */}
+
       {isDropdownVisible && (
-        <Dropdown>
+        <DropdownMenu>
           {items.map((item, index) => (
             <DropdownItem
               key={index}
               onClick={() => {
                 setSelectedValue(item.title || item.commit.message);
-                setIsDropdownVisible(false); // 선택 시 드롭다운 닫기
+                setIsDropdownVisible(false);
               }}
             >
               {item.title || item.commit.message}
             </DropdownItem>
           ))}
-        </Dropdown>
+        </DropdownMenu>
       )}
-    </GitDiv>
+    </DropdownContainer>
   );
 };
 
-const GitDiv = styled.div`
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: 5px;
-  align-items: center;
+const DropdownContainer = styled.div`
+  position: relative;
+  width: 100%;
   margin-top: 10px;
-`;
-
-const GitLabel = styled.label`
-  font-size: 20px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
 `;
 
 const Button = styled.button`
@@ -77,22 +66,41 @@ const ButtonText = styled.span`
   color: rgba(255, 255, 255, 0.5);
 `;
 
-const Dropdown = styled.div`
-  margin-top: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  width: 100%;
+const DropdownMenu = styled.div`
   position: absolute;
+  top: 70px;
+  width: 100%; 
+  background-color: rgba(0, 0, 0, 0.8); 
+  border-radius: 5px;
   z-index: 100;
+  max-height: 335px; 
+  overflow-y: auto;
+  padding: 0;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const DropdownItem = styled.div`
   padding: 10px;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
+  height: 67px;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
 `;
 
-export default GitButton;
+export default Dropdown;
