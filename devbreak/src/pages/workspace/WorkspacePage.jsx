@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
@@ -8,27 +8,60 @@ import { AiFillPlusCircle } from 'react-icons/ai';
 function WorkspacePage() {
   const navigate = useNavigate();
 
+  const [myBlogList, setMyBlogList] = useState([]);
+
+  useEffect(() => {
+    const fetchMyBlogList = async () => {
+      try {
+        // const response = await axios.get('YOUR_API_URL');
+        // setMyBlogList(response.data); // 받은 데이터를 상태에 저장
+
+        const data = [
+          {
+            blogName: "Tech Blog A",
+            description: "Description of Tech Blog A",
+          },
+          {
+            blogName: "Tech Blog B",
+            description: "Description of Tech Blog B",
+          },
+        ];
+        setMyBlogList(data);
+
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+
+    fetchMyBlogList();
+  }, []);
+
   return (
     <>
       <NavBar />
       <Container>
-        <MyBlogContainer>
-          <MyBlogContainerText> You are currently running these blogs.</MyBlogContainerText>
-            <MyBlogItem>
-              <BlogName>blogName</BlogName>
-              <BlogDescription>description</BlogDescription>
-            </MyBlogItem>
+        {myBlogList.length > 0 ? (
+          <MyBlogContainer>
+            <MyBlogContainerText> You are currently running these blogs.</MyBlogContainerText>
+            {myBlogList.map((blog, index) => (
+              <MyBlogItem key={index}>
+                <BlogName>{blog.blogName}</BlogName>
+                <BlogDescription>{blog.description}</BlogDescription>
+              </MyBlogItem>
+            ))}
             <MyBlogItem2>
               <AiFillPlusCircle size={45} onClick={() => navigate(`/workspace/makeblog`)} />
             </MyBlogItem2>
-        </MyBlogContainer>
-        <CreateContainer>
-          <CreateContainerText>
-            Add your project members <br />
-            and transform GitHub repository into tech blog
-          </CreateContainerText>
-          <GoToButton text="create a new tech blog" onClick={() => navigate(`/workspace/makeblog`)} />
-        </CreateContainer>
+          </MyBlogContainer>
+        ) : (
+          <CreateContainer>
+            <CreateContainerText>
+              Add your project members <br />
+              and transform GitHub repository into tech blog
+            </CreateContainerText>
+            <GoToButton text="create a new tech blog" onClick={() => navigate(`/workspace/makeblog`)} />
+          </CreateContainer>
+        )}
       </Container>
     </>
   );
@@ -61,7 +94,6 @@ const MyBlogContainerText = styled.div`
   margin-bottom: 20px;
 `;
 
-
 const MyBlogItem = styled.div`
   align-items: center;
   margin: 0 auto;
@@ -76,7 +108,7 @@ const MyBlogItem = styled.div`
 
   &:hover {
     color: #02f798;
-    border: 3px solid #02f798;
+    border: 1px solid #02f798;
     box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
   }
 `;
@@ -109,6 +141,12 @@ const MyBlogItem2 = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  &:hover {
+    color: #02f798;
+    border: 3px solid #02f798;
+    box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
+  }
 `;
 
 const CreateContainer = styled.div`
@@ -130,4 +168,10 @@ const CreateContainerText = styled.div`
   margin-bottom: 50px;
   line-height: 40px;
   text-align: center;
+`;
+
+const LoadingText = styled.div`
+  font-size: 25px;
+  color: #ffffff;
+  margin-top: 100px;
 `;
