@@ -93,7 +93,7 @@ const BreakthroughContainer = styled.div`
 
 const Title = styled.div`
   color: #ffffff;
-  font-size: 30px;
-  margin-bottom: 40px;
+  font-size: 25px;
+  margin-bottom: 50px;
   min-width: 930px;
 `;
