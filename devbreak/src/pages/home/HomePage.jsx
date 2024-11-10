@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { useAuth } from "../../AuthContext"; // 경로 확인
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BreakthroughData from "../../components/HomePageItems/BreakthroughData";
@@ -6,11 +6,15 @@ import BlogTenList from "../../components/HomePageItems/BlogTenList";
 import BlogData from "../../components/HomePageItems/BlogData";
 import MyBreakthroughList from "../../components/HomePageItems/MyBreakthroughList";
 import MyBlogList from "../../components/HomePageItems/MyBlogList";
+import PropTypes from "prop-types";
+import styled from "@emotion/styled";
 
 function HomePage() {
+  const { isLoggedIn } = useAuth(); // useAuth 훅을 사용하여 로그인 상태 가져오기
+
   return (
     <>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <ListContainer>
           <BreakthroughTenList items={BreakthroughData} />
@@ -18,19 +22,25 @@ function HomePage() {
         <ListContainer>
           <BlogTenList items={BlogData} />
         </ListContainer>
-        <MyListBox>
-          <Title>
-            List of Your <BoldText>fav Breakthroughs & Blogs</BoldText>
-          </Title>
-          <span>
-            <MyBreakthroughList />
-            <MyBlogList />
-          </span>
-        </MyListBox>
+        {isLoggedIn && (
+          <MyListBox>
+            <Title>
+              List of Your <BoldText>fav Breakthroughs & Blogs</BoldText>
+            </Title>
+            <span>
+              <MyBreakthroughList />
+              <MyBlogList />
+            </span>
+          </MyListBox>
+        )}
       </Container>
     </>
   );
 }
+
+HomePage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+};
 
 export default HomePage;
 
@@ -42,8 +52,7 @@ const Container = styled.div`
 `;
 
 const ListContainer = styled.div`
-  margin-right: -15vw; /* 음수 마진 유지 */
-  /* 필요에 따라 추가 스타일을 적용할 수 있습니다. */
+  margin-right: -15vw;
 `;
 
 const MyListBox = styled.div`
@@ -72,5 +81,5 @@ const Title = styled.div`
 const BoldText = styled.span`
   font-weight: 700;
   font-size: 3vh;
-  font-family: "Pretendard"; // devbreak에 대한 font-weight 설정
+  font-family: "Pretendard";
 `;

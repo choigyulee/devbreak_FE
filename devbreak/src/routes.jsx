@@ -66,16 +66,6 @@ const routes = [
     element: <BlogPage />,
     name: "10. 블로그 열람 페이지",
   },
-  {
-    path: "/home/favblog",
-    element: <favBlogListPage />,
-    name: "11. 팔로우한 블로그 열람 페이지",
-  },
-  {
-    path: "/home/favbreakthrough",
-    element: <favBreakthroughPage />,
-    name: "11. 팔로우한 블로그 열람 페이지",
-  },
 ];
 
 export default routes;
