@@ -1,9 +1,19 @@
 import styled from "@emotion/styled";
 import DashBoard from "./DashBoard"; // 이미 임포트된 DashBoard 사용
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate 임포트
+import { useAuth } from "../../AuthContext";
 
 const DashBoardsItem = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate(); // navigate 초기화
+  const { login } = useAuth(); // context에서 login 함수 가져오기
+
+  const handleImageClick = () => {
+    login(); // 로그인 상태 설정
+    navigate("/home"); // HomePage로 이동
+  };
+
   return (
     <ItemBox>
       <DashBoard />
@@ -16,7 +26,7 @@ const DashBoardsItem = () => {
             and <BoldText isHovered={isHovered}>Join Us !</BoldText>
           </Line>
         </TextContainer>
-        <StyledImage src="/image/Github_Login.png" alt="GitHub Login" />
+        <StyledImage src="/image/Github_Login.png" alt="GitHub Login" onClick={handleImageClick} />
       </HoverableDashBoard>
       <DashBoard />
     </ItemBox>
@@ -80,5 +90,6 @@ const StyledImage = styled.img`
   width: 100%; /* 이미지의 너비를 부모 요소에 맞춤 */
   max-width: 25vh; /* 최대 너비를 설정하여 크기 제한 */
   height: auto; /* 비율을 유지하면서 높이 자동 조정 */
-  margin-top: 1vh; /* 이미지와 텍스트 간의 간격 조정 */
+  margin-top: 1vh;
+  cursor: pointer; /* 이미지와 텍스트 간의 간격 조정 */
 `;
