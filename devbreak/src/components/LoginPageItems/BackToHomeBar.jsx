@@ -4,7 +4,9 @@ import styled from "@emotion/styled";
 const BackToHomeBar = () => {
   return (
     <NavContainer>
-      <Logo src="/image/logo.svg" alt="logo" />
+      <Link to="/start">
+        <Logo src="/image/logo.svg" alt="logo" />
+      </Link>
       <BackToHomeBtn>
         <Link to="/home">back to home</Link>
       </BackToHomeBtn>
@@ -17,7 +19,7 @@ export default BackToHomeBar;
 const NavContainer = styled.nav`
   display: flex;
   align-items: center;
-  padding: 3vw 13vw;
+  padding: 10vh 13vw;
   justify-content: space-between;
   width: 100%;
 `;

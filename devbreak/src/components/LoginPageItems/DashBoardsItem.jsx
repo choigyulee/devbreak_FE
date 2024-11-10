@@ -62,7 +62,7 @@ const TextContainer = styled.div`
 const Line = styled.div`
   font-family: "Pretendard";
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 5vh;
   color: white;
   transition: font-size 0.3s ease; /* 글자 크기 전환 효과 */

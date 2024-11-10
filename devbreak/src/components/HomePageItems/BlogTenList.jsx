@@ -82,7 +82,7 @@ const InnerListContainer = styled.div`
 
 const Title = styled.div`
   font-size: 3vh;
-  font-weight: 300;
+  font-weight: 400;
   font-family: "pretendard";
   color: white;
 `;

@@ -23,8 +23,8 @@ function HomePage() {
             List of Your <BoldText>fav Breakthroughs & Blogs</BoldText>
           </Title>
           <span>
-            <MyBreakthroughList></MyBreakthroughList>
-            <MyBlogList></MyBlogList>
+            <MyBreakthroughList />
+            <MyBlogList />
           </span>
         </MyListBox>
       </Container>
@@ -35,14 +35,14 @@ function HomePage() {
 export default HomePage;
 
 const Container = styled.div`
-  margin: 7vh 13vw 13vh 13vw;
+  margin: 3vh 15vw 13vh 15vw;
   display: flex;
   flex-direction: column;
   gap: 9vh;
 `;
 
 const ListContainer = styled.div`
-  margin-right: -13vw; /* 음수 마진 유지 */
+  margin-right: -15vw; /* 음수 마진 유지 */
   /* 필요에 따라 추가 스타일을 적용할 수 있습니다. */
 `;
 
@@ -64,7 +64,7 @@ const Title = styled.div`
   flex-direction: row;
   gap: 1vh;
   font-size: 3vh;
-  font-weight: 300;
+  font-weight: 400;
   font-family: "pretendard";
   color: white;
 `;
