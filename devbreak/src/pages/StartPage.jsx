@@ -27,7 +27,7 @@ export default StartPage;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 3vh 15vh;
+  margin: 1.8vh 15vh;
   gap: 8vh;
 `;
 
@@ -41,7 +41,7 @@ const TextContainer = styled.div`
 const TitleBox = styled.div`
   font-family: "Pretendard";
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 2vw;
   line-height: 48px;
   color: white;
@@ -62,7 +62,7 @@ const ComentBox = styled.div`
 const Line = styled.div`
   font-family: "Pretendard";
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1.5vw;
   color: #ffffff;
 `;

@@ -1,12 +1,15 @@
+import PropTypes from "prop-types"; // PropTypes 임포트
 import { Link, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
 
-const NavBar = () => {
+const NavBar = ({ isLoggedIn }) => {
   const location = useLocation();
 
   return (
     <NavContainer>
-      <Logo src="/image/logo.svg" alt="logo" />
+      <Link to="/start">
+        <Logo src="/image/logo.svg" alt="logo" />
+      </Link>
       <NavItems>
         <NavItem active={location.pathname.startsWith("/home")}>
           <Link to="/home">Home</Link>
@@ -19,10 +22,15 @@ const NavBar = () => {
         </NavItem>
       </NavItems>
       <LoginButton>
-        <Link to="/login">Login</Link>
+        {isLoggedIn ? <UserIcon src="/image/user-icon.svg" alt="User Icon" /> : <Link to="/login">Login</Link>}
       </LoginButton>
     </NavContainer>
   );
+};
+
+// PropTypes 정의
+NavBar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired, // isLoggedIn은 필수 boolean 타입
 };
 
 export default NavBar;
@@ -30,7 +38,7 @@ export default NavBar;
 const NavContainer = styled.nav`
   display: flex;
   align-items: center;
-  padding: 3vw 13vw;
+  padding: 10vh 13vw;
   justify-content: space-between;
   width: 100%;
 `;
@@ -46,12 +54,12 @@ const NavItems = styled.ul`
   margin: 0;
   padding: 0;
   flex-grow: 1;
-  justify-content: center; // 중앙 정렬
+  justify-content: center;
 `;
 
 const NavItem = styled.li`
-  flex: 1; // 각 NavItem이 동일한 비율로 공간을 차지하도록 설정
-  text-align: center; // 텍스트 중앙 정렬
+  flex: 1;
+  text-align: center;
   font-weight: ${(props) => (props.active ? 700 : 300)};
   color: white;
   font-family: "Pretendard";
@@ -62,7 +70,7 @@ const NavItem = styled.li`
     font-size: 1.3vw;
     color: inherit;
     display: block;
-    padding: 1rem; // 패딩을 사용하여 클릭 영역 확대
+    padding: 1rem;
   }
 
   &:hover {
@@ -80,9 +88,18 @@ const LoginButton = styled.button`
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   &:hover {
     color: #02f798;
     border: 1px solid #02f798;
     box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
   }
+`;
+
+const UserIcon = styled.img`
+  height: 2vw;
+  width: 2vw;
 `;

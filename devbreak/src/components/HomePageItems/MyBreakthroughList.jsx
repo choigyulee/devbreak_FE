@@ -37,7 +37,7 @@ const Line = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1vh;
-  font-weight: 300; /* 일반 글씨 */
+  font-weight: 400; /* 일반 글씨 */
   font-size: 4vh; /* 제목 크기 */
   text-align: left;
   margin: 0;
@@ -50,7 +50,6 @@ const BoldText = styled.span`
 `;
 
 const DashBoard = styled.div`
-  margin-left: 3vh;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
