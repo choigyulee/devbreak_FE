@@ -1,9 +1,17 @@
 import PropTypes from "prop-types"; // PropTypes 임포트
 import { Link, useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
+import { HiOutlineUserCircle } from "react-icons/hi2";
+import { useState } from "react";
+import ProfileModal from "./ProfileModal";
 
 const NavBar = ({ isLoggedIn }) => {
   const location = useLocation();
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+
+  const toggleProfileModal = () => {
+    setProfileModalOpen((prev) => !prev);
+  };
 
   return (
     <NavContainer>
@@ -21,9 +29,20 @@ const NavBar = ({ isLoggedIn }) => {
           <Link to="/workspace">Workspace</Link>
         </NavItem>
       </NavItems>
-      <LoginButton>
-        {isLoggedIn ? <UserIcon src="/image/user-icon.svg" alt="User Icon" /> : <Link to="/login">Login</Link>}
-      </LoginButton>
+      {isLoggedIn ? (
+        <ProfileContainer>
+          <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
+          {isProfileModalOpen && (
+            <ProfileModalContainer>
+              <ProfileModal />
+            </ProfileModalContainer>
+          )}
+        </ProfileContainer>
+      ) : (
+        <LoginButton>
+          <Link to="/login">Login</Link>
+        </LoginButton>
+      )}
     </NavContainer>
   );
 };
@@ -41,11 +60,13 @@ const NavContainer = styled.nav`
   padding: 10vh 13vw;
   justify-content: space-between;
   width: 100%;
+  position: relative; // NavContainer를 기준으로 ProfileModal 위치 설정
 `;
 
 const Logo = styled.img`
   height: 1.3vw;
   margin-right: 12vw;
+  cursor: pointer;
 `;
 
 const NavItems = styled.ul`
@@ -90,6 +111,7 @@ const LoginButton = styled.button`
   backdrop-filter: blur(40px);
   display: flex;
   align-items: center;
+  cursor: pointer;
   justify-content: center;
 
   &:hover {
@@ -99,7 +121,26 @@ const LoginButton = styled.button`
   }
 `;
 
-const UserIcon = styled.img`
+const ProfileContainer = styled.div`
+  position: relative; // 상대 위치 설정
+  display: flex;
+  align-items: center; // 아이콘과 모달을 수직 정렬
+`;
+
+const ProfileModalContainer = styled.div`
+  position: absolute; // 절대 위치 설정
+  top: 5vh; // NavBar 위쪽에 위치
+  right: 0; // 아이콘과의 간격 조정
+  z-index: 1000; // 다른 요소 위에 표시
+`;
+
+const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
   height: 2vw;
   width: 2vw;
+  margin-left: 13vw;
+  cursor: pointer;
+  color: ${(props) => (props.active ? "#02f798" : "#ffffff")}; // active 상태에 따라 색상 변경
+  &:hover {
+    color: #02f798;
+  }
 `;
