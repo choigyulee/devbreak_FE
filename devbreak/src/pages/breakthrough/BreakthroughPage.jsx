@@ -48,6 +48,10 @@ function BreakthroughPage() {
     setCurrentPage(pageNumber);
   };
 
+  const handleItemClick = (articleId) => {
+    navigate(`/breakthrough/article/${articleId}`);  // 해당 articleId로 이동
+  };
+
   return (
     <>
       <NavBar />
@@ -59,6 +63,7 @@ function BreakthroughPage() {
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
+            onItemClick={handleItemClick}
           />
           <Pagination
             currentPage={currentPage}
