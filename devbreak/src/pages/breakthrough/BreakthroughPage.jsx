@@ -82,7 +82,7 @@ const Container = styled.div`
 `;
 
 const BreakthroughContainer = styled.div`
-  margin: 98px auto;
+  margin: 60px auto;
   width: 75vw;
   display: flex;
   flex-direction: column;

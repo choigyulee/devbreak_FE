@@ -20,7 +20,10 @@ const List = ({
               {item.title}
             </Title>
             <Info>
-              {item.createdAt} | {item.blogName}
+              {item.createdAt && item.blogName
+                ? `${item.createdAt} | ${item.blogName}`
+                : item.description}
+
             </Info>
           </ListItem>
         ))}
@@ -34,7 +37,6 @@ const ListContainer = styled.div`
   color: #ffffff;
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth};
-  
 `;
 
 const ListItemsContainer = styled.div`
@@ -48,6 +50,7 @@ const ListItemsContainer = styled.div`
 `;
 
 const ListItem = styled.div`
+  width: 57vw;
   padding-left: 12px;
   border-left: 2px solid #ffffff;
   color: #ffffff;
