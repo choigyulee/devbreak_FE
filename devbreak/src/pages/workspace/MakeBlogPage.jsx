@@ -1,30 +1,33 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
 import Input from "../../components/Workspace/Input";
 import TextArea from "../../components/Workspace/TextArea";
-import Dropdown from '../../components/Breakthrough/Dropdown';
+import Dropdown from "../../components/Breakthrough/Dropdown";
+import PropTypes from "prop-types";
+import { useAuth } from "../../AuthContext";
 
 const githubRepos = [
-  { id: 1, title: 'Tech Blog A' },
-  { id: 2, title: 'Tech Blog B' },
-  { id: 3, title: 'Tech Blog C' },
-  { id: 4, title: 'Tech Blog D' },
-  { id: 5, title: 'Tech Blog E' },
+  { id: 1, title: "Tech Blog A" },
+  { id: 2, title: "Tech Blog B" },
+  { id: 3, title: "Tech Blog C" },
+  { id: 4, title: "Tech Blog D" },
+  { id: 5, title: "Tech Blog E" },
 ];
 
 function MakeBlogPage() {
+  const { isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
-    blogName: '',
-    description: '',
-    gitRepoUrl: 'pick one from your Github account',
+    blogName: "",
+    description: "",
+    gitRepoUrl: "pick one from your Github account",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -42,47 +45,37 @@ function MakeBlogPage() {
     const { blogName, description, gitRepoUrl } = formData;
 
     const requestBody = {
-      blogName,   
-      description,  
-      gitRepoUrl, 
+      blogName,
+      description,
+      gitRepoUrl,
     };
 
     try {
       // const response = await axios.post('API_URL', requestBody);
-      console.log('Form submitted:', requestBody);
-
+      console.log("Form submitted:", requestBody);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
     }
   };
 
   return (
     <>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <FormContainer>
           <Title>Create a new tech blog</Title>
-          <Subtitle>A little note: Anyone on the Internet can see this tech blog. <br />
-            Please fill out all fields marked with an asterisk (*).</Subtitle>
+          <Subtitle>
+            A little note: Anyone on the Internet can see this tech blog. <br />
+            Please fill out all fields marked with an asterisk (*).
+          </Subtitle>
 
           <Form onSubmit={handleSubmit}>
             <FormField label="Blog name" required>
-              <Input
-                type="text"
-                name="blogName"
-                value={formData.blogName}
-                onChange={handleChange}
-                required
-              />
+              <Input type="text" name="blogName" value={formData.blogName} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Description" required>
-              <TextArea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-              />
+              <TextArea name="description" value={formData.description} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Github repository link" required>
@@ -94,7 +87,7 @@ function MakeBlogPage() {
             </FormField>
 
             <ButtonContainer>
-              <GoToButton text="create blog" onClick={handleSubmit} /> 
+              <GoToButton text="create blog" onClick={handleSubmit} />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -102,6 +95,10 @@ function MakeBlogPage() {
     </>
   );
 }
+
+MakeBlogPage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired, // isLoggedIn prop validation 추가
+};
 
 export default MakeBlogPage;
 

@@ -1,12 +1,7 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import PropTypes from "prop-types";
 
-const List = ({
-  items = [],
-  currentPage = 1,
-  itemsPerPage = 15,
-  maxWidth = "933px"
-}) => {
+const List = ({ items = [], currentPage = 1, itemsPerPage = 15, maxWidth = "933px", onItemClick }) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
@@ -15,16 +10,11 @@ const List = ({
     <ListContainer maxWidth={maxWidth}>
       <ListItemsContainer>
         {currentItems.map((item) => (
-          <ListItem key={item.id}>
-            <Title>
-              {item.title}
-            </Title>
-            <Info>
-              {item.createdAt && item.blogName
-                ? `${item.createdAt} | ${item.blogName}`
-                : item.description}
-
-            </Info>
+          <ListItem key={item.id} onClick={() => onItemClick(item.id)}>
+            {" "}
+            {/* 클릭 이벤트 추가 */}
+            <Title>{item.title}</Title>
+            <Info>{item.createdAt && item.blogName ? `${item.createdAt} | ${item.blogName}` : item.description}</Info>
           </ListItem>
         ))}
       </ListItemsContainer>
@@ -32,8 +22,16 @@ const List = ({
   );
 };
 
+List.propTypes = {
+  items: PropTypes.array.isRequired,
+  currentPage: PropTypes.number.isRequired, // 이 부분은 더 이상 필요하지 않음
+  itemsPerPage: PropTypes.number.isRequired, // 이 부분은 더 이상 필요하지 않음
+  maxWidth: PropTypes.string,
+  onItemClick: PropTypes.func.isRequired, // 클릭 이벤트 핸들러 추가
+};
+
 const ListContainer = styled.div`
-  font-family: 'Urbanist', sans-serif;
+  font-family: "Urbanist", sans-serif;
   color: #ffffff;
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth};
@@ -58,8 +56,8 @@ const ListItem = styled.div`
   cursor: pointer;
 
   &:hover {
-    border-left: 4px solid #71FFC9; 
-    color: #71FFC9; 
+    border-left: 4px solid #71ffc9;
+    color: #71ffc9;
   }
 `;
 

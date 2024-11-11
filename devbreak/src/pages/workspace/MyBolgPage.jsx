@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import { BsStarFill, BsPencil, BsGithub } from "react-icons/bs";
 import GoToButton from "../../components/GoToButton";
 import List from "../../components/Breakthrough/List";
+import PropTypes from "prop-types";
+import { useAuth } from "../../AuthContext";
 
 const ActivityItem = ({ activity }) => {
   // state가 "open" 또는 null일 경우 초록색, 아니면 보라색
-  const dotColor = (activity.state === "open" || activity.state === null) ? "#4ADE80" : "#8250DF";
-  
+  const dotColor = activity.state === "open" || activity.state === null ? "#4ADE80" : "#8250DF";
+
   return (
     <ActivityItemContainer>
       <ActivityDot style={{ backgroundColor: dotColor }} />
@@ -21,25 +23,37 @@ const ActivityItem = ({ activity }) => {
   );
 };
 
+ActivityItem.propTypes = {
+  activity: PropTypes.shape({
+    state: PropTypes.string,
+    message: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 const MemberItem = ({ member }) => <Member>{member}</Member>;
 
+MemberItem.propTypes = {
+  member: PropTypes.string.isRequired,
+};
+
 function MyBolgPage() {
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   // 고정된 목 데이터를 설정
-  const [blogData, setBlogData] = useState({
+  const [blogData] = useState({
     blogName: "devbreak BE tech blog",
     description: "This is a blog about my journey through learning web development.",
     gitRepoUrl: "https://github.com/LikeLion-Project-3Team/BE",
     members: ["sadew1121", "ddfsdf545", "dfeeg5445"],
     breakthroughs: [
       { title: "First Breakthrough", description: "Started learning React!" },
-      { title: "Second Breakthrough", description: "Built my first app!" }
+      { title: "Second Breakthrough", description: "Built my first app!" },
     ],
     repositoryActivity: [
       { message: "Pushed new changes to the repository.", date: "2024.11.01" },
-      { message: "Opened a new issue regarding bug fixes.", date: "2024.11.02" }
+      { message: "Opened a new issue regarding bug fixes.", date: "2024.11.02" },
     ],
     favButton: false,
   });
@@ -63,7 +77,7 @@ function MyBolgPage() {
 
   return (
     <>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <InfoContainer>
           <BlogInfo>
@@ -126,9 +140,9 @@ function MyBolgPage() {
                     width="100px"
                     height="40px"
                     style={{
-                      position: 'absolute',
-                      right: '0',
-                      top: '0',
+                      position: "absolute",
+                      right: "0",
+                      top: "0",
                     }}
                   />
                 )}
@@ -136,7 +150,9 @@ function MyBolgPage() {
               <ListContainer>
                 {blogData.breakthroughs.length === 0 ? (
                   <EmptyState>
-                    <p>Share your <br /> breakthroughs with us!</p>
+                    <p>
+                      Share your <br /> breakthroughs with us!
+                    </p>
                     <GoToButton
                       onClick={() => navigate("/workspace/myblog/write")}
                       fontSize="20px"
@@ -161,6 +177,10 @@ function MyBolgPage() {
     </>
   );
 }
+
+MyBolgPage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired, // isLoggedIn prop validation 추가
+};
 
 export default MyBolgPage;
 

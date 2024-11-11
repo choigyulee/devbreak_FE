@@ -1,27 +1,24 @@
 import PropTypes from "prop-types"; // PropTypes 임포트
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
-import AccountDeleteModal from "./AccountDeleteModal"; // 새로 추가할 모달 컴포넌트
 
-const NavBar = ({ isLoggedIn }) => {
+const NavBar = ({ isLoggedIn, onLogout }) => {
   const location = useLocation();
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
-  const [isAccountDeleteModalOpen, setAccountDeleteModalOpen] = useState(false);
 
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => !prev);
   };
 
-  const handleAccountDelete = () => {
-    setProfileModalOpen(false); // ProfileModal 닫기
-    setAccountDeleteModalOpen(true); // AccountDeleteModal 열기
-  };
-
-  const closeAccountDeleteModal = () => {
-    setAccountDeleteModalOpen(false); // AccountDeleteModal 닫기
+  const handleWorkspaceClick = () => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 서비스입니다!\n로그인 후 이용 부탁드립니다.");
+      navigate("/login"); // 로그인 페이지로 이동
+    }
   };
 
   return (
@@ -36,7 +33,7 @@ const NavBar = ({ isLoggedIn }) => {
         <NavItem active={location.pathname.startsWith("/breakthrough")}>
           <Link to="/breakthrough">Breakthrough</Link>
         </NavItem>
-        <NavItem active={location.pathname.startsWith("/workspace")}>
+        <NavItem active={location.pathname.startsWith("/workspace")} onClick={handleWorkspaceClick}>
           <Link to="/workspace">Workspace</Link>
         </NavItem>
       </NavItems>
@@ -46,13 +43,18 @@ const NavBar = ({ isLoggedIn }) => {
           {isProfileModalOpen && (
             <ProfileModalContainer>
               <ProfileModal
-                githubId="your_github_id" // 실제 GitHub ID로 변경
-                onLogout={() => console.log("Logged out")} // 로그아웃 로직 추가
-                onDeleteAccount={handleAccountDelete} // 계정 삭제 핸들러
+                githubId="your_github_id" // GitHub ID를 적절히 설정
+                onLogout={() => {
+                  onLogout(); // 부모 컴포넌트의 로그아웃 함수 호출
+                  setProfileModalOpen(false); // 모달 닫기
+                }}
+                onDeleteAccount={() => {
+                  // 계정 삭제 처리 로직
+                  console.log("Account deleted");
+                }}
               />
             </ProfileModalContainer>
           )}
-          {isAccountDeleteModalOpen && <AccountDeleteModal onClose={closeAccountDeleteModal} />}
         </ProfileContainer>
       ) : (
         <LoginButton>
@@ -65,10 +67,13 @@ const NavBar = ({ isLoggedIn }) => {
 
 // PropTypes 정의
 NavBar.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired, // isLoggedIn은 필수 boolean 타입
+  isLoggedIn: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func.isRequired, // onLogout prop 추가
 };
 
 export default NavBar;
+
+// 나머지 스타일 컴포넌트는 동일하게 유지
 
 const NavContainer = styled.nav`
   display: flex;

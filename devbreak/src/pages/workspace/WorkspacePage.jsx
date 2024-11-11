@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
-import GoToButton from '../../components/GoToButton';
-import { AiFillPlusCircle } from 'react-icons/ai';
+import GoToButton from "../../components/GoToButton";
+import { AiFillPlusCircle } from "react-icons/ai";
+import PropTypes from "prop-types";
+import { useAuth } from "../../AuthContext";
 
 function WorkspacePage() {
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
@@ -27,7 +30,6 @@ function WorkspacePage() {
           },
         ];
         setMyBlogList(data);
-
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -38,7 +40,7 @@ function WorkspacePage() {
 
   return (
     <>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         {myBlogList.length > 0 ? (
           <MyBlogContainer>
@@ -66,6 +68,10 @@ function WorkspacePage() {
     </>
   );
 }
+
+WorkspacePage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+};
 
 export default WorkspacePage;
 
@@ -170,8 +176,8 @@ const CreateContainerText = styled.div`
   text-align: center;
 `;
 
-const LoadingText = styled.div`
-  font-size: 25px;
-  color: #ffffff;
-  margin-top: 100px;
-`;
+// const LoadingText = styled.div`
+//   font-size: 25px;
+//   color: #ffffff;
+//   margin-top: 100px;
+// `;
