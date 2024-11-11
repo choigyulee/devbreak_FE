@@ -22,11 +22,11 @@ const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
             <DropdownItem
               key={index}
               onClick={() => {
-                setSelectedValue(item.title || item.commit.message);
+                setSelectedValue(item.title);
                 setIsDropdownVisible(false);
               }}
             >
-              {item.title || item.commit.message}
+              {item.title}
             </DropdownItem>
           ))}
         </DropdownMenu>
