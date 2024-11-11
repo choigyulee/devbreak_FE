@@ -1,45 +1,50 @@
-import react, { useState } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
-import List from '../../components/Breakthrough/List';
+import List from "../../components/Breakthrough/List";
+import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
+import PropTypes from "prop-types";
+import { useAuth } from "../../AuthContext";
 
 function BreakthroughPage() {
-
+  const { isLoggedIn } = useAuth();
   const exampleItems = [
     {
       id: 1,
       title: "Exploring React hooks",
       createdAt: "2024.10.01",
-      blogName: "Tech Blog A"
+      blogName: "Tech Blog A",
     },
     {
       id: 2,
       title: "JavaScript async/await deep dive",
       createdAt: "2024.10.02",
-      blogName: "Tech Blog B"
+      blogName: "Tech Blog B",
     },
     {
       id: 3,
       title: "Understanding TypeScript types",
       createdAt: "2024.10.03",
-      blogName: "Tech Blog C"
+      blogName: "Tech Blog C",
     },
     {
       id: 4,
       title: "Best practices for clean code",
       createdAt: "2024.10.04",
-      blogName: "Tech Blog A"
+      blogName: "Tech Blog A",
     },
     {
       id: 5,
       title: "CSS Grid vs Flexbox",
       createdAt: "2024.10.05",
-      blogName: "Tech Blog D"
+      blogName: "Tech Blog D",
     },
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
 
   const itemsPerPage = 15;
   // const totalPages = Math.ceil(exampleItems.length / itemsPerPage);
@@ -49,12 +54,12 @@ function BreakthroughPage() {
   };
 
   const handleItemClick = (articleId) => {
-    navigate(`/breakthrough/article/${articleId}`);  // 해당 articleId로 이동
+    navigate(`/breakthrough/article/${articleId}`); // 해당 articleId로 이동
   };
 
   return (
     <>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <BreakthroughContainer>
           <Title>Let’s Explore all breakthroughs!</Title>
@@ -76,6 +81,10 @@ function BreakthroughPage() {
   );
 }
 
+BreakthroughPage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+};
+
 export default BreakthroughPage;
 
 const Container = styled.div`
@@ -93,8 +102,8 @@ const BreakthroughContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-grow: 1; 
-`
+  flex-grow: 1;
+`;
 
 const Title = styled.div`
   color: #ffffff;

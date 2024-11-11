@@ -1,30 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
 import Dropdown from "../../components/Breakthrough/Dropdown";
 import TextArea from "../../components/Workspace/TextArea";
+import PropTypes from "prop-types";
+import { useAuth } from "../../AuthContext";
 
 function WritePage() {
+  const { isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
-    title: '',
-    content: ''
+    title: "",
+    content: "",
   });
 
-  const [selectedAbout, setSelectedAbout] = useState('pick from the Github repository');
-  const [selectedProblem, setSelectedProblem] = useState('pick from the Github repository');
-  const [selectedSolution, setSelectedSolution] = useState('pick from the Github repository');
+  const [selectedAbout, setSelectedAbout] = useState("pick from the Github repository");
+  const [selectedProblem, setSelectedProblem] = useState("pick from the Github repository");
+  const [selectedSolution, setSelectedSolution] = useState("pick from the Github repository");
 
   const [issuesAndCommits, setIssuesAndCommits] = useState([]);
 
   const mockData = [
-    { type: 'issue', title: 'Issue 1' },
-    { type: 'issue', title: 'Issue 2' },
-    { type: 'issue', title: 'Issue 3' },
-    { type: 'commit', title: 'Commit 1' },
-    { type: 'commit', title: 'Commit 2' },
-    { type: 'commit', title: 'Commit 3' },
+    { type: "issue", title: "Issue 1" },
+    { type: "issue", title: "Issue 2" },
+    { type: "issue", title: "Issue 3" },
+    { type: "commit", title: "Commit 1" },
+    { type: "commit", title: "Commit 2" },
+    { type: "commit", title: "Commit 3" },
   ];
 
   useEffect(() => {
@@ -36,9 +39,9 @@ function WritePage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -51,62 +54,51 @@ function WritePage() {
       problem: selectedProblem,
       solution: selectedSolution,
     };
-    console.log('Form submitted:', payload);
+    console.log("Form submitted:", payload);
   };
 
   return (
     <>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <FormContainer>
           <Form>
             <FormField label="Breakthrough Title" required>
-              <Input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
+              <Input type="text" name="title" value={formData.title} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Add related issue or commit (optional)">
               <FormItem>
-              <Label>about</Label>
-              <Dropdown
-                label="About"
-                selectedValue={selectedAbout}
-                setSelectedValue={setSelectedAbout}
-                items={issuesAndCommits}
-              />
+                <Label>about</Label>
+                <Dropdown
+                  label="About"
+                  selectedValue={selectedAbout}
+                  setSelectedValue={setSelectedAbout}
+                  items={issuesAndCommits}
+                />
               </FormItem>
               <FormItem>
-              <Label>problem</Label>
-              <Dropdown
-                label="Problem"
-                selectedValue={selectedProblem}
-                setSelectedValue={setSelectedProblem}
-                items={issuesAndCommits}
-              />
+                <Label>problem</Label>
+                <Dropdown
+                  label="Problem"
+                  selectedValue={selectedProblem}
+                  setSelectedValue={setSelectedProblem}
+                  items={issuesAndCommits}
+                />
               </FormItem>
               <FormItem>
-              <Label>solution</Label>
-              <Dropdown
-                label="Solution"
-                selectedValue={selectedSolution}
-                setSelectedValue={setSelectedSolution}
-                items={issuesAndCommits}
-              />
-               </FormItem>
+                <Label>solution</Label>
+                <Dropdown
+                  label="Solution"
+                  selectedValue={selectedSolution}
+                  setSelectedValue={setSelectedSolution}
+                  items={issuesAndCommits}
+                />
+              </FormItem>
             </FormField>
 
             <FormField label="Body" required>
-              <TextArea
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                required
-              />
+              <TextArea name="content" value={formData.content} onChange={handleChange} required />
             </FormField>
 
             <ButtonContainer>
@@ -119,6 +111,9 @@ function WritePage() {
   );
 }
 
+WritePage.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+};
 export default WritePage;
 
 const Container = styled.div`
@@ -146,7 +141,7 @@ const Form = styled.form`
 const FormItem = styled.div`
   display: flex;
   flex-direction: row;
-`
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -168,8 +163,8 @@ const Label = styled.div`
   font-size: 25px;
   height: 67px;
   width: 150px;
-  padding: 25px 20px 0 0 ;
-`
+  padding: 25px 20px 0 0;
+`;
 
 const ButtonContainer = styled.div`
   margin-top: 60px;
