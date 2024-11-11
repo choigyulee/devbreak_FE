@@ -6,15 +6,21 @@ import { BsStarFill, BsPencil, BsGithub } from "react-icons/bs";
 import GoToButton from "../../components/GoToButton";
 import List from "../../components/Breakthrough/List";
 
-const ActivityItem = ({ activity }) => (
-  <ActivityItemContainer>
-    <ActivityDot style={{ backgroundColor: "#4ADE80" }} />
-    <ActivityContent>
-      <ActivityMessage>{activity.message}</ActivityMessage>
-      <ActivityDate>{activity.date}</ActivityDate>
-    </ActivityContent>
-  </ActivityItemContainer>
-);
+const ActivityItem = ({ activity }) => {
+  // state가 "open" 또는 null일 경우 초록색, 아니면 보라색
+  const dotColor = (activity.state === "open" || activity.state === null) ? "#4ADE80" : "#8250DF";
+  
+  return (
+    <ActivityItemContainer>
+      <ActivityDot style={{ backgroundColor: dotColor }} />
+      <ActivityContent>
+        <ActivityMessage>{activity.message}</ActivityMessage>
+        <ActivityDate>{activity.updatedAt}</ActivityDate>
+      </ActivityContent>
+    </ActivityItemContainer>
+  );
+};
+
 
 const MemberItem = ({ member }) => <Member>{member}</Member>;
 
