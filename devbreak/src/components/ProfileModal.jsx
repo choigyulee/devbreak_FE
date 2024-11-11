@@ -11,7 +11,7 @@ const ProfileModal = ({ githubId, onLogout, onDeleteAccount }) => {
             <img src="/image/hand.png" alt="Waving Hand" />
           </span>
         </Greeting>
-        <GitHubId>Gitbub ID{githubId}</GitHubId>
+        <GitHubId>GitHub ID: {githubId}</GitHubId>
         <ButtonContainer>
           <Logout onClick={onLogout}>Logout</Logout>
           <Divider />

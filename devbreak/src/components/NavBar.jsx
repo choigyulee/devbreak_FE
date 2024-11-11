@@ -4,13 +4,24 @@ import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
+import AccountDeleteModal from "./AccountDeleteModal"; // 새로 추가할 모달 컴포넌트
 
 const NavBar = ({ isLoggedIn }) => {
   const location = useLocation();
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [isAccountDeleteModalOpen, setAccountDeleteModalOpen] = useState(false);
 
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => !prev);
+  };
+
+  const handleAccountDelete = () => {
+    setProfileModalOpen(false); // ProfileModal 닫기
+    setAccountDeleteModalOpen(true); // AccountDeleteModal 열기
+  };
+
+  const closeAccountDeleteModal = () => {
+    setAccountDeleteModalOpen(false); // AccountDeleteModal 닫기
   };
 
   return (
@@ -34,9 +45,14 @@ const NavBar = ({ isLoggedIn }) => {
           <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
           {isProfileModalOpen && (
             <ProfileModalContainer>
-              <ProfileModal />
+              <ProfileModal
+                githubId="your_github_id" // 실제 GitHub ID로 변경
+                onLogout={() => console.log("Logged out")} // 로그아웃 로직 추가
+                onDeleteAccount={handleAccountDelete} // 계정 삭제 핸들러
+              />
             </ProfileModalContainer>
           )}
+          {isAccountDeleteModalOpen && <AccountDeleteModal onClose={closeAccountDeleteModal} />}
         </ProfileContainer>
       ) : (
         <LoginButton>
