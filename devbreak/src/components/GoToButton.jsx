@@ -2,10 +2,10 @@ import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
 
-const GoToButton = ({ text, onClick, width = "250px", height = "50px", borderRadius = "63px" }) => {
+const GoToButton = ({ text, onClick, width = "250px", height = "50px", fontSize = "22px"}) => {
 
   return (
-    <Button onClick={onClick} width={width} height={height} borderRadius={borderRadius}>
+    <Button onClick={onClick} width={width} height={height} fontSize={fontSize}>
       {text}
     </Button>
   );
@@ -21,9 +21,7 @@ export default GoToButton;
 const Button = styled.button`
   margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.15);
-
   border: 1.5px solid rgba(255, 255, 255, 0.5);
-
   backdrop-filter: blur(40px);
   width: ${({ width }) => width};
   height: ${({ height }) => height};
@@ -31,8 +29,8 @@ const Button = styled.button`
   font-family: "Pretendard";
   font-weight: 400;
 
-  font-size: 22px;
-  border-radius: ${({ borderRadius }) => borderRadius};
+  font-size: ${({ fontSize }) => fontSize};
+  border-radius: 63px;
   cursor: pointer;
   transition: color, border 0.3s;
 
