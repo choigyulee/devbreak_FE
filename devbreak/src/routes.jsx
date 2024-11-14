@@ -32,7 +32,7 @@ const routes = [
     path: "/home",
     element: <HomePage />,
     name: "03. 홈 메인 페이지",
-    protected: true,  // 로그인한 사용자만 접근
+    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/breakthrough/article/:articleId",
