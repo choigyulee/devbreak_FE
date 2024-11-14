@@ -23,3 +23,4 @@ export default async function postAuthGithub(authorizationCode) {
     throw error; // 에러를 상위로 전달
   }
 }
+

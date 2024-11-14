@@ -93,9 +93,12 @@
 //   margin-top: 1vh;
 //   cursor: pointer; /* 이미지와 텍스트 간의 간격 조정 */
 // `;
+
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../AuthContext"; // 로그인 상태를 관리하는 context
+import postAuthGithub from "../../APIs/post/postAuthGithub";
 import styled from "@emotion/styled";
 import DashBoard from './DashBoard';
 
@@ -107,37 +110,33 @@ const DashBoardsItem = () => {
 
   // GitHub 로그인 버튼 클릭 시 처리
   const handleGitHubLogin = () => {
-    const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;  // .env 파일에서 가져온 Client ID
-    const redirectUri = process.env.REACT_APP_GITHUB_REDIRECT_URI;  // .env 파일에서 가져온 리디렉트 URI
+    const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;  // .env 파일에서 가져온 Client ID
+    const redirectUri = import.meta.env.VITE_GITHUB_REDIRECT_URI;  // .env 파일에서 가져온 리디렉트 URI
+
     const state = Math.random().toString(36).substring(7);  // CSRF 방지를 위한 랜덤 값
-    
+
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}&scope=user`;
-  
+
     // GitHub 로그인 페이지로 리디렉션
     window.location.href = githubAuthUrl;
   };
 
   // GitHub 인증 성공 후 처리
-  const handleGitHubSuccess = (response) => {
-    console.log("GitHub OAuth Success:", response);
+  const handleGitHubSuccess = async (authorizationCode) => {
+    try {
+      const { accessToken, refreshToken, grantType, expiresIn } = await postAuthGithub(authorizationCode); // GitHub 인증 후 토큰 받기
 
-    // GitHub 로그인 후 받은 액세스 토큰을 백엔드로 전송하여 사용자 인증을 완료
-    fetch('https://your-backend-api.com/auth/github', {
-      method: 'POST',
-      body: JSON.stringify({ token: response.access_token }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      // 서버에서 인증된 사용자 정보를 받으면 로그인 처리
-      login(data.user);
-      navigate('/home'); // 홈으로 이동
-    })
-    .catch((err) => {
-      console.error("GitHub OAuth error", err);
-    });
+      // 액세스 토큰과 리프레시 토큰을 세션에 저장
+      sessionStorage.setItem("accessToken", accessToken);
+      sessionStorage.setItem("refreshToken", refreshToken);
+
+      // 로그인 처리 (예: 사용자 정보를 로그인 상태로 저장)
+      login(); // 로그인 상태 설정
+      navigate("/home"); // 홈으로 이동
+    } catch (error) {
+      console.error("GitHub OAuth Failed:", error);
+      // 오류 처리: 인증 실패 시 사용자에게 알림 표시 등을 할 수 있습니다.
+    }
   };
 
   // GitHub 인증 실패 처리
@@ -148,7 +147,7 @@ const DashBoardsItem = () => {
   return (
     <ItemBox>
       <DashBoard />
-      <HoverableDashBoard onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <HoverableDashBoard onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={handleGitHubLogin}>
         <TextContainer>
           <Line>
             Go To <BoldText isHovered={isHovered}>Sign Up</BoldText>
@@ -158,11 +157,7 @@ const DashBoardsItem = () => {
           </Line>
         </TextContainer>
         {/* GitHub 로그인 이미지를 클릭하면 GitHub 인증 페이지로 리디렉션 */}
-        <StyledImage 
-          src="/image/Github_Login.png" 
-          alt="GitHub Login" 
-          onClick={handleGitHubLogin} 
-        />
+        <StyledImage src="/image/Github_Login.png" alt="GitHub Login" />
       </HoverableDashBoard>
       <DashBoard />
     </ItemBox>
@@ -227,3 +222,4 @@ const StyledImage = styled.img`
   margin-top: 1vh;
   cursor: pointer;
 `;
+
