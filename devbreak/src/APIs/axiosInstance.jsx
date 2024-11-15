@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 // axios 인스턴스 생성
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER,  // 환경 변수를 import.meta.env로 접근
-  timeout: 5000,  // 요청 타임아웃 5000ms (5초)
+  timeout: 10000,  // 요청 타임아웃 5000ms (5초)
 });
 
 // 토큰을 헤더에 설정하는 함수

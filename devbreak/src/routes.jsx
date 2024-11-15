@@ -74,7 +74,7 @@ const routes = [
     name: "10. 블로그 열람 페이지",
   },
   {
-    path: "/github/callback",
+    path: "/oauth/github/callback",
     element: <GithubRedirectPage />,
     name: "11. GitHub 인증 페이지",
   },
