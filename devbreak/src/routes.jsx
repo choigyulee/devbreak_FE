@@ -10,7 +10,7 @@ import MakeBlogPage from "./pages/workspace/MakeBlogPage";
 import MyBolgPage from "./pages/workspace/MyBolgPage";
 import WorkspacePage from "./pages/workspace/WorkspacePage";
 import WritePage from "./pages/workspace/WritePage";
-import GithubRedirectPage from "./pages/GithubRedirectPage";
+import GithubLogin from "./pages/GithubLogin";
 
 const routes = [
   {
@@ -74,8 +74,8 @@ const routes = [
     name: "10. 블로그 열람 페이지",
   },
   {
-    path: "/oauth/github/callback",
-    element: <GithubRedirectPage />,
+    path: "/githubLogin",
+    element: <GithubLogin />,
     name: "11. GitHub 인증 페이지",
   },
 ];

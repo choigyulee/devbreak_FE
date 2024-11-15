@@ -1,17 +1,16 @@
-// Github 소셜 로그인/회원가입
-import axiosInstance from '../axiosInstance';
+import axiosInstance from '../axiosInstance';  // 기존의 axios 인스턴스를 사용
 
-export default async function postAuthGithub(authorizationCode) {
+// GitHub 인증 code를 백엔드로 보내는 함수
+const postAuthGithub = async (code) => {
   try {
-    const response = await axiosInstance.post('/api/auth/github', {
-      authorizationCode,
-    });
+    // 백엔드로 GitHub 인증 code 전송
+    const response = await axiosInstance.post('/api/auth/github', { code });
 
-    const { accessToken, refreshToken } = response.data;
-
-    return { accessToken, refreshToken };
+    // 응답받은 데이터 (액세스 토큰, 리프레시 토큰 등) 반환
+    return response.data;
   } catch (error) {
-    console.error('GitHub 인증 실패:', error);
-    throw new Error('GitHub 인증 처리 중 오류가 발생했습니다.');
+    throw new Error('GitHub 인증에 실패했습니다.');
   }
-}
+};
+
+export default postAuthGithub;

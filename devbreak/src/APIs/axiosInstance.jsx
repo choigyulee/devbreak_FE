@@ -4,13 +4,13 @@ import Cookies from 'js-cookie';
 // axios 인스턴스 생성
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER,  // 환경 변수를 import.meta.env로 접근
-  timeout: 10000,  // 요청 타임아웃 5000ms (5초)
+  timeout: 1000000,  // 요청 타임아웃 5000ms (5초)
 });
 
 // 토큰을 헤더에 설정하는 함수
 const setAuthHeader = (config) => {
-  // sessionStorage 대신 Cookies에서 accessToken을 가져올 수 있도록 변경
-  const accessToken = sessionStorage.getItem('accessToken') || Cookies.get('accessToken');
+  // sessionStorage에서 accessToken을 가져와 헤더에 설정
+  const accessToken = sessionStorage.getItem('accessToken');
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
