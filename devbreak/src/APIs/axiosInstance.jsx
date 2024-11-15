@@ -9,8 +9,8 @@ const axiosInstance = axios.create({
 
 // 토큰을 헤더에 설정하는 함수
 const setAuthHeader = (config) => {
-  // sessionStorage에서 accessToken을 가져와 헤더에 설정
-  const accessToken = sessionStorage.getItem('accessToken');
+  // sessionStorage 대신 Cookies에서 accessToken을 가져올 수 있도록 변경
+  const accessToken = sessionStorage.getItem('accessToken') || Cookies.get('accessToken');
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }

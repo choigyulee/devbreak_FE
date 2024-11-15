@@ -7,11 +7,11 @@ export const useGithubAuth = () => {
   const initiateGithubLogin = useCallback(() => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_GITHUB_REDIRECT_URI;
-    const state = Math.random().toString(36).substring(7);
-    
-    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${state}`;
-    
-    window.location.href = authUrl;
+    const state = Math.random().toString(36).substring(7);  // CSRF 보호용 state
+
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
+
+    window.location.href = authUrl;  // GitHub 로그인 페이지로 리디렉션
   }, []);
 
   const handleAuthCallback = useCallback(async (code) => {
@@ -30,16 +30,16 @@ export const useGithubAuth = () => {
 
       const data = await response.json();
       
-      // Store tokens
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('grantType', data.grantType);
-      localStorage.setItem('expiresIn', data.expiresIn);
+      // 토큰을 로컬 스토리지에 저장
+      sessionStorage.setItem('accessToken', data.accessToken);
+      sessionStorage.setItem('refreshToken', data.refreshToken);
+      sessionStorage.setItem('grantType', data.grantType);
+      sessionStorage.setItem('expiresIn', data.expiresIn);
 
       navigate('/home');
       return true;
     } catch (error) {
-      console.error('GitHub authentication error:', error);
+      console.error('GitHub 인증 오류:', error);
       navigate('/login?error=auth_failed');
       return false;
     }
