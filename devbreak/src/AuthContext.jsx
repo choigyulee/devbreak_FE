@@ -1,23 +1,29 @@
-import { createContext, useContext, useState } from "react";
-import PropTypes from "prop-types";
+import React, { createContext, useContext, useState } from 'react';
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export const useAuth = () => useContext(AuthContext);
 
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('accessToken'));
+
+  const login = (accessToken, refreshToken) => {
+    // 액세스 토큰과 리프레시 토큰을 쿠키에 저장
+    Cookies.set('accessToken', accessToken, { expires: 1 / 24 }); // 1시간
+    Cookies.set('refreshToken', refreshToken, { expires: 7 });  // 7일
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
+    setIsAuthenticated(false);
+  };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export const useAuth = () => useContext(AuthContext);
