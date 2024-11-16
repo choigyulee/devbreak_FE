@@ -8,6 +8,8 @@ import TextArea from "../../components/Workspace/TextArea";
 import Dropdown from "../../components/Breakthrough/Dropdown";
 import PropTypes from "prop-types";
 import { useAuth } from "../../AuthContext";
+import getRepos from "../../APIs/get/getRepos";
+import postBlog from "../../APIs/post/postBlog";
 
 const githubRepos = [
   { id: 1, title: "Tech Blog A" },
@@ -20,10 +22,28 @@ const githubRepos = [
 function MakeBlogPage() {
   const { isLoggedIn } = useAuth();
   const [formData, setFormData] = useState({
-    blogName: "",
-    description: "",
+    blogName: blogName,
+    description: description,
     gitRepoUrl: "pick one from your Github account",
+    blogMember: blogMember
   });
+
+  const [githubRepos, setGithubRepos] = useState([]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchRepos();  // 로그인된 상태에서만 레포지토리 목록을 가져옴
+    }
+  }, [isLoggedIn]);
+
+  const fetchRepos = async () => {
+    try {
+      const repos = await getRepos();
+      setGithubRepos(repos);  // 상태 업데이트
+    } catch (error) {
+      console.error("Error fetching GitHub repos:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,17 +62,18 @@ function MakeBlogPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { blogName, description, gitRepoUrl } = formData;
+    const { blogName, description, gitRepoUrl, blogMember } = formData;
 
     const requestBody = {
       blogName,
       description,
       gitRepoUrl,
+      blogMember,
     };
 
     try {
-      // const response = await axios.post('API_URL', requestBody);
-      console.log("Form submitted:", requestBody);
+      const response = await postBlog(blogName, description, gitRepoUrl);
+      console.log("Blog created successfully:", response);
     } catch (error) {
       console.error("Error submitting form:", error);
     }

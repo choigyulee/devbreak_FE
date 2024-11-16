@@ -10,11 +10,9 @@ const List = ({ items = [], currentPage = 1, itemsPerPage = 15, maxWidth = "933p
     <ListContainer maxWidth={maxWidth}>
       <ListItemsContainer>
         {currentItems.map((item) => (
-          <ListItem key={item.id} onClick={() => onItemClick(item.id)}>
-            {" "}
-            {/* 클릭 이벤트 추가 */}
+          <ListItem key={item.articleId} onClick={() => onItemClick(item.articleId)}>
             <Title>{item.title}</Title>
-            <Info>{item.createdAt && item.blogName ? `${item.createdAt} | ${item.blogName}` : item.description}</Info>
+            <Info>{item.createdAt} | {item.blogName}</Info>
           </ListItem>
         ))}
       </ListItemsContainer>
@@ -24,10 +22,10 @@ const List = ({ items = [], currentPage = 1, itemsPerPage = 15, maxWidth = "933p
 
 List.propTypes = {
   items: PropTypes.array.isRequired,
-  currentPage: PropTypes.number.isRequired, // 이 부분은 더 이상 필요하지 않음
-  itemsPerPage: PropTypes.number.isRequired, // 이 부분은 더 이상 필요하지 않음
+  currentPage: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
   maxWidth: PropTypes.string,
-  onItemClick: PropTypes.func.isRequired, // 클릭 이벤트 핸들러 추가
+  onItemClick: PropTypes.func.isRequired,
 };
 
 const ListContainer = styled.div`

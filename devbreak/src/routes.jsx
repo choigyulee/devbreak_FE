@@ -32,7 +32,6 @@ const routes = [
     path: "/home",
     element: <HomePage />,
     name: "03. 홈 메인 페이지",
-    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/breakthrough/article/:articleId",
@@ -74,7 +73,7 @@ const routes = [
     name: "10. 블로그 열람 페이지",
   },
   {
-    path: "/githubLogin",
+    path: "/github",
     element: <GithubLogin />,
     name: "11. GitHub 인증 페이지",
   },

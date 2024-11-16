@@ -1,67 +1,127 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext"; // 로그인 상태 관리 함수
-import Cookies from "js-cookie"; // js-cookie 사용
-import axios from "axios"; // axios 라이브러리 사용
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../AuthContext";
+import Cookies from "js-cookie";
+import postAuthGithub from "../APIs/post/postAuthGithub";
 
 const GithubLogin = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // 로그인 상태 관리 함수
+  const { login, isLoggedIn } = useAuth(); // isLoggedIn 추가
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // URL에서 'code' 파라미터를 추출하는 함수
   const getCodeFromUrl = () => {
-    const params = new URLSearchParams(window.location.search); // 현재 URL의 쿼리 문자열을 가져옴
-    return params.get("code"); // 'code' 파라미터의 값을 반환
+    const params = new URLSearchParams(window.location.search);
+    return params.get("code");
   };
 
-  // 백엔드에 `code`를 보내고 액세스 토큰을 받아오는 함수
+  const saveCookies = (tokens) => {
+    const { accessToken, refreshToken, grantType, expiresIn } = tokens;
+    const cookieOptions = {
+      expires: 7,
+      path: "/",
+      secure: window.location.protocol === 'https:',
+      sameSite: "Lax",
+    };
+
+    Cookies.set("accessToken", accessToken, cookieOptions);
+    Cookies.set("refreshToken", refreshToken, cookieOptions);
+    Cookies.set("grantType", grantType, cookieOptions);
+    Cookies.set("expiresIn", expiresIn, cookieOptions);
+    localStorage.setItem('accessToken', `Bearer ${accessToken}`);
+  };
+
   const fetchTokensFromBackend = async (code) => {
     try {
-      // 백엔드로 POST 요청을 보내서 액세스 토큰을 가져옴
-      const response = await axios.post("/api/auth/github", { code });
-
-      // 응답에서 액세스 토큰과 리프레시 토큰을 추출
-      const { accessToken, refreshToken, grantType, expiresIn } = response.data;
-
-      // 쿠키에 토큰 저장
-      Cookies.set("accessToken", accessToken, { expires: 7, path: "/", secure: true, sameSite: "Strict" });
-      Cookies.set("refreshToken", refreshToken, { expires: 7, path: "/", secure: true, sameSite: "Strict" });
-      Cookies.set("grantType", grantType, { expires: 7, path: "/", secure: true, sameSite: "Strict" });
-      Cookies.set("expiresIn", expiresIn, { expires: 7, path: "/", secure: true, sameSite: "Strict" });
-
-      // 로그인 상태로 설정
-      login();
-
-      // 홈으로 리디렉션
-      navigate("/home");
+      setIsLoading(true);
+      const response = await postAuthGithub(code);
+      
+      saveCookies(response);
+      await login(); // login 함수가 비동기일 경우를 대비
+      
+      const redirectTo = location.state?.from || "/home"; // 이전에 시도한 페이지가 있으면 그곳으로 리디렉션
+      navigate(redirectTo);
     } catch (error) {
       console.error("GitHub 인증 실패:", error);
-      alert("GitHub 인증에 실패했습니다.");
+      setError(error.message);
+      setTimeout(() => navigate("/login"), 5000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const code = getCodeFromUrl();
-    if (code) {
-      console.log(code); // 여기서 코드 확인
-      fetchTokensFromBackend(code); // 백엔드에 `code` 보내기
-    } else {
-      alert("GitHub 인증에 실패했습니다.");
+    
+    if (!code) {
+      setError("인증 코드를 찾을 수 없습니다.");
+      setIsLoading(false);
+      setTimeout(() => navigate("/login"), 3000);
+      return;
     }
-  }, []); // 빈 배열을 넣으면 컴포넌트가 마운트될 때 한 번만 실행
+
+    fetchTokensFromBackend(code);
+  }, [navigate, location.state?.from]);
+
+  if (error) {
+    return (
+      <Container>
+        <ErrorMessage>
+          {error}
+          <RedirectText>5초 후 로그인 페이지로 이동합니다...</RedirectText>
+        </ErrorMessage>
+      </Container>
+    );
+  }
 
   return (
     <Container>
-      <h2>GitHub 인증 중...</h2>
+      {isLoading && (
+        <>
+          <LoadingSpinner />
+          <h2>GitHub 인증 중...</h2>
+        </>
+      )}
     </Container>
   );
 };
 
-export default GithubLogin;
-
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
   text-align: center;
-  margin-top: 20vh;
   font-size: 2rem;
 `;
+
+const LoadingSpinner = styled.div`
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: #e74c3c;
+  font-size: 1.5rem;
+  margin: 20px;
+`;
+
+const RedirectText = styled.p`
+  color: #7f8c8d;
+  font-size: 1rem;
+  margin-top: 10px;
+`;
+
+export default GithubLogin;

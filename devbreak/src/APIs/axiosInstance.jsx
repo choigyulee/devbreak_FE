@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 // axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_SERVER,  // 환경 변수를 import.meta.env로 접근
+  baseURL: import.meta.env.VITE_SERVER_URL,  // 환경 변수를 import.meta.env로 접근
   timeout: 1000000,  // 요청 타임아웃 5000ms (5초)
 });
 
