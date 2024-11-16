@@ -222,4 +222,3 @@ const StyledImage = styled.img`
   margin-top: 1vh;
   cursor: pointer;
 `;
-

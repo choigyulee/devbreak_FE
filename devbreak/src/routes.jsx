@@ -10,7 +10,7 @@ import MakeBlogPage from "./pages/workspace/MakeBlogPage";
 import MyBolgPage from "./pages/workspace/MyBolgPage";
 import WorkspacePage from "./pages/workspace/WorkspacePage";
 import WritePage from "./pages/workspace/WritePage";
-import GithubRedirectPage from "./pages/GithubRedirectPage";
+import GithubLogin from "./pages/GithubLogin";
 
 const routes = [
   {
@@ -32,7 +32,6 @@ const routes = [
     path: "/home",
     element: <HomePage />,
     name: "03. 홈 메인 페이지",
-    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/breakthrough/article/:articleId",
@@ -74,8 +73,8 @@ const routes = [
     name: "10. 블로그 열람 페이지",
   },
   {
-    path: "/github/callback",
-    element: <GithubRedirectPage />,
+    path: "/github",
+    element: <GithubLogin />,
     name: "11. GitHub 인증 페이지",
   },
 ];
