@@ -2,7 +2,7 @@
 import axiosInstance from "../axiosInstance";  
 
 
-export default async function postBlog( blogName, description, gitRepoUrl ) {
+export default async function postBlog( blogName, description, gitRepoUrl, blogMember ) {
   try {
 
     const response = await axiosInstance.post(
@@ -11,6 +11,7 @@ export default async function postBlog( blogName, description, gitRepoUrl ) {
         blogName: blogName,
         description: description,
         gitRepoUrl: gitRepoUrl,
+        blogMember: blogMember,
       }
     );
     return response.data;

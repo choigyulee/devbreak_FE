@@ -6,48 +6,29 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
 import PropTypes from "prop-types";
 import { useAuth } from "../../AuthContext";
+import getBreakthrough from "../../APIs/get/getBreakthroguh";
 
 function BreakthroughPage() {
   const { isLoggedIn } = useAuth();
-  const exampleItems = [
-    {
-      id: 1,
-      title: "Exploring React hooks",
-      createdAt: "2024.10.01",
-      blogName: "Tech Blog A",
-    },
-    {
-      id: 2,
-      title: "JavaScript async/await deep dive",
-      createdAt: "2024.10.02",
-      blogName: "Tech Blog B",
-    },
-    {
-      id: 3,
-      title: "Understanding TypeScript types",
-      createdAt: "2024.10.03",
-      blogName: "Tech Blog C",
-    },
-    {
-      id: 4,
-      title: "Best practices for clean code",
-      createdAt: "2024.10.04",
-      blogName: "Tech Blog A",
-    },
-    {
-      id: 5,
-      title: "CSS Grid vs Flexbox",
-      createdAt: "2024.10.05",
-      blogName: "Tech Blog D",
-    },
-  ];
-
+  const [formData, setFormData] = useState([]); 
   const [currentPage, setCurrentPage] = useState(1);
-
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // API 호출해서 데이터 가져오기
+    const fetchData = async () => {
+      try {
+        const data = await getBreakthrough(); // API 호출
+        setFormData(data); // 상태에 데이터 저장
+      } catch (error) {
+        console.error("데이터 로딩 실패:", error);
+      }
+    };
+
+    fetchData(); // 컴포넌트 마운트 시 데이터 로딩
+  }, []);
+
   const itemsPerPage = 15;
-  // const totalPages = Math.ceil(exampleItems.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -64,7 +45,7 @@ function BreakthroughPage() {
         <BreakthroughContainer>
           <Title>Let’s Explore all breakthroughs!</Title>
           <List
-            items={exampleItems}
+            items={formData}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}

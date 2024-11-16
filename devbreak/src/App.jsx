@@ -1,23 +1,31 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+// App.jsx
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./AuthContext";
 import routes from "./routes";
-import { AuthProvider } from "./AuthContext"; // AuthContext에서 useAuth 가져오기
-import React, { useState } from "react";
+import PrivateRoute from "./components/LoginPageItems/PrivateRoute";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
-
   const elements = routes.map((item, index) => {
-    // 각 route에 isLoggedIn prop 전달
     if (!item.element) {
       console.error(`Route at index ${index} does not have a valid element.`);
-      return null; // element가 없으면 null 반환
+      return null;
     }
-    const elementWithProps = React.cloneElement(item.element, { isLoggedIn, setIsLoggedIn });
-    return <Route key={index} path={item.path} element={elementWithProps} />;
+
+    if (item.protected) {
+      return (
+        <Route
+          key={item.path}
+          path={item.path}
+          element={<PrivateRoute>{item.element}</PrivateRoute>}
+        />
+      );
+    }
+
+    return <Route key={item.path} path={item.path} element={item.element} />;
   });
 
   return (
-    <AuthProvider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthProvider>
       <Router>
         <Routes>{elements}</Routes>
       </Router>
