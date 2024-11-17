@@ -47,13 +47,13 @@ const routes = [
     path: "/workspace",
     element: <WorkspacePage />,
     name: "06.워크스페이스 메인 페이지",
-    protected: true,  // 로그인한 사용자만 접근
+    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/workspace/makeblog",
     element: <MakeBlogPage />,
     name: "07. 블로그 작성 페이지",
-    protected: true,  // 로그인한 사용자만 접근
+    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/workspace/myblog",
@@ -65,7 +65,7 @@ const routes = [
     path: "/workspace/myblog/write",
     element: <WritePage />,
     name: "09. 브레잌스루 작성 페이지",
-    protected: true,  // 로그인한 사용자만 접근
+    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/blog/:blogId",
