@@ -39,7 +39,7 @@ function MakeBlogPage() {
   const fetchRepos = async () => {
     try {
       const repos = await getRepos();
-      setGithubRepos(repos);  // 상태 업데이트
+      setGithubRepos(repos);
     } catch (error) {
       console.error("Error fetching GitHub repos:", error);
     }
