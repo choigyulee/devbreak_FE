@@ -4,11 +4,15 @@ import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
+import { useAuth } from "../context/AuthContext"; // useAuth 훅 임포트
 
-const NavBar = ({ isLoggedIn, onLogout }) => {
+const NavBar = ({ onLogout }) => {
   const location = useLocation();
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+
+  // useAuth 훅을 사용하여 로그인 상태를 가져옴
+  const { isLoggedIn } = useAuth();
 
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => !prev);
@@ -67,13 +71,11 @@ const NavBar = ({ isLoggedIn, onLogout }) => {
 
 // PropTypes 정의
 NavBar.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
   onLogout: PropTypes.func.isRequired, // onLogout prop 추가
 };
 
 export default NavBar;
 
-// 나머지 스타일 컴포넌트는 동일하게 유지
 
 const NavContainer = styled.nav`
   display: flex;

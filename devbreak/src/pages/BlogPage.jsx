@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../components/NavBar";
 import PropTypes from "prop-types";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 function BlogPage() {
   const { isLoggedIn } = useAuth(); // useAuth 훅을 사용하여 로그인 상태 가져오기

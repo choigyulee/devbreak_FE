@@ -1,4 +1,4 @@
-import { useAuth } from "../../AuthContext"; // 경로 확인
+import { useAuth } from "../../context/AuthContext";
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BreakthroughData from "../../components/HomePageItems/BreakthroughData";

@@ -5,7 +5,7 @@ import List from "../../components/Breakthrough/List";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
 import PropTypes from "prop-types";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import getBreakthrough from "../../APIs/get/getBreakthroguh";
 
 function BreakthroughPage() {

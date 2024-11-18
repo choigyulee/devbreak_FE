@@ -7,7 +7,7 @@ import Input from "../../components/Workspace/Input";
 import TextArea from "../../components/Workspace/TextArea";
 import Dropdown from "../../components/Breakthrough/Dropdown";
 import PropTypes from "prop-types";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import getRepos from "../../APIs/get/getRepos";
 import postBlog from "../../APIs/post/postBlog";
 
