@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import List from "../../components/Breakthrough/List";
@@ -53,7 +53,7 @@ function BreakthroughPage() {
           />
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(exampleItems.length / itemsPerPage)}
+            totalPages={Math.ceil(formData.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
         </BreakthroughContainer>
