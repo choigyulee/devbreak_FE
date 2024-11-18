@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
 import NavBar from "../components/NavBar";
 import PropTypes from "prop-types";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 function StartPage() {
   const { isLoggedIn } = useAuth(); // useAuth 훅을 사용하여 로그인 상태 가져오기

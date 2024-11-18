@@ -5,7 +5,7 @@ import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import { AiFillPlusCircle } from "react-icons/ai";
 import PropTypes from "prop-types";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function WorkspacePage() {
   const { isLoggedIn } = useAuth();

@@ -1,4 +1,3 @@
-// src/routes.js
 import BlogPage from "./pages/BlogPage";
 import BreakthroughPage from "./pages/breakthrough/BreakthroughPage";
 import ContentsPage from "./pages/home/ContentsPage";
@@ -11,6 +10,7 @@ import MyBolgPage from "./pages/workspace/MyBolgPage";
 import WorkspacePage from "./pages/workspace/WorkspacePage";
 import WritePage from "./pages/workspace/WritePage";
 import GithubLogin from "./pages/GithubLogin";
+import PrivateRoute from "./PrivateRoute";
 
 const routes = [
   {
@@ -45,27 +45,23 @@ const routes = [
   },
   {
     path: "/workspace",
-    element: <WorkspacePage />,
+    element: <PrivateRoute><WorkspacePage /></PrivateRoute>,
     name: "06.워크스페이스 메인 페이지",
-    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/workspace/makeblog",
-    element: <MakeBlogPage />,
+    element: <PrivateRoute><MakeBlogPage /></PrivateRoute>,
     name: "07. 블로그 작성 페이지",
-    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/workspace/myblog",
-    element: <MyBolgPage />,
+    element: <PrivateRoute><MyBolgPage /></PrivateRoute>,
     name: "08. 내 블로그 열람 페이지",
-    protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/workspace/myblog/write",
-    element: <WritePage />,
+    element: <PrivateRoute><WritePage /></PrivateRoute>,
     name: "09. 브레잌스루 작성 페이지",
-    // protected: true,  // 로그인한 사용자만 접근
   },
   {
     path: "/blog/:blogId",

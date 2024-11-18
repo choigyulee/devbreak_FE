@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../AuthContext";
+import { AuthProvider } from "../context/AuthContext";
 import getAuthGithub from '../APIs/get/getAuthGithub';
 import styled from '@emotion/styled';
 
@@ -13,6 +13,9 @@ const GithubLogin = () => {
   useEffect(() => {
     const handleGithubAuth = async () => {
       try {
+
+        sessionStorage.setItem('prevPath', window.location.pathname);
+
         const { accessToken, refreshToken } = await getAuthGithub();
         login({ accessToken, refreshToken });
   

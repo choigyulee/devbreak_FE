@@ -6,10 +6,21 @@ import FormField from "../../components/Workspace/FormField";
 import Dropdown from "../../components/Breakthrough/Dropdown";
 import TextArea from "../../components/Workspace/TextArea";
 import PropTypes from "prop-types";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function WritePage() {
+
   const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login"); // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
+    }
+  }, [isLoggedIn, navigate]);
+
+  if (!isLoggedIn) return null; 
+
   const [formData, setFormData] = useState({
     title: "",
     content: "",

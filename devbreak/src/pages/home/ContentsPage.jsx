@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa"; // 리액트 아이콘의 하트 아이콘
 

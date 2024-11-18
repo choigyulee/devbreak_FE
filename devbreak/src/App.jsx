@@ -1,8 +1,8 @@
 // App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import routes from "./routes";
-import PrivateRoute from "./components/LoginPageItems/PrivateRoute";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   const elements = routes.map((item, index) => {

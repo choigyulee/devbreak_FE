@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../../AuthContext"; // 로그인 상태를 관리하는 context
+import { useAuth } from "../../context/AuthContext"; // 로그인 상태를 관리하는 context
 import styled from "@emotion/styled";
 import DashBoard from './DashBoard';
 

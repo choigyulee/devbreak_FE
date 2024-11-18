@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const login = (tokens) => {
     const { accessToken, refreshToken } = tokens;
@@ -14,16 +14,19 @@ export const AuthProvider = ({ children }) => {
     Cookies.set('refreshToken', refreshToken, { expires: 30 }); // 30 days
     
     setIsAuthenticated(true);
+
+    const prevPath = '/workspace'; // 기본값을 home으로 설정
+    window.location.href = prevPath;
   };
 
   const logout = () => {
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
-    setIsAuthenticated(false);
+    setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
