@@ -12,12 +12,15 @@ const DashBoardsItem = () => {
 
   const handleGitHubLogin = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
-    const redirectUri = import.meta.env.VITE_GITHUB_REDIRECT_URI;
+    const redirectUri = encodeURIComponent(import.meta.env.VITE_GITHUB_REDIRECT_URI);
     
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+    // GitHub OAuth 로그인 URL 생성
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
     
+    // GitHub 로그인 페이지로 리디렉션
     window.location.href = githubAuthUrl;
   };
+  
 
 
   return (
