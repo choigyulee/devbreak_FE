@@ -6,7 +6,6 @@ import BlogTenList from "../../components/HomePageItems/BlogTenList";
 import BlogData from "../../components/HomePageItems/BlogData";
 import MyBreakthroughList from "../../components/HomePageItems/MyBreakthroughList";
 import MyBlogList from "../../components/HomePageItems/MyBlogList";
-import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 
 function HomePage() {
@@ -37,10 +36,6 @@ function HomePage() {
     </>
   );
 }
-
-HomePage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-};
 
 export default HomePage;
 

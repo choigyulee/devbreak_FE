@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
@@ -25,21 +25,21 @@ function MakeBlogPage() {
     blogName: blogName,
     description: description,
     gitRepoUrl: "pick one from your Github account",
-    blogMember: blogMember
+    blogMember: blogMember,
   });
 
   const [githubRepos, setGithubRepos] = useState([]);
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetchRepos();  // 로그인된 상태에서만 레포지토리 목록을 가져옴
+      fetchRepos(); // 로그인된 상태에서만 레포지토리 목록을 가져옴
     }
   }, [isLoggedIn]);
 
   const fetchRepos = async () => {
     try {
       const repos = await getRepos();
-      setGithubRepos(repos);  // 상태 업데이트
+      setGithubRepos(repos); // 상태 업데이트
     } catch (error) {
       console.error("Error fetching GitHub repos:", error);
     }
