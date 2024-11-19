@@ -12,7 +12,9 @@ const List = ({ items = [], currentPage = 1, itemsPerPage = 15, maxWidth = "933p
         {currentItems.map((item) => (
           <ListItem key={item.articleId} onClick={() => onItemClick(item.articleId)}>
             <Title>{item.title}</Title>
-            <Info>{item.createdAt} | {item.blogName}</Info>
+            <Info>
+              {item.createdAt} | {item.blogName}
+            </Info>
           </ListItem>
         ))}
       </ListItemsContainer>
@@ -42,12 +44,12 @@ const ListItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 42px;
+  gap: 3vh;
 `;
 
 const ListItem = styled.div`
   width: 57vw;
-  padding-left: 12px;
+  padding-left: 3vh;
   border-left: 2px solid #ffffff;
   color: #ffffff;
   transition: all 0.2s ease-in-out;
@@ -60,7 +62,7 @@ const ListItem = styled.div`
 `;
 
 const Title = styled.h3`
-  font-size: 30px;
+  font-size: 3vh;
   margin-bottom: 17px;
   word-wrap: break-word;
   white-space: normal;

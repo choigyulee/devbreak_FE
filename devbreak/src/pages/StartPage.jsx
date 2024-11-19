@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
 import NavBar from "../components/NavBar";
-import PropTypes from "prop-types";
 import { useAuth } from "../AuthContext";
 
 function StartPage() {
@@ -24,11 +23,6 @@ function StartPage() {
     </>
   );
 }
-
-StartPage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-};
-
 export default StartPage;
 
 const Container = styled.div`
