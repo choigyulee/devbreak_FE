@@ -1,8 +1,7 @@
 // 로그아웃
-// Github 소셜 로그인/회원가입
 import axiosInstance from "../axiosInstance";
 
-export default async function postAuthGithub() {
+export default async function postAuthLogout() {
   try {
 
     const response = await axiosInstance.post(

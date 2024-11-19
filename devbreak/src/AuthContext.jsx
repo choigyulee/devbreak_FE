@@ -1,46 +1,32 @@
-// AuthContext.jsx
-import { createContext, useContext, useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import Cookies from "js-cookie";
+import React, { createContext, useContext, useState } from 'react';
+import Cookies from 'js-cookie';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    // 로그인 상태가 바뀌면 상태 확인
-    const token = sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken') || Cookies.get('accessToken');
-    setIsLoggedIn(!!token);  // 토큰이 존재하면 로그인 상태
-  }, []);
-
-  const login = () => {
-    setIsLoggedIn(true);
+  const login = (tokens) => {
+    const { accessToken, refreshToken } = tokens;
+    
+    // Store tokens in cookies with proper expiration
+    Cookies.set('accessToken', accessToken, { expires: 1 }); // 1 day
+    Cookies.set('refreshToken', refreshToken, { expires: 30 }); // 30 days
+    
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
-    // 세션, 로컬스토리지 및 쿠키에서 토큰 제거
-    sessionStorage.removeItem('accessToken');
-    localStorage.removeItem('accessToken');
     Cookies.remove('accessToken');
-    setIsLoggedIn(false);
+    Cookies.remove('refreshToken');
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);
