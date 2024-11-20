@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../AuthContext"; // 경로 확인
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BlogTenList from "../../components/HomePageItems/BlogTenList";
 import MyBreakthroughList from "../../components/HomePageItems/MyBreakthroughList";
 import MyBlogList from "../../components/HomePageItems/MyBlogList";
 import styled from "@emotion/styled";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState } from "../../atoms/authAtoms";
 import getHomeArticle from "../../APIs/get/getHomeArticle";
 import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
 
+
 function HomePage() {
-  const { isLoggedIn } = useAuth(); // useAuth 훅을 사용하여 로그인 상태 가져오기
+
+  const { isLoggedIn } = useRecoilValue(authState);
+
+  const [auth, setAuth] = useRecoilState(authState);
+  const onLogout = () => {
+    setAuth({ isLoggedIn: false });
+  };
+
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,7 +47,7 @@ function HomePage() {
 
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar onLogout={onLogout} isLoggedIn={auth.isLoggedIn} />
       <Container>
         <ListContainer>
           <BreakthroughTenList items={data.breakthroughs} />

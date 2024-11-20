@@ -1,7 +1,19 @@
 import PropTypes from "prop-types"; // PropTypes 임포트
 import styled from "@emotion/styled";
+import { useRecoilState } from "recoil"; // 리코일 상태를 업데이트 하기 위한 훅
+import { authState } from "../atoms/authAtoms"; // 리코일 상태 임포트
 
-const ProfileModal = ({ githubId, onLogout, onDeleteAccount }) => {
+const ProfileModal = ({ githubId, onDeleteAccount }) => {
+  const [auth, setAuth] = useRecoilState(authState); // 리코일 상태 가져오기 및 업데이트
+
+  // 로그아웃 처리
+  const handleLogout = () => {
+    setAuth({ isLoggedIn: false }); // 로그인 상태를 false로 설정
+    if (onDeleteAccount) {
+      onDeleteAccount(); // 계정 삭제 함수 호출 (필요시 계정 삭제 처리)
+    }
+  };
+
   return (
     <ModalContainer>
       <DashBoard>
@@ -13,7 +25,7 @@ const ProfileModal = ({ githubId, onLogout, onDeleteAccount }) => {
         </Greeting>
         <GitHubId>GitHub ID: {githubId}</GitHubId>
         <ButtonContainer>
-          <Logout onClick={onLogout}>Logout</Logout>
+          <Logout onClick={handleLogout}>Logout</Logout>
           <Divider />
           <AccountDelete onClick={onDeleteAccount}>Account Delete</AccountDelete>
         </ButtonContainer>
@@ -25,7 +37,6 @@ const ProfileModal = ({ githubId, onLogout, onDeleteAccount }) => {
 // PropTypes 정의
 ProfileModal.propTypes = {
   githubId: PropTypes.string.isRequired, // GitHub ID는 필수 문자열
-  onLogout: PropTypes.func.isRequired, // 로그아웃 함수는 필수 함수
   onDeleteAccount: PropTypes.func.isRequired, // 계정 삭제 함수는 필수 함수
 };
 
@@ -96,7 +107,7 @@ const Logout = styled.button`
   font-weight: 400;
 
   &:hover {
-    // 여기에 hover 스타일 추가 가능
+    color: #02f798;
   }
 `;
 
@@ -108,7 +119,7 @@ const AccountDelete = styled.button`
   font-weight: 400;
 
   &:hover {
-    // 여기에 hover 스타일 추가 가능
+    color: red;
   }
 `;
 

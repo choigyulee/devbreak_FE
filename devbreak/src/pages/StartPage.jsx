@@ -1,10 +1,15 @@
 import styled from "@emotion/styled";
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
 import NavBar from "../components/NavBar";
-import { useAuth } from "../AuthContext";
+import PropTypes from "prop-types";
+import { useRecoilValue } from "recoil";
+import { authState } from "../atoms/authAtoms"; 
+
 
 function StartPage() {
-  const { isLoggedIn } = useAuth(); // useAuth 훅을 사용하여 로그인 상태 가져오기
+
+  const { isLoggedIn } = useRecoilValue(authState); // useAuth 훅을 사용하여 로그인 상태 가져오기
+
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -23,6 +28,12 @@ function StartPage() {
     </>
   );
 }
+
+// StartPage.propTypes = {
+//   isLoggedIn: PropTypes.bool.isRequired,
+// };
+
+
 export default StartPage;
 
 const Container = styled.div`

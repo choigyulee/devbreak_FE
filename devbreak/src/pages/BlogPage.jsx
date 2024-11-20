@@ -6,10 +6,11 @@ import { BsStarFill, BsPencil, BsGithub } from "react-icons/bs";
 import GoToButton from "../components/GoToButton";
 import List from "../components/Breakthrough/List";
 import PropTypes from "prop-types";
-import { useAuth } from "../AuthContext";
+import { useRecoilValue } from "recoil";
+import { authState } from "../atoms/authAtoms"; 
 
 function BlogPage() {
-  const { isLoggedIn } = useAuth(); // 로그인 상태
+  const { isLoggedIn } = useRecoilValue(authState); 
   const navigate = useNavigate();
   // 고정된 목 데이터 설정
   const [blogData] = useState({
@@ -162,6 +163,12 @@ function BlogPage() {
     </>
   );
 }
+
+// BlogPage.propTypes = {
+//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+// };
+
+
 export default BlogPage;
 
 const Container = styled.div`

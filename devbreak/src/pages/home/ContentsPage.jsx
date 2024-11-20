@@ -1,33 +1,37 @@
 import styled from "@emotion/styled";
 import { useParams, useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import { useAuth } from "../../AuthContext";
 import { useEffect, useState } from "react";
+import { FaHeart } from "react-icons/fa"; // 리액트 아이콘의 하트 아이콘
+import { useRecoilValue } from "recoil";
+import { authState } from "../../atoms/authAtoms";
 import LinkItem from "../../components/ContentsPageItems/LinkItem";
 import LikesItem from "../../components/ContentsPageItems/LikesItem";
 import ActivityItem from "../../components/ContentsPageItems/ActivityItem";
 import ContentItem from "../../components/ContentsPageItems/ContentItem";
 
 function ContentsPage() {
-  const { isLoggedIn } = useAuth();
   const { articleId } = useParams(); // URL에서 articleId 가져오기
   const [article, setArticle] = useState(null);
   const [liked, setLiked] = useState(false); // 좋아요 상태 관리
   const navigate = useNavigate(); // useNavigate 훅 사용
 
+  // Recoil 상태로부터 로그인 상태를 가져옴
+  const { isLoggedIn } = useRecoilValue(authState); // useRecoilValue를 사용하여 로그인 상태 가져오기
+
   useEffect(() => {
-    // 여기서 API 호출을 통해 articleId에 해당하는 글을 가져옵니다.
     const fetchArticle = async () => {
-      // 실제 API 호출로 대체해야 합니다.
-      // 예시로 주어진 JSON 데이터를 사용합니다.
+      // 여기서 실제로 API 호출 등을 할 수 있음. 현재는 더미 데이터로 설정
       const fetchedArticle = {
         articleId: 2,
         blogId: 1,
         userId: 1,
         title: "Breakthrough title",
         blogName: "blog name",
+
         content:
           '# Welcome to the Markdown Showcase!\n\nMarkdown is a lightweight markup language with plain-text formatting syntax.\nIt\'s widely used for documentation and content creation. Let\'s explore all its features.\n\nMarkdown is a lightweight markup language with plain-text formatting syntax.\n\\nIt\'s widely used for documentation and content creation. Let\'s explore all its features.\n\n---\n\n## Table of Contents\n1. [Headers](#headers)\n2. [Text Styles](#text-styles)\n3. [Links and Images](#links-and-images)\n4. [Lists](#lists)\n5. [Code Blocks](#code-blocks)\n6. [Blockquotes](#blockquotes)\n7. [Tables](#tables)\n8. [Horizontal Lines](#horizontal-lines)\n\n---\n\n## Headers\nMarkdown supports six levels of headers:\n\n# H1 - Largest Header  \n## H2 - Second Largest Header  \n### H3 - Third Largest Header  \n#### H4 - Fourth Largest Header  \n##### H5 - Fifth Largest Header  \n###### H6 - Smallest Header  \n\n---\n\n## Text Styles\n\n- **Bold text**: `**bold text**` or `__bold text__`\n- *Italic text*: `*italic text*` or `_italic text_`\n- ***Bold and Italic***: `***bold and italic***`\n- ~~Strikethrough~~: `~~strikethrough~~`\n- `Inline code` : ``Use backticks (`) for inline code``\n\n---\n\n## Links and Images\n\n### Links\nYou can add links like this:  \n- [OpenAI](https://openai.com)\n- [Markdown Guide](https://www.markdownguide.org)\n\n### Images\nInclude images like this:  \n![OpenAI Logo](https://via.placeholder.com/150 "Placeholder Image")\n\n---\n\n## Lists\n\n### Unordered List\n- Item 1\n  - Subitem 1.1\n  - Subitem 1.2\n- Item 2\n\n### Ordered List\n1. Step 1\n   1. Sub-step 1.1\n   2. Sub-step 1.2\n2. Step 2\n\n---\n\n## Code Blocks\n\n### Inline Code\nThis is `inline code`.\n\n### Block Code\n```javascript\n// JavaScript Example\nfunction greet(name) {\n  console.log(`Hello, ${name}!`);\n}\ngreet("World");\n```\n\n---\n\n## Blockquotes\n\n> "The best way to predict the future is to invent it."  \n> — Alan Kay\n\n---\n\n## Tables\n\n| Name       | Age | Country  |\n|------------|-----|----------|\n| Alice      | 25  | USA      |\n| Bob        | 30  | Canada   |\n| Charlie    | 35  | UK       |\n\n---\n\n## Horizontal Lines\nYou can separate content using horizontal lines:\n\n---\n---\n### Thanks for reading!\nMarkdown is simple yet powerful. Try it out for your next project!',
+
         likeCount: 0,
         likeButton: false,
         createdAt: "2024.10.17",
@@ -38,10 +42,6 @@ function ContentsPage() {
 
     fetchArticle();
   }, [articleId]);
-
-  if (!article) {
-    return <Container>Loading...</Container>; // 데이터 로딩 중 표시
-  }
 
   const handleLikeClick = () => {
     if (!isLoggedIn) {
