@@ -24,6 +24,7 @@
     "recoil": "^0.7.7",
     "rehype-react": "^8.0.0",
     "remark-gfm": "^4.0.0",
+    "styled-components": "^6.1.13",
     "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
