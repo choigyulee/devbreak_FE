@@ -1,25 +1,50 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../../AuthContext"; // 경로 확인
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
-import BreakthroughData from "../../components/HomePageItems/BreakthroughData";
 import BlogTenList from "../../components/HomePageItems/BlogTenList";
-import BlogData from "../../components/HomePageItems/BlogData";
 import MyBreakthroughList from "../../components/HomePageItems/MyBreakthroughList";
 import MyBlogList from "../../components/HomePageItems/MyBlogList";
 import styled from "@emotion/styled";
+import getHomeArticle from "../../APIs/get/getHomeArticle";
+import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
 
 function HomePage() {
   const { isLoggedIn } = useAuth(); // useAuth 훅을 사용하여 로그인 상태 가져오기
+  const [data, setData] = useState({ breakthroughs: [], blogs: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [articleResult, blogResult] = await Promise.all([
+          getHomeArticle(), // 기사 데이터 가져오기
+          getHomeBlog(), // 블로그 데이터 가져오기
+        ]);
+        setData({ breakthroughs: articleResult, blogs: blogResult }); // API에서 받은 데이터를 상태에 저장
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <ListContainer>
-          <BreakthroughTenList items={BreakthroughData} />
+          <BreakthroughTenList items={data.breakthroughs} />
         </ListContainer>
         <ListContainer>
-          <BlogTenList items={BlogData} />
+          <BlogTenList items={data.blogs} />
         </ListContainer>
         {isLoggedIn && (
           <MyListBox>

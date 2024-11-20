@@ -27,13 +27,13 @@ const BreakthroughTenList = ({ items }) => {
       </Title>
       <ListContainer>
         <InnerListContainer ref={innerListRef} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
-          {items.slice(0, 10).map((item, index) => (
-            <BreakthroughBoxWrapper key={index}>
+          {items.slice(0, 10).map((item) => (
+            <BreakthroughBoxWrapper key={item.articleId}>
               <BreakthroughBox
-                title={item.title}
-                createdAt={item.createdAt}
-                blogName={item.blogName}
-                articleId={item.articleId}
+                title={item.title} // title
+                createdAt={item.createdAt} // createdAt
+                blogName={item.blogName} // blogName
+                articleId={item.articleId} // articleId
               />
             </BreakthroughBoxWrapper>
           ))}
@@ -46,9 +46,11 @@ const BreakthroughTenList = ({ items }) => {
 BreakthroughTenList.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
+      articleId: PropTypes.number.isRequired, // articleId는 필수 숫자
       title: PropTypes.string.isRequired, // title은 필수 문자열
-      date: PropTypes.string.isRequired, // date는 필수 문자열
-      blogname: PropTypes.string.isRequired, // blogname은 필수 문자열
+      blogName: PropTypes.string.isRequired, // blogName은 필수 문자열
+      createdAt: PropTypes.string.isRequired, // createdAt은 필수 문자열
+      likeCount: PropTypes.number.isRequired, // likeCount는 필수 숫자
     })
   ).isRequired, // items는 필수 배열
 };
