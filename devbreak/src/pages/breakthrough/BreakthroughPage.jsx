@@ -4,13 +4,13 @@ import NavBar from "../../components/NavBar";
 import List from "../../components/Breakthrough/List";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
-import PropTypes from "prop-types";
-// import { useAuth } from "../../context/AuthContext";
+import { authState } from "../../atoms/authAtoms";
+import { useRecoilValue } from "recoil";
 import getBreakthrough from "../../APIs/get/getBreakthroguh";
 
 function BreakthroughPage() {
-  const { isLoggedIn } = useAuth();
-  const [formData, setFormData] = useState([]); 
+  const { isLoggedIn } = useRecoilValue(authState);
+  const [formData, setFormData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ function BreakthroughPage() {
     fetchData(); // 컴포넌트 마운트 시 데이터 로딩
   }, []);
 
-  const itemsPerPage = 15;
+  const itemsPerPage = 10;
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -66,6 +66,7 @@ function BreakthroughPage() {
 //   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
 // };
 
+
 export default BreakthroughPage;
 
 const Container = styled.div`
@@ -77,7 +78,7 @@ const Container = styled.div`
 `;
 
 const BreakthroughContainer = styled.div`
-  margin: 60px auto;
+  margin: 3vh 15vw 13vh 15vw;
   width: 75vw;
   display: flex;
   flex-direction: column;

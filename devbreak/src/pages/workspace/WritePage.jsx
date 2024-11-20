@@ -7,6 +7,8 @@ import Dropdown from "../../components/Breakthrough/Dropdown";
 import TextArea from "../../components/Workspace/TextArea";
 import PropTypes from "prop-types";
 // import { useAuth } from "../../context/AuthContext";
+import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
+
 
 function WritePage() {
 
@@ -26,7 +28,7 @@ function WritePage() {
     content: "",
   });
 
-  const [selectedAbout, setSelectedAbout] = useState("pick from the Github repository");
+  const [selectedAbout, setSelectedAbout] = useState("pick your programming language");
   const [selectedProblem, setSelectedProblem] = useState("pick from the Github repository");
   const [selectedSolution, setSelectedSolution] = useState("pick from the Github repository");
 
@@ -42,9 +44,6 @@ function WritePage() {
   ];
 
   useEffect(() => {
-    // setIssuesAndCommits(response.data); // 실제 API 호출 시
-
-    // 임시로 목 데이터를 사용
     setIssuesAndCommits(mockData);
   }, []);
 
@@ -57,15 +56,17 @@ function WritePage() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // 폼 기본 제출 동작 방지
     const payload = {
       title: formData.title,
       content: formData.content,
-      about: selectedAbout,
+      language: selectedAbout,
       problem: selectedProblem,
       solution: selectedSolution,
     };
-    console.log("Form submitted:", payload);
+
+    // 콘솔 로그에 JSON 형태로 출력
+    console.log("Form submitted:", JSON.stringify(payload, null, 2));
   };
 
   return (
@@ -73,16 +74,17 @@ function WritePage() {
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <FormContainer>
-          <Form>
+          {/* form에 onSubmit 이벤트 핸들러 추가 */}
+          <Form onSubmit={handleSubmit}>
             <FormField label="Breakthrough Title" required>
               <Input type="text" name="title" value={formData.title} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Add related issue or commit (optional)">
               <FormItem>
-                <Label>about</Label>
+                <Label>language</Label>
                 <Dropdown
-                  label="About"
+                  label="language"
                   selectedValue={selectedAbout}
                   setSelectedValue={setSelectedAbout}
                   items={issuesAndCommits}
@@ -109,11 +111,15 @@ function WritePage() {
             </FormField>
 
             <FormField label="Body" required>
-              <TextArea name="content" value={formData.content} onChange={handleChange} required />
+              <MarkdownEditor
+                content={formData.content}
+                setContent={(value) => setFormData((prev) => ({ ...prev, content: value }))}
+              />
             </FormField>
 
             <ButtonContainer>
-              <GoToButton text="Post" onClick={handleSubmit} />
+              {/* 버튼에서 handleSubmit를 호출하지 않아도 form의 onSubmit으로 처리 */}
+              <GoToButton text="Post" />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -126,6 +132,7 @@ function WritePage() {
 //   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
 // };
 
+
 export default WritePage;
 
 const Container = styled.div`
@@ -135,11 +142,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 300px;
 `;
 
 const FormContainer = styled.div`
-  margin: 60px auto;
+  margin: 3vh 20vw 3vh 20vw;
   align-items: center;
   min-width: 930px;
 `;
@@ -147,7 +153,6 @@ const FormContainer = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin-bottom: 100px;
 `;
 
 const FormItem = styled.div`
@@ -179,7 +184,7 @@ const Label = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin-top: 60px;
+  margin-top: 3vh;
   display: flex;
   justify-content: center;
   width: 100%;

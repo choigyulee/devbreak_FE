@@ -1,10 +1,14 @@
 import styled from "@emotion/styled";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa"; // 리액트 아이콘의 하트 아이콘
 import { useRecoilValue } from "recoil";
-import { authState } from "../../atoms/authAtoms"; // Recoil 상태 임포트
+import { authState } from "../../atoms/authAtoms";
+import LinkItem from "../../components/ContentsPageItems/LinkItem";
+import LikesItem from "../../components/ContentsPageItems/LikesItem";
+import ActivityItem from "../../components/ContentsPageItems/ActivityItem";
+import ContentItem from "../../components/ContentsPageItems/ContentItem";
 
 function ContentsPage() {
   const { articleId } = useParams(); // URL에서 articleId 가져오기
@@ -24,7 +28,10 @@ function ContentsPage() {
         userId: 1,
         title: "Breakthrough title",
         blogName: "blog name",
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        content:
+          '# Welcome to the Markdown Showcase!\n\nMarkdown is a lightweight markup language with plain-text formatting syntax.\nIt\'s widely used for documentation and content creation. Let\'s explore all its features.\n\nMarkdown is a lightweight markup language with plain-text formatting syntax.\n\\nIt\'s widely used for documentation and content creation. Let\'s explore all its features.\n\n---\n\n## Table of Contents\n1. [Headers](#headers)\n2. [Text Styles](#text-styles)\n3. [Links and Images](#links-and-images)\n4. [Lists](#lists)\n5. [Code Blocks](#code-blocks)\n6. [Blockquotes](#blockquotes)\n7. [Tables](#tables)\n8. [Horizontal Lines](#horizontal-lines)\n\n---\n\n## Headers\nMarkdown supports six levels of headers:\n\n# H1 - Largest Header  \n## H2 - Second Largest Header  \n### H3 - Third Largest Header  \n#### H4 - Fourth Largest Header  \n##### H5 - Fifth Largest Header  \n###### H6 - Smallest Header  \n\n---\n\n## Text Styles\n\n- **Bold text**: `**bold text**` or `__bold text__`\n- *Italic text*: `*italic text*` or `_italic text_`\n- ***Bold and Italic***: `***bold and italic***`\n- ~~Strikethrough~~: `~~strikethrough~~`\n- `Inline code` : ``Use backticks (`) for inline code``\n\n---\n\n## Links and Images\n\n### Links\nYou can add links like this:  \n- [OpenAI](https://openai.com)\n- [Markdown Guide](https://www.markdownguide.org)\n\n### Images\nInclude images like this:  \n![OpenAI Logo](https://via.placeholder.com/150 "Placeholder Image")\n\n---\n\n## Lists\n\n### Unordered List\n- Item 1\n  - Subitem 1.1\n  - Subitem 1.2\n- Item 2\n\n### Ordered List\n1. Step 1\n   1. Sub-step 1.1\n   2. Sub-step 1.2\n2. Step 2\n\n---\n\n## Code Blocks\n\n### Inline Code\nThis is `inline code`.\n\n### Block Code\n```javascript\n// JavaScript Example\nfunction greet(name) {\n  console.log(`Hello, ${name}!`);\n}\ngreet("World");\n```\n\n---\n\n## Blockquotes\n\n> "The best way to predict the future is to invent it."  \n> — Alan Kay\n\n---\n\n## Tables\n\n| Name       | Age | Country  |\n|------------|-----|----------|\n| Alice      | 25  | USA      |\n| Bob        | 30  | Canada   |\n| Charlie    | 35  | UK       |\n\n---\n\n## Horizontal Lines\nYou can separate content using horizontal lines:\n\n---\n---\n### Thanks for reading!\nMarkdown is simple yet powerful. Try it out for your next project!',
+
         likeCount: 0,
         likeButton: false,
         createdAt: "2024.10.17",
@@ -45,10 +52,6 @@ function ContentsPage() {
     }
   };
 
-  if (!article) {
-    return <Container>Loading...</Container>; // 데이터 로딩 중 표시
-  }
-
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -58,32 +61,15 @@ function ContentsPage() {
           <NameAndData>
             {article.blogName} | {article.createdAt}
           </NameAndData>
-          <ActivityContainer>
-            <Category>
-              About <p>category</p>
-            </Category>
-            <Problem>
-              Problem <p>what a issue title</p>
-            </Problem>
-            <Solution>
-              Solution <p>how to solve the problem</p>
-            </Solution>
-          </ActivityContainer>
-          <Content>{article.content}</Content>
+          <ActivityItem
+            language="Programing Language"
+            problem="what a issue title"
+            solution="how to solve the problem"
+          />
+          <ContentItem>{article.content}</ContentItem> {/* 마크다운 콘텐츠 렌더링 */}
         </TextContainer>
-        <LikesContainer liked={liked}>
-          <StyledFaHeart onClick={handleLikeClick} /> {/* 클릭 이벤트 핸들러 추가 */}
-          <span>{article.likeCount}</span>
-        </LikesContainer>
-        <LinkContainer>
-          <span className="comment">If you are curious about which blog this article is from,</span>
-          <span className="button">
-            {article.blogName}
-            <Link to={`/blog/${article.blogId}`}>
-              <Button>Go To See</Button>
-            </Link>
-          </span>
-        </LinkContainer>
+        <LikesItem liked={liked} likeCount={article.likeCount} handleLikeClick={handleLikeClick} />
+        <LinkItem blogName={article.blogName} blogId={article.blogId} />
       </Container>
     </>
   );
@@ -94,17 +80,19 @@ export default ContentsPage;
 const Container = styled.div`
   color: white;
   gap: 3vh;
-  margin: 2.5vh 16vw 13vh 16vw;
+  margin: 3vh 20vw 20vh 20vw;
+  align-items: center;
 `;
 
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3vh;
+  gap: 5vh;
+  width: 60vw;
 `;
 
 const Title = styled.p`
-  font-size: 4vh;
+  font-size: 5vh;
   font-weight: 700;
   font-family: "pretendard";
 `;
@@ -113,142 +101,4 @@ const NameAndData = styled.div`
   font-size: 2.8vh;
   font-weight: 400;
   color: #a7a7a7;
-`;
-
-const ActivityContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1vh;
-  width: 30vw;
-`;
-
-const Category = styled.div`
-  font-size: 2vh;
-  font-family: "pretendard";
-  font-weight: 400;
-  color: #a7a7a7;
-  line-height: 3.5vh;
-  display: flex;
-  flex-direction: row;
-  gap: 2vh;
-  p {
-    color: #ffffff;
-  }
-`;
-
-const Problem = styled.div`
-  font-size: 2vh;
-  font-family: "pretendard";
-  font-weight: 400;
-  color: #a7a7a7;
-  line-height: 3.5vh;
-  display: flex;
-  flex-direction: row;
-  gap: 2vh;
-  p {
-    color: #ffffff;
-  }
-`;
-
-const Solution = styled.div`
-  font-size: 2vh;
-  font-family: "pretendard";
-  font-weight: 400;
-  color: #a7a7a7;
-  line-height: 3.5vh;
-  display: flex;
-  flex-direction: row;
-  gap: 2vh;
-  p {
-    color: #ffffff;
-  }
-`;
-
-const Content = styled.p`
-  font-size: 2vh;
-  font-family: "pretendard";
-  font-weight: 400;
-  color: #c9c9c9;
-  line-height: 3.5vh;
-  margin: 2vh;
-`;
-
-const LikesContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 4vh 2vh 2vh 3vh;
-  gap: 1.5vh;
-  span {
-    font-size: 3vh;
-    font-weight: 400;
-    color: ${(props) => (props.liked ? "#FF4F4F" : "#a7a7a7")}; // 좋아요 상태에 따라 색상 변경
-  } // 좋아요 수를 강조하기 위해 색상 변경
-`;
-
-const StyledFaHeart = styled(FaHeart)`
-  color: ${(props) => (props.liked ? "#FF4F4F" : "#a7a7a7")};
-  font-size: 3vh;
-  :hover {
-    color: #ff6060;
-  }
-`;
-
-const LinkContainer = styled.div`
-  width: 100%;
-  border: 1px solid #02f798;
-  border-radius: 3vh;
-  padding: 6vh 11vh;
-  background: linear-gradient(
-    122.72deg,
-    rgba(79, 79, 79, 0.1) 1.74%,
-    rgba(79, 79, 79, 0.1) 1.75%,
-    rgba(255, 255, 255, 0.1) 33.05%,
-    rgba(79, 79, 79, 0.1) 97.16%
-  );
-  backdrop-filter: blur(40px);
-
-  .comment {
-    font-size: 4vh;
-    color: #c9c9c9;
-    font-family: "pretendard";
-    font-weight: 400;
-  }
-
-  .button {
-    font-size: 4.8vh;
-    font-family: "pretendard";
-    font-weight: 700;
-    color: #ffffff;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 6vh 0 2vh 0;
-  }
-`;
-
-const Button = styled.button`
-  background: linear-gradient(
-    122.72deg,
-    rgba(79, 79, 79, 0.1) 1.74%,
-    rgba(79, 79, 79, 0.1) 1.75%,
-    rgba(255, 255, 255, 0.1) 33.05%,
-    rgba(79, 79, 79, 0.1) 97.16%
-  );
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 2vh 3vh;
-  font-size: 3vh;
-  font-family: "pretendard";
-  font-weight: 700;
-  border-radius: 2vh;
-  cursor: pointer;
-  backdrop-filter: blur(40px);
-
-  &:hover {
-    color: #02f798;
-    border: 1px solid #02f798;
-    box-shadow: 0px 0px 5px #02f798;
-  }
 `;

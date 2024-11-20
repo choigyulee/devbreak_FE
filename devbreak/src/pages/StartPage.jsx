@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
 import { authState } from "../atoms/authAtoms"; 
 
+
 function StartPage() {
 
   const { isLoggedIn } = useRecoilValue(authState); // useAuth 훅을 사용하여 로그인 상태 가져오기
@@ -31,6 +32,7 @@ function StartPage() {
 // StartPage.propTypes = {
 //   isLoggedIn: PropTypes.bool.isRequired,
 // };
+
 
 export default StartPage;
 
