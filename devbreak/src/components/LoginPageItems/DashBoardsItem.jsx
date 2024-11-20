@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../../context/AuthContext"; // 로그인 상태를 관리하는 context
+// import { useAuth } from "../../context/AuthContext"; // 로그인 상태를 관리하는 context
 import styled from "@emotion/styled";
 import DashBoard from './DashBoard';
+import { useRecoilState } from 'recoil'; 
+import { authState } from '../../atoms/authAtoms'; 
 
 // DashBoardsItem 컴포넌트
 const DashBoardsItem = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const [auth, setAuth] = useRecoilState(authState); 
   const navigate = useNavigate();
-  const { login } = useAuth(); // 로그인 상태를 관리하는 context
+
 
   const handleGitHubLogin = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;

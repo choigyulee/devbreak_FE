@@ -1,18 +1,29 @@
+// src/components/NavBar.js
 import PropTypes from "prop-types"; // PropTypes 임포트
 import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProfileModal from "./ProfileModal";
-import { useAuth } from "../context/AuthContext"; // useAuth 훅 임포트
+import LoginButton from "./LoginPageItems/LoginButton";
+// import { useAuth } from "../context/AuthContext"; // useAuth 훅 임포트
+import { useRecoilValue } from "recoil"; // 리코일 상태 값을 가져오기 위한 훅
+import { authState } from "../atoms/authAtoms"; // 리코일 상태 임포트
 
 const NavBar = ({ onLogout }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
-  // useAuth 훅을 사용하여 로그인 상태를 가져옴
-  const { isLoggedIn } = useAuth();
+  // 리코일을 사용하여 로그인 상태를 가져옴
+  const { isLoggedIn } = useRecoilValue(authState); // useRecoilValue를 사용하여 상태 가져오기
+
+
+  // 페이지가 변경될 때마다 로그인 상태를 콘솔에 찍기
+  useEffect(() => {
+    console.log("Current Path:", location.pathname); // 현재 페이지 경로 출력
+    console.log("Is Logged In:", isLoggedIn); // 로그인 상태 출력
+  }, [location, isLoggedIn]); 
 
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => !prev);
@@ -61,21 +72,18 @@ const NavBar = ({ onLogout }) => {
           )}
         </ProfileContainer>
       ) : (
-        <LoginButton>
-          <Link to="/login">Login</Link>
-        </LoginButton>
+        <LoginButton /> // 로그인하지 않은 경우 LoginButton 컴포넌트 렌더링
       )}
     </NavContainer>
   );
 };
 
-// PropTypes 정의
 NavBar.propTypes = {
   onLogout: PropTypes.func.isRequired, // onLogout prop 추가
 };
 
-export default NavBar;
 
+export default NavBar;
 
 const NavContainer = styled.nav`
   display: flex;
@@ -119,28 +127,6 @@ const NavItem = styled.li`
 
   &:hover {
     font-weight: 700;
-  }
-`;
-
-const LoginButton = styled.button`
-  font-weight: 700;
-  padding: 0.5vw 1vw;
-  margin-left: 13vw;
-  color: white;
-  font-size: 1.3vw;
-  border-radius: 3vw;
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(40px);
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  justify-content: center;
-
-  &:hover {
-    color: #02f798;
-    border: 1px solid #02f798;
-    box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
   }
 `;
 

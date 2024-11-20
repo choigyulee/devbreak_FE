@@ -1,4 +1,3 @@
-import { useAuth } from "../../context/AuthContext";
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BreakthroughData from "../../components/HomePageItems/BreakthroughData";
@@ -6,15 +5,24 @@ import BlogTenList from "../../components/HomePageItems/BlogTenList";
 import BlogData from "../../components/HomePageItems/BlogData";
 import MyBreakthroughList from "../../components/HomePageItems/MyBreakthroughList";
 import MyBlogList from "../../components/HomePageItems/MyBlogList";
-import PropTypes from "prop-types";
 import styled from "@emotion/styled";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState } from "../../atoms/authAtoms";
+
 
 function HomePage() {
-  const { isLoggedIn } = useAuth(); // useAuth 훅을 사용하여 로그인 상태 가져오기
+  // 리코일 상태에서 로그인 여부를 가져옵니다.
+  const { isLoggedIn } = useRecoilValue(authState); // 리코일 상태 가져오기
+
+  const [auth, setAuth] = useRecoilState(authState);
+  const onLogout = () => {
+    setAuth({ isLoggedIn: false }); // 로그인 상태를 false로 변경
+  };
+
 
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar onLogout={onLogout} isLoggedIn={auth.isLoggedIn} />
       <Container>
         <ListContainer>
           <BreakthroughTenList items={BreakthroughData} />
@@ -37,10 +45,6 @@ function HomePage() {
     </>
   );
 }
-
-HomePage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-};
 
 export default HomePage;
 

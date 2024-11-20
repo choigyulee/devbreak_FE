@@ -6,7 +6,7 @@ import FormField from "../../components/Workspace/FormField";
 import Dropdown from "../../components/Breakthrough/Dropdown";
 import TextArea from "../../components/Workspace/TextArea";
 import PropTypes from "prop-types";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 
 function WritePage() {
 
@@ -122,9 +122,10 @@ function WritePage() {
   );
 }
 
-WritePage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-};
+// WritePage.propTypes = {
+//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+// };
+
 export default WritePage;
 
 const Container = styled.div`

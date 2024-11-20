@@ -1,30 +1,30 @@
 import styled from "@emotion/styled";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa"; // 리액트 아이콘의 하트 아이콘
+import { useRecoilValue } from "recoil";
+import { authState } from "../../atoms/authAtoms"; // Recoil 상태 임포트
 
 function ContentsPage() {
-  const { isLoggedIn } = useAuth();
   const { articleId } = useParams(); // URL에서 articleId 가져오기
   const [article, setArticle] = useState(null);
   const [liked, setLiked] = useState(false); // 좋아요 상태 관리
   const navigate = useNavigate(); // useNavigate 훅 사용
 
+  // Recoil 상태로부터 로그인 상태를 가져옴
+  const { isLoggedIn } = useRecoilValue(authState); // useRecoilValue를 사용하여 로그인 상태 가져오기
+
   useEffect(() => {
-    // 여기서 API 호출을 통해 articleId에 해당하는 글을 가져옵니다.
     const fetchArticle = async () => {
-      // 실제 API 호출로 대체해야 합니다.
-      // 예시로 주어진 JSON 데이터를 사용합니다.
+      // 여기서 실제로 API 호출 등을 할 수 있음. 현재는 더미 데이터로 설정
       const fetchedArticle = {
         articleId: 2,
         blogId: 1,
         userId: 1,
         title: "Breakthrough title",
         blogName: "blog name",
-        content:
-          "a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo.a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo.a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo. a lot of contents in breakthrough. It's 2:58 AM. very sleeeeeeeeeeeeepy now. but I can't sleep now. because I have soooooooooo many task. nae ga whae gaebaleul handa haeseo yee gosangeul haneunji jeongong jalmot gollateoyo.",
+        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         likeCount: 0,
         likeButton: false,
         createdAt: "2024.10.17",
@@ -35,10 +35,6 @@ function ContentsPage() {
 
     fetchArticle();
   }, [articleId]);
-
-  if (!article) {
-    return <Container>Loading...</Container>; // 데이터 로딩 중 표시
-  }
 
   const handleLikeClick = () => {
     if (!isLoggedIn) {

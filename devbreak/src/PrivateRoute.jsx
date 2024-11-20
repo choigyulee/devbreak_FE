@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
+// import { useAuth } from "./context/AuthContext";
 import PropTypes from "prop-types";
+import { useRecoilValue } from "recoil";
+import { authState } from "./atoms/authAtoms"; 
 
 const PrivateRoute = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useRecoilValue(authState); 
   const navigate = useNavigate();
 
   useEffect(() => {

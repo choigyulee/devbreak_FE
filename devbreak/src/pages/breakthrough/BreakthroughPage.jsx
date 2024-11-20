@@ -5,7 +5,7 @@ import List from "../../components/Breakthrough/List";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
 import PropTypes from "prop-types";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import getBreakthrough from "../../APIs/get/getBreakthroguh";
 
 function BreakthroughPage() {
@@ -62,9 +62,9 @@ function BreakthroughPage() {
   );
 }
 
-BreakthroughPage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-};
+// BreakthroughPage.propTypes = {
+//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+// };
 
 export default BreakthroughPage;
 

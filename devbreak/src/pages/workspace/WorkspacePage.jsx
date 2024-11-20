@@ -5,7 +5,7 @@ import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import { AiFillPlusCircle } from "react-icons/ai";
 import PropTypes from "prop-types";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 
 function WorkspacePage() {
   const { isLoggedIn } = useAuth();
@@ -69,9 +69,9 @@ function WorkspacePage() {
   );
 }
 
-WorkspacePage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-};
+// WorkspacePage.propTypes = {
+//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
+// };
 
 export default WorkspacePage;
 

@@ -1,8 +1,10 @@
-// App.jsx
+// src/App.jsx
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
-import routes from "./routes";
-import PrivateRoute from "./PrivateRoute";
+import { RecoilRoot } from 'recoil';
+import routes from './routes';
+import PrivateRoute from './PrivateRoute';
+import LoginCheck from './components/LoginCheck';
 
 function App() {
   const elements = routes.map((item, index) => {
@@ -11,12 +13,17 @@ function App() {
       return null;
     }
 
+    // 로그인 보호된 라우트 처리
     if (item.protected) {
       return (
         <Route
           key={item.path}
           path={item.path}
-          element={<PrivateRoute>{item.element}</PrivateRoute>}
+          element={
+            <LoginCheck>
+              <PrivateRoute>{item.element}</PrivateRoute>
+            </LoginCheck>
+          }
         />
       );
     }
@@ -25,11 +32,11 @@ function App() {
   });
 
   return (
-    <AuthProvider>
+    <RecoilRoot>
       <Router>
         <Routes>{elements}</Routes>
       </Router>
-    </AuthProvider>
+    </RecoilRoot>
   );
 }
 
