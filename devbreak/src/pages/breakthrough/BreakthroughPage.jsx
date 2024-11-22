@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
 import { authState } from "../../atoms/authAtoms";
 import { useRecoilValue } from "recoil";
-import getBreakthrough from "../../APIs/get/getBreakthroguh";
+import getBreakthrough from "../../APIs/get/getBreakthrough";
 
 function BreakthroughPage() {
   const { isLoggedIn } = useRecoilValue(authState);
@@ -65,7 +65,6 @@ function BreakthroughPage() {
 // BreakthroughPage.propTypes = {
 //   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
 // };
-
 
 export default BreakthroughPage;
 
