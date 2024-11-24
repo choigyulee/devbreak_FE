@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../components/NavBar";
 import { BsStarFill, BsPencil, BsGithub } from "react-icons/bs";
@@ -7,42 +7,46 @@ import GoToButton from "../components/GoToButton";
 import List from "../components/Breakthrough/List";
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
-import { authState } from "../atoms/authAtoms"; 
+import { authState } from "../atoms/authAtoms";
+import getBlogBlogId from "../APIs/get/getBlogBlogId";
 
 function BlogPage() {
-  const { isLoggedIn } = useRecoilValue(authState); 
+  const { blogId } = useParams(); // URL에서 blogId 가져오기
+  const { isLoggedIn } = useRecoilValue(authState);
   const navigate = useNavigate();
-  // 고정된 목 데이터 설정
-  const [blogData] = useState({
-    blogName: "devbreak BE tech blog",
-    description: "This is a blog about my journey through learning web development.",
-    gitRepoUrl: "https://github.com/LikeLion-Project-3Team/BE",
-    members: ["sadew1121", "ddfsdf545", "dfeeg5445"],
-    breakthroughs: [
-      { title: "First Breakthrough", description: "Started learning React!" },
-      { title: "Second Breakthrough", description: "Built my first app!" },
-    ],
-    repositoryActivity: [
-      { message: "Pushed new changes to the repository.", date: "2024.11.01" },
-      { message: "Opened a new issue regarding bug fixes.", date: "2024.11.02" },
-    ],
-    favButton: false,
-  });
-  const [favButton, setFavButton] = useState(blogData.favButton); // 좋아요 버튼 상태
+  const [blogData, setBlogData] = useState(null); // 블로그 데이터 상태
+  const [favButton, setFavButton] = useState(false); // 좋아요 버튼 상태
+
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      try {
+        const fetchedBlogData = await getBlogBlogId(blogId); // API 호출
+        setBlogData(fetchedBlogData);
+        setFavButton(fetchedBlogData.fav_button); // 좋아요 상태 초기화
+      } catch (error) {
+        console.error("블로그 데이터를 가져오는 중 에러 발생:", error);
+      }
+    };
+
+    fetchBlogData();
+  }, [blogId]);
+
   // 좋아요 버튼 클릭 핸들러
   const handleFavButtonClick = () => {
     setFavButton(!favButton); // 색상 변경 토글
   };
+
   // GitHub 아이콘 클릭 핸들러
   const handleGitHubClick = () => {
-    window.open(blogData.gitRepoUrl, "_blank");
+    window.open(blogData.git_repo_url, "_blank");
   };
+
   // 연필 아이콘 클릭 핸들러
   const handlePencilClick = () => {
     navigate("/workspace/myblog/write");
   };
+
   const ActivityItem = ({ activity }) => {
-    // state가 "open" 또는 null일 경우 초록색, 아니면 보라색
     const dotColor = activity.state === "open" || activity.state === null ? "#4ADE80" : "#8250DF";
     return (
       <ActivityItemContainer>
@@ -54,6 +58,7 @@ function BlogPage() {
       </ActivityItemContainer>
     );
   };
+
   ActivityItem.propTypes = {
     activity: PropTypes.shape({
       state: PropTypes.string,
@@ -61,10 +66,16 @@ function BlogPage() {
       updatedAt: PropTypes.string.isRequired,
     }).isRequired,
   };
+
   const MemberItem = ({ member }) => <Member>{member}</Member>;
   MemberItem.propTypes = {
     member: PropTypes.string.isRequired,
   };
+
+  if (!blogData) {
+    return <div>로딩 중...</div>; // 블로그 데이터 로딩 중 표시
+  }
+
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -72,7 +83,7 @@ function BlogPage() {
         <InfoContainer>
           <BlogInfo>
             <NameContainer>
-              <BlogName>{blogData.blogName}</BlogName>
+              <BlogName>{blogData.blog_name}</BlogName>
               <StarButton
                 onClick={handleFavButtonClick}
                 style={{
@@ -101,9 +112,13 @@ function BlogPage() {
               <Section>
                 <SectionTitle>Project Repository Activity</SectionTitle>
                 <ActivityContainer>
-                  {blogData.repositoryActivity.map((activity, index) => (
-                    <ActivityItem key={index} activity={activity} />
-                  ))}
+                  {blogData.repositoryActivity && blogData.repositoryActivity.length > 0 ? (
+                    blogData.repositoryActivity.map((activity, index) => (
+                      <ActivityItem key={index} activity={activity} />
+                    ))
+                  ) : (
+                    <NoActivityMessage>There is no Repository Activity !</NoActivityMessage>
+                  )}
                 </ActivityContainer>
               </Section>
               <Section>
@@ -117,8 +132,8 @@ function BlogPage() {
             </LeftColumn>
             <RightColumn>
               <TitleContainer>
-                <SectionTitle>The Breakthroughs ({blogData.breakthroughs.length})</SectionTitle>
-                {isLoggedIn && blogData.breakthroughs.length > 0 && (
+                <SectionTitle>The Breakthroughs ({blogData.break_throughs.length})</SectionTitle>
+                {isLoggedIn && blogData.break_throughs.length > 0 && (
                   <GoToButton
                     onClick={() => navigate("/workspace/myblog/write")}
                     fontSize="20px"
@@ -134,7 +149,7 @@ function BlogPage() {
                 )}
               </TitleContainer>
               <ListContainer>
-                {blogData.breakthroughs.length === 0 ? (
+                {blogData.break_throughs.length === 0 ? (
                   <EmptyState>
                     <p>
                       Share your <br /> breakthroughs with us!
@@ -153,7 +168,7 @@ function BlogPage() {
                     />
                   </EmptyState>
                 ) : (
-                  <List maxWidth={500} items={blogData.breakthroughs} currentPage={1} itemsPerPage={15} />
+                  <List maxWidth={500} items={blogData.break_throughs} currentPage={1} itemsPerPage={15} />
                 )}
               </ListContainer>
             </RightColumn>
@@ -163,11 +178,6 @@ function BlogPage() {
     </>
   );
 }
-
-// BlogPage.propTypes = {
-//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-// };
-
 
 export default BlogPage;
 
@@ -273,10 +283,12 @@ const ActivityMessage = styled.div`
   font-size: 20px;
   margin-bottom: 4px;
 `;
+
 const ActivityDate = styled.div`
   font-size: 20px;
   color: #888;
 `;
+
 const MembersContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.7);
@@ -316,4 +328,7 @@ const EmptyState = styled.div`
     color: #ffffff;
     margin-bottom: 20px;
   }
+`;
+const NoActivityMessage = styled.div`
+  font-size: 2vh;
 `;
