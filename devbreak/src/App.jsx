@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import routes from './routes';
+import routes from './routes'; // 경로 설정 import
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
@@ -12,7 +12,6 @@ function App() {
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;
-

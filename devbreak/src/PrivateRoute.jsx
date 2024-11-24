@@ -1,25 +1,17 @@
-// import { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// // import { useAuth } from "./context/AuthContext";
-// import PropTypes from "prop-types";
-// import { useRecoilValue } from "recoil";
-// import { authState } from "./atoms/authAtoms"; 
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-// const PrivateRoute = ({ children }) => {
-//   const { isLoggedIn } = useRecoilValue(authState); 
-//   const navigate = useNavigate();
+// 로그인 여부를 확인하는 함수
+const isLoggedIn = () => {
+  return sessionStorage.getItem('accessToken') && sessionStorage.getItem('refreshToken');
+};
 
-//   useEffect(() => {
-//     if (!isLoggedIn) {
-//       navigate("/login", { replace: true });
-//     }
-//   }, [isLoggedIn, navigate]);
+const PrivateRoute = ({ element }) => {
+  if (isLoggedIn()) {
+    return element; // 로그인한 경우, 해당 컴포넌트를 렌더링
+  } else {
+    return <Navigate to="/login" />; // 로그인하지 않은 경우, 로그인 페이지로 리디렉션
+  }
+};
 
-//   return isLoggedIn ? children : null;
-// };
-
-// PrivateRoute.propTypes = {
-//   children: PropTypes.node.isRequired,
-// };
-
-// export default PrivateRoute;
+export default PrivateRoute;
