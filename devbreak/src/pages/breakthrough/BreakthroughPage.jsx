@@ -35,7 +35,7 @@ function BreakthroughPage() {
   };
 
   const handleItemClick = (articleId) => {
-    navigate(`/article/breakthrough/${articleId}`); // 해당 articleId로 이동
+    navigate(`/breakthrough/${articleId}`); // 해당 articleId로 이동
   };
 
   return (

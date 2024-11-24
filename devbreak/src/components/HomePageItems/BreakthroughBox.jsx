@@ -8,7 +8,7 @@ const BreakthroughBox = ({ title, createdAt, blogName, articleId }) => {
   const navigate = useNavigate(); // useNavigate 훅 사용
 
   const handleClick = () => {
-    navigate(`/article/breakthrough/${articleId}`); // 클릭 시 이동할 경로
+    navigate(`/breakthrough/${articleId}`); // 클릭 시 이동할 경로
   };
 
   return (

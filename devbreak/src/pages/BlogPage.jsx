@@ -331,4 +331,5 @@ const EmptyState = styled.div`
 `;
 const NoActivityMessage = styled.div`
   font-size: 2vh;
+  color: #888;
 `;

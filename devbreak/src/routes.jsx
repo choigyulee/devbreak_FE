@@ -34,7 +34,7 @@ const routes = [
     name: "03. 홈 메인 페이지",
   },
   {
-    path: "/article/breakthrough/:articleId",
+    path: "/breakthrough/:articleId",
     element: <ContentsPage />,
     name: "04. breakthrough 열람 페이지",
   },
@@ -80,7 +80,7 @@ const routes = [
     name: "09. 브레잌스루 작성 페이지",
   },
   {
-    path: "/blog/non-member/:blogId",
+    path: "/blog/:blogId",
     element: <BlogPage />,
     name: "10. 블로그 열람 페이지",
   },
