@@ -21,7 +21,6 @@
     "react-markdown": "^9.0.1",
     "react-oauth": "^0.0.1",
     "react-router-dom": "^6.27.0",
-    "recoil": "^0.7.7",
     "rehype-react": "^8.0.0",
     "remark-gfm": "^4.0.0",
     "styled-components": "^6.1.13",

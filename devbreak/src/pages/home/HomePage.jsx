@@ -5,24 +5,37 @@ import BlogTenList from "../../components/HomePageItems/BlogTenList";
 import MyBreakthroughList from "../../components/HomePageItems/MyBreakthroughList";
 import MyBlogList from "../../components/HomePageItems/MyBlogList";
 import styled from "@emotion/styled";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { authState } from "../../atoms/authAtoms";
 import getHomeArticle from "../../APIs/get/getHomeArticle";
 import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
 
-
 function HomePage() {
 
-  const { isLoggedIn } = useRecoilValue(authState);
-
-  const [auth, setAuth] = useRecoilState(authState);
-  const onLogout = () => {
-    setAuth({ isLoggedIn: false });
-  };
 
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 직접 관리
+
+  // 로그인 상태 관리 (예시로 로컬 스토리지나 세션 스토리지를 통해 관리할 수 있음)
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (accessToken) {
+        setIsLoggedIn(true);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+    // 로그아웃 함수 추가
+    const onLogout = () => {
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("refreshToken");
+      setIsLoggedIn(false);
+      window.location.href = "/login"; // 로그아웃 후 로그인 페이지로 리디렉션
+    };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +60,7 @@ function HomePage() {
 
   return (
     <>
-      <NavBar onLogout={onLogout} isLoggedIn={auth.isLoggedIn} />
+      <NavBar onLogout={onLogout} isLoggedIn={isLoggedIn} />
       <Container>
         <ListContainer>
           <BreakthroughTenList items={data.breakthroughs} />

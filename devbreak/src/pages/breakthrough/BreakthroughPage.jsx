@@ -4,18 +4,23 @@ import NavBar from "../../components/NavBar";
 import List from "../../components/Breakthrough/List";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
-import { authState } from "../../atoms/authAtoms";
-import { useRecoilValue } from "recoil";
 import getBreakthrough from "../../APIs/get/getBreakthrough";
 
 function BreakthroughPage() {
-  const { isLoggedIn } = useRecoilValue(authState);
+  // 로그인 상태 관리 (로컬 스토리지 사용)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
+  // 로그인 상태를 로컬 스토리지에서 가져오기
   useEffect(() => {
-    // API 호출해서 데이터 가져오기
+    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 세션 스토리지에서 로그인 상태 확인
+    setIsLoggedIn(loggedIn);
+  }, []);
+
+  // API 호출해서 데이터 가져오기
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getBreakthrough(); // API 호출
@@ -61,10 +66,6 @@ function BreakthroughPage() {
     </>
   );
 }
-
-// BreakthroughPage.propTypes = {
-//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-// };
 
 export default BreakthroughPage;
 

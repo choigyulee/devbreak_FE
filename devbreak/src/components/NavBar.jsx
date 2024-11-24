@@ -1,32 +1,31 @@
-// src/components/NavBar.js
-import PropTypes from "prop-types"; // PropTypes 임포트
 import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
-import ProfileModal from "./ProfileModal";
-import LoginButton from "./LoginPageItems/LoginButton";
-// import { useAuth } from "../context/AuthContext"; // useAuth 훅 임포트
-import { useRecoilValue } from "recoil"; // 리코일 상태 값을 가져오기 위한 훅
-import { authState } from "../atoms/authAtoms"; // 리코일 상태 임포트
+import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
 
-const NavBar = ({ onLogout }) => {
+const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 로컬 상태로 관리
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false); // 프로필 모달 상태
 
-  // 리코일을 사용하여 로그인 상태를 가져옴
-  const { isLoggedIn } = useRecoilValue(authState); // useRecoilValue를 사용하여 상태 가져오기
+  // 세션 스토리지에서 로그인 상태 가져오기
+  useEffect(() => {
+    const loggedIn = sessionStorage.getItem("isLoggedIn");
+    setIsLoggedIn(loggedIn === "true"); // "true"일 경우 로그인 상태
+  }, []);
 
 
   // 페이지가 변경될 때마다 로그인 상태를 콘솔에 찍기
   useEffect(() => {
     console.log("Current Path:", location.pathname); // 현재 페이지 경로 출력
     console.log("Is Logged In:", isLoggedIn); // 로그인 상태 출력
-  }, [location, isLoggedIn]); 
+  }, [location, isLoggedIn]); // location과 isLoggedIn이 변경될 때마다 실행
+
 
   const toggleProfileModal = () => {
-    setProfileModalOpen((prev) => !prev);
+    setProfileModalOpen((prev) => !prev); // 프로필 모달 토글
   };
 
   const handleWorkspaceClick = () => {
@@ -34,6 +33,15 @@ const NavBar = ({ onLogout }) => {
       alert("로그인이 필요한 서비스입니다!\n로그인 후 이용 부탁드립니다.");
       navigate("/login"); // 로그인 페이지로 이동
     }
+  };
+
+  const handleLogin = () => {
+    navigate("/login"); // 로그인 페이지로 이동
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("isLoggedIn"); // 세션 스토리지에서 로그인 상태 제거
+    setIsLoggedIn(false); // 로컬 상태에서 로그인 상태 false로 설정
   };
 
   return (
@@ -58,13 +66,9 @@ const NavBar = ({ onLogout }) => {
           {isProfileModalOpen && (
             <ProfileModalContainer>
               <ProfileModal
-                githubId="your_github_id" // GitHub ID를 적절히 설정
-                onLogout={() => {
-                  onLogout(); // 부모 컴포넌트의 로그아웃 함수 호출
-                  setProfileModalOpen(false); // 모달 닫기
-                }}
+                githubId="your_github_id"
+                onLogout={handleLogout}
                 onDeleteAccount={() => {
-                  // 계정 삭제 처리 로직
                   console.log("Account deleted");
                 }}
               />
@@ -72,18 +76,16 @@ const NavBar = ({ onLogout }) => {
           )}
         </ProfileContainer>
       ) : (
-        <LoginButton /> // 로그인하지 않은 경우 LoginButton 컴포넌트 렌더링
+        <ButtonContainer onClick={handleLogin}>
+          <Link to="/login">Login</Link>
+        </ButtonContainer>
       )}
     </NavContainer>
   );
 };
 
-NavBar.propTypes = {
-  onLogout: PropTypes.func.isRequired, // onLogout prop 추가
-};
-
-
 export default NavBar;
+
 
 const NavContainer = styled.nav`
   display: flex;
@@ -151,5 +153,49 @@ const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
   color: ${(props) => (props.active ? "#02f798" : "#ffffff")}; // active 상태에 따라 색상 변경
   &:hover {
     color: #02f798;
+  }
+`;
+
+const LoginButton = styled.button`
+  font-weight: 700;
+  padding: 0.5vw 1.7vw;
+  margin-left: 9vw;
+  color: white;
+  font-size: 1.5vw;
+  border-radius: 3vw;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(40px);
+  &:hover {
+    color: #02f798;
+    border: 1px solid #02f798;
+    box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
+  }
+  a {
+    text-decoration: none;
+    color: inherit; // 버튼의 색상과 동일하게 유지
+    font-size: 1.3vw; // 로그인 텍스트의 크기를 조정
+  }
+`;
+
+const ButtonContainer = styled.button`
+  font-weight: 700;
+  padding: 0.5vw 1vw;
+  margin-left: 13vw;
+  color: white;
+  font-size: 1.3vw;
+  border-radius: 3vw;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(40px);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+
+  &:hover {
+    color: #02f798;
+    border: 1px solid #02f798;
+    box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
   }
 `;

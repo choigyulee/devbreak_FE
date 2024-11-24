@@ -1,16 +1,40 @@
 import PropTypes from "prop-types"; // PropTypes 임포트
 import styled from "@emotion/styled";
-import { useRecoilState } from "recoil"; // 리코일 상태를 업데이트 하기 위한 훅
-import { authState } from "../atoms/authAtoms"; // 리코일 상태 임포트
+import { useState } from "react"; // 리액트 상태를 위한 useState
+import postAuthLogout from "../APIs/post/postAuthLogout";
+import deleteAuthDeleteAccount from "../APIs/delete/deleteAuthDeleteAccount";
 
-const ProfileModal = ({ githubId, onDeleteAccount }) => {
-  const [auth, setAuth] = useRecoilState(authState); // 리코일 상태 가져오기 및 업데이트
+const ProfileModal = ({ githubId, onLogout }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태를 관리하는 로컬 상태
 
   // 로그아웃 처리
-  const handleLogout = () => {
-    setAuth({ isLoggedIn: false }); // 로그인 상태를 false로 설정
-    if (onDeleteAccount) {
-      onDeleteAccount(); // 계정 삭제 함수 호출 (필요시 계정 삭제 처리)
+  const handleLogout = async () => {
+    try {
+      // API로 로그아웃 요청
+      await postAuthLogout();
+      // 로그아웃 성공 후 로컬 상태 및 세션 스토리지 처리
+      sessionStorage.removeItem("isLoggedIn");
+      setIsLoggedIn(false);
+      onLogout(); // 부모 컴포넌트에서 전달된 로그아웃 함수 호출
+    } catch (error) {
+      console.error("로그아웃 중 오류가 발생했습니다:", error);
+    }
+  };
+
+  // 계정 삭제 처리
+  const handleAccountDelete = async () => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete your account? This action is irreversible."
+    );
+    if (isConfirmed) {
+      try {
+        // 계정 삭제 API 요청
+        await deleteAuthDeleteAccount();
+        // 계정 삭제 후 로그아웃 처리
+        handleLogout(); // 계정 삭제 후 로그아웃 처리
+      } catch (error) {
+        console.error("계정 삭제 중 오류가 발생했습니다:", error);
+      }
     }
   };
 
@@ -27,7 +51,7 @@ const ProfileModal = ({ githubId, onDeleteAccount }) => {
         <ButtonContainer>
           <Logout onClick={handleLogout}>Logout</Logout>
           <Divider />
-          <AccountDelete onClick={onDeleteAccount}>Account Delete</AccountDelete>
+          <AccountDelete onClick={handleAccountDelete}>Account Delete</AccountDelete>
         </ButtonContainer>
       </DashBoard>
     </ModalContainer>
@@ -37,8 +61,9 @@ const ProfileModal = ({ githubId, onDeleteAccount }) => {
 // PropTypes 정의
 ProfileModal.propTypes = {
   githubId: PropTypes.string.isRequired, // GitHub ID는 필수 문자열
-  onDeleteAccount: PropTypes.func.isRequired, // 계정 삭제 함수는 필수 함수
+  onLogout: PropTypes.func.isRequired, // 로그아웃 함수는 필수 함수
 };
+
 
 const ModalContainer = styled.div`
   z-index: 1000; // 모달이 다른 요소 위에 나타나도록 설정

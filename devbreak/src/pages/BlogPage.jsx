@@ -6,16 +6,20 @@ import { BsStarFill, BsPencil, BsGithub } from "react-icons/bs";
 import GoToButton from "../components/GoToButton";
 import List from "../components/Breakthrough/List";
 import PropTypes from "prop-types";
-import { useRecoilValue } from "recoil";
-import { authState } from "../atoms/authAtoms";
 import getBlogBlogId from "../APIs/get/getBlogBlogId";
 
 function BlogPage() {
   const { blogId } = useParams(); // URL에서 blogId 가져오기
-  const { isLoggedIn } = useRecoilValue(authState);
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
   const [blogData, setBlogData] = useState(null); // 블로그 데이터 상태
   const [favButton, setFavButton] = useState(false); // 좋아요 버튼 상태
+
+  // 로그인 상태를 sessionStorage에서 가져오기
+  useEffect(() => {
+    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 로컬 스토리지에서 로그인 상태 확인
+    setIsLoggedIn(loggedIn);
+  }, []);
 
   useEffect(() => {
     const fetchBlogData = async () => {
@@ -72,13 +76,25 @@ function BlogPage() {
     member: PropTypes.string.isRequired,
   };
 
+  // 로그인 상태 변경 함수
+  const handleLogin = () => {
+    sessionStorage.setItem("isLoggedIn", "true"); // 로컬 스토리지에 로그인 상태 저장
+    setIsLoggedIn(true); // 로그인 상태 업데이트
+  };
+
+  // 로그아웃 함수
+  const handleLogout = () => {
+    sessionStorage.setItem("isLoggedIn", "false"); // 로컬 스토리지에 로그인 상태 false로 설정
+    setIsLoggedIn(false); // 로그인 상태 업데이트
+  };
+
   if (!blogData) {
     return <div>로딩 중...</div>; // 블로그 데이터 로딩 중 표시
   }
 
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <Container>
         <InfoContainer>
           <BlogInfo>

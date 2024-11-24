@@ -1,60 +1,54 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
-
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_SERVER_URL,
-    timeout: 10000,
-  });
-  
-  axiosInstance.interceptors.request.use(
-    config => {
-      const accessToken = Cookies.get('accessToken');
-      if (accessToken) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
-      }
-      return config;
-    },
-    error => Promise.reject(error)
-  );
-  
-  
+  baseURL: import.meta.env.VITE_SERVER_URL,
+  timeout: 10000,
+});
 
-  axiosInstance.interceptors.response.use(
-    response => response,
-    async error => {
-      const originalRequest = error.config;
-  
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-  
-        try {
-          const refreshToken = Cookies.get('refreshToken');
-          if (!refreshToken) {
-            throw new Error('No refresh token available');
-          }
-  
-          // 리프레시 토큰을 사용하여 액세스 토큰 갱신
-          const response = await axiosInstance.post('/api/auth/refresh', { refreshToken });
-  
-          const { accessToken } = response.data;
-          Cookies.set('accessToken', accessToken, { expires: 1 });
-  
-          originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-          return axiosInstance(originalRequest);
-        } catch (refreshError) {
-          // 오류 발생 시 로그인 페이지로 리디렉션
-          Cookies.remove('accessToken');
-          Cookies.remove('refreshToken');
-          window.location.href = '/login';
-          return Promise.reject(refreshError);
-        }
-      }
-  
-      return Promise.reject(error);
+axiosInstance.interceptors.request.use(
+  config => {
+    const accessToken = sessionStorage.getItem('accessToken'); // 세션 스토리지에서 액세스 토큰 가져오기
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
-  );
-  
-  
-  export default axiosInstance;
-  
+    return config;
+  },
+  error => Promise.reject(error)
+);
+
+axiosInstance.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const refreshToken = sessionStorage.getItem('refreshToken'); // 세션 스토리지에서 리프레시 토큰 가져오기
+        if (!refreshToken) {
+          throw new Error('No refresh token available');
+        }
+
+        // 리프레시 토큰을 사용하여 액세스 토큰 갱신
+        const response = await axiosInstance.post('/api/auth/refresh', { refreshToken });
+
+        const { accessToken } = response.data;
+        sessionStorage.setItem('accessToken', accessToken); // 갱신된 액세스 토큰을 세션 스토리지에 저장
+
+        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        // 오류 발생 시 로그인 페이지로 리디렉션
+        sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;

@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { useAuth } from "../../context/AuthContext"; // 로그인 상태를 관리하는 context
 import styled from "@emotion/styled";
 import DashBoard from './DashBoard';
-import { useRecoilState } from 'recoil'; 
-import { authState } from '../../atoms/authAtoms'; 
 
-// DashBoardsItem 컴포넌트
 const DashBoardsItem = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [auth, setAuth] = useRecoilState(authState); 
   const navigate = useNavigate();
-
 
   const handleGitHubLogin = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
-    const redirectUri = encodeURIComponent(import.meta.env.VITE_GITHUB_REDIRECT_URI);
+    // const redirectUri = encodeURIComponent(import.meta.env.VITE_GITHUB_REDIRECT_URI);
     
     // GitHub OAuth 로그인 URL 생성
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
@@ -23,8 +17,12 @@ const DashBoardsItem = () => {
     // GitHub 로그인 페이지로 리디렉션
     window.location.href = githubAuthUrl;
   };
-  
 
+  // 로그인 성공 시 로컬 스토리지에 로그인 상태 저장
+  const handleLoginSuccess = () => {
+    sessionStorage.setItem('isLoggedIn', 'true'); // 로그인 상태를 로컬 스토리지에 저장
+    navigate('/home'); // 대시보드 페이지로 리디렉션
+  };
 
   return (
     <ItemBox>
@@ -47,7 +45,7 @@ const DashBoardsItem = () => {
 
 export default DashBoardsItem;
 
-// Styled components
+
 const ItemBox = styled.div`
   display: flex;
   flex-direction: row;

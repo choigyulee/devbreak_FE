@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { authState } from "../../atoms/authAtoms";
 import getArticleArticleId from "../../APIs/get/getArticleArticleId";
 import NavBar from "../../components/NavBar";
 import styled from "@emotion/styled";
@@ -16,8 +14,13 @@ function ContentsPage() {
   const [liked, setLiked] = useState(false); // 좋아요 상태 관리
   const navigate = useNavigate(); // useNavigate 훅 사용
 
-  // Recoil 상태로부터 로그인 상태를 가져옴
-  const { isLoggedIn } = useRecoilValue(authState); // useRecoilValue를 사용하여 로그인 상태 가져오기
+  // 로그인 상태를 로컬 스토리지에서 가져오기
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 로컬 스토리지에서 로그인 상태 확인
+    setIsLoggedIn(loggedIn);
+  }, []);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -69,6 +72,7 @@ function ContentsPage() {
 }
 
 export default ContentsPage;
+
 
 const Container = styled.div`
   color: white;
