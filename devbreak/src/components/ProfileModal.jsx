@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import getAuthInfo from "../APIs/get/getAuthInfo";
 import postAuthLogout from "../APIs/post/postAuthLogout";
 import deleteAuthDeleteAccount from "../APIs/delete/deleteAuthDeleteAccount";
+import AccountDeleteModal from "./AccountDeleteModal";
 
 const ProfileModal = ({ onLogout }) => {
   const [githubId, setGithubId] = useState("");  // githubId 상태 관리
   const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태를 관리하는 로컬 상태
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // 컴포넌트가 마운트될 때 API 호출하여 githubId 가져오기
   useEffect(() => {
@@ -39,38 +41,51 @@ const ProfileModal = ({ onLogout }) => {
 
   // 계정 삭제 처리
   const handleAccountDelete = async () => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete your account? This action is irreversible."
-    );
-    if (isConfirmed) {
-      try {
-        // 계정 삭제 API 요청
-        await deleteAuthDeleteAccount();
-        // 계정 삭제 후 로그아웃 처리
-        handleLogout(); // 계정 삭제 후 로그아웃 처리
-      } catch (error) {
-        console.error("계정 삭제 중 오류가 발생했습니다:", error);
-      }
+    setShowDeleteModal(true); // 계정 삭제 모달 표시
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteAuthDeleteAccount();
+      setShowDeleteModal(false);
+      // 계정 삭제 후 로그아웃 처리
+      handleLogout();
+    } catch (error) {
+      console.error("계정 삭제 중 오류가 발생했습니다:", error);
     }
   };
 
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+  };
+
   return (
-    <ModalContainer>
-      <DashBoard>
-        <Greeting>
-          <span>
-            Hello!
-            <img src="/image/hand.png" alt="Waving Hand" />
-          </span>
-        </Greeting>
-        <GitHubId>GitHub ID: {githubId}</GitHubId>
-        <ButtonContainer>
-          <Logout onClick={handleLogout}>Logout</Logout>
-          <Divider />
-          <AccountDelete onClick={handleAccountDelete}>Account Delete</AccountDelete>
-        </ButtonContainer>
-      </DashBoard>
-    </ModalContainer>
+    <>
+      <ModalContainer>
+        <DashBoard>
+          <Greeting>
+            <span>
+              Hello!
+              <img src="/image/hand.png" alt="Waving Hand" />
+            </span>
+          </Greeting>
+          <GitHubId>GitHub ID: {githubId}</GitHubId>
+          <ButtonContainer>
+            <Logout onClick={handleLogout}>Logout</Logout>
+            <Divider />
+            <AccountDelete onClick={handleAccountDelete}>Account Delete</AccountDelete>
+          </ButtonContainer>
+        </DashBoard>
+      </ModalContainer>
+
+      {showDeleteModal && (
+        <AccountDeleteModal
+          onClose={handleDeleteCancel}
+          onConfirm={handleDeleteConfirm}
+        />
+      )
+      }
+    </>
   );
 };
 

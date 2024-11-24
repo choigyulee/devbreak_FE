@@ -2,11 +2,9 @@ import styled from "@emotion/styled";
 import { IoIosWarning } from "react-icons/io";
 import PropTypes from "prop-types"; // PropTypes를 사용하여 prop 유효성 검사
 
-const AccountDeleteModal = ({ onClose }) => {
-  const handleDelete = () => {
-    // 계정 삭제 로직을 여기에 추가합니다.
-    console.log("Account deleted");
-    onClose(); // 삭제 후 모달 닫기
+const AccountDeleteModal = ({ onClose, onConfirm }) => {
+  const handleDelete = async () => {
+    await onConfirm(); // 계정 삭제 실행
   };
 
   return (
