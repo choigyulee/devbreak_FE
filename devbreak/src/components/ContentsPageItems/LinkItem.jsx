@@ -7,7 +7,7 @@ const LinkItem = ({ blogName, blogId }) => (
     <span className="comment">If you are curious about which blog this article is from,</span>
     <span className="button">
       {blogName}
-      <Link to={`/blog/${blogId}`}>
+      <Link to={`/blog/non-member/${blogId}`}>
         <Button>Go To See</Button>
       </Link>
     </span>
