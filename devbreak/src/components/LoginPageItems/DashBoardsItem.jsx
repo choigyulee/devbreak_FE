@@ -10,10 +10,14 @@ const DashBoardsItem = () => {
   const handleGitHubLogin = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
     // const redirectUri = encodeURIComponent(import.meta.env.VITE_GITHUB_REDIRECT_URI);
-    
+
+    // 현재 경로를 state로 저장
+    const currentPath = window.location.pathname;
+    sessionStorage.setItem('loginRedirectPath', currentPath);
+
     // GitHub OAuth 로그인 URL 생성
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
-    
+
     // GitHub 로그인 페이지로 리디렉션
     window.location.href = githubAuthUrl;
   };
@@ -21,7 +25,7 @@ const DashBoardsItem = () => {
   // 로그인 성공 시 로컬 스토리지에 로그인 상태 저장
   const handleLoginSuccess = () => {
     sessionStorage.setItem('isLoggedIn', 'true'); // 로그인 상태를 로컬 스토리지에 저장
-    navigate('/home'); // 대시보드 페이지로 리디렉션
+    navigate('/'); // 대시보드 페이지로 리디렉션
   };
 
   return (

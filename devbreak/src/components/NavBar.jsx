@@ -10,19 +10,43 @@ const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 로컬 상태로 관리
   const [isProfileModalOpen, setProfileModalOpen] = useState(false); // 프로필 모달 상태
 
-  // 세션 스토리지에서 로그인 상태 가져오기
   useEffect(() => {
-    const loggedIn = sessionStorage.getItem("isLoggedIn");
-    setIsLoggedIn(loggedIn === "true"); // "true"일 경우 로그인 상태
-  }, []);
+    // URL에서 토큰 파라미터 추출
+    const params = new URLSearchParams(location.search);
+    const accessToken = params.get('accessToken');
+    const refreshToken = params.get('refreshToken');
 
+    // URL에 토큰이 있으면 세션 스토리지에 저장
+    if (accessToken && refreshToken) {
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+      sessionStorage.setItem('isLoggedIn', 'true');
 
-  // 페이지가 변경될 때마다 로그인 상태를 콘솔에 찍기
+      // 토큰을 저장한 후 URL 파라미터 제거
+      navigate('/', { replace: true });
+    }
+
+    // 로그인 상태 확인 (토큰 존재 여부로 판단)
+    const storedAccessToken = sessionStorage.getItem('accessToken');
+    const storedRefreshToken = sessionStorage.getItem('refreshToken');
+    setIsLoggedIn(!!storedAccessToken && !!storedRefreshToken);
+  }, [location, navigate]);
+
   useEffect(() => {
-    console.log("Current Path:", location.pathname); // 현재 페이지 경로 출력
-    console.log("Is Logged In:", isLoggedIn); // 로그인 상태 출력
-  }, [location, isLoggedIn]); // location과 isLoggedIn이 변경될 때마다 실행
+    console.log("Current Path:", location.pathname);
+    console.log("Is Logged In:", isLoggedIn);
+    console.log("Access Token:", sessionStorage.getItem('accessToken'));
+    console.log("Refresh Token:", sessionStorage.getItem('refreshToken'));
+  }, [location, isLoggedIn]);
 
+  const handleLogout = () => {
+    // 로그아웃 시 모든 토큰 제거
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
 
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => !prev); // 프로필 모달 토글
@@ -39,10 +63,6 @@ const NavBar = () => {
     navigate("/login"); // 로그인 페이지로 이동
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("isLoggedIn"); // 세션 스토리지에서 로그인 상태 제거
-    setIsLoggedIn(false); // 로컬 상태에서 로그인 상태 false로 설정
-  };
 
   return (
     <NavContainer>
@@ -50,8 +70,8 @@ const NavBar = () => {
         <Logo src="/image/logo.svg" alt="logo" />
       </Link>
       <NavItems>
-        <NavItem active={location.pathname.startsWith("/home")}>
-          <Link to="/home">Home</Link>
+        <NavItem active={location.pathname.startsWith("/")}>
+          <Link to="/">Home</Link>
         </NavItem>
         <NavItem active={location.pathname.startsWith("/breakthrough")}>
           <Link to="/breakthrough">Breakthrough</Link>

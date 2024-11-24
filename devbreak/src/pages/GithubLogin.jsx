@@ -12,29 +12,39 @@ const GithubLogin = () => {
       try {
         // GitHub OAuth 인증 처리
         const { accessToken, refreshToken } = await getAuthGithub();
+        
+        // 토큰 저장
+        sessionStorage.setItem('accessToken', accessToken);
+        sessionStorage.setItem('refreshToken', refreshToken);
+        sessionStorage.setItem('isLoggedIn', 'true');
 
-        // 로그인 성공 시 세션 스토리지에 토큰 저장
-        handleLoginSuccess(accessToken, refreshToken);
+        // 상태 저장이 완료된 것을 확인하고 리다이렉트
+        window.location.replace('/');  // navigate 대신 window.location.replace 사용
       } catch (err) {
         console.error('GitHub 인증 실패:', err);
+        window.location.replace('/login');  // 에러 시에도 window.location.replace 사용
+      } finally {
         setLoading(false);
       }
     };
 
     handleGithubAuth();
-  }, [navigate]);
+  }, []);
 
-  const handleLoginSuccess = (accessToken, refreshToken) => {
-    // 세션 스토리지에 accessToken과 refreshToken 저장
-    sessionStorage.setItem('accessToken', accessToken);
-    sessionStorage.setItem('refreshToken', refreshToken);
+  // const handleLoginSuccess = async (accessToken, refreshToken, state) => {
+  //   // 세션 스토리지에 토큰 저장
+  //   sessionStorage.setItem('accessToken', accessToken);
+  //   sessionStorage.setItem('refreshToken', refreshToken);
+  //   sessionStorage.setItem('isLoggedIn', 'true');
 
-    // 로그인 상태 업데이트: isLoggedIn 상태를 세션 스토리지에 저장
-    sessionStorage.setItem('isLoggedIn', 'true');
+  //   // state 파라미터가 있으면 해당 경로로, 없으면 홈으로 리다이렉트
+  //   const redirectPath = state ? decodeURIComponent(state) : '/home';
     
-    // /home으로 리디렉션
-    navigate('/home');
-  };
+  //   // 상태 업데이트가 완료된 후 리다이렉트
+  //   setTimeout(() => {
+  //     navigate(redirectPath, { replace: true });
+  //   }, 100);
+  // };
 
   if (loading) {
     return (

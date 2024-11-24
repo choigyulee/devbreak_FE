@@ -1,11 +1,27 @@
-import PropTypes from "prop-types"; // PropTypes 임포트
+import PropTypes from "prop-types";
 import styled from "@emotion/styled";
-import { useState } from "react"; // 리액트 상태를 위한 useState
+import { useState, useEffect } from "react";
+import getAuthInfo from "../APIs/get/getAuthInfo";
 import postAuthLogout from "../APIs/post/postAuthLogout";
 import deleteAuthDeleteAccount from "../APIs/delete/deleteAuthDeleteAccount";
 
-const ProfileModal = ({ githubId, onLogout }) => {
+const ProfileModal = ({ onLogout }) => {
+  const [githubId, setGithubId] = useState("");  // githubId 상태 관리
   const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태를 관리하는 로컬 상태
+
+  // 컴포넌트가 마운트될 때 API 호출하여 githubId 가져오기
+  useEffect(() => {
+    const fetchGithubId = async () => {
+      try {
+        const data = await getAuthInfo();  // API 호출
+        setGithubId(data.userName);  // API 응답에서 githubId를 상태에 저장
+      } catch (error) {
+        console.error("GitHub ID를 가져오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchGithubId();
+  }, []);
 
   // 로그아웃 처리
   const handleLogout = async () => {
@@ -60,7 +76,6 @@ const ProfileModal = ({ githubId, onLogout }) => {
 
 // PropTypes 정의
 ProfileModal.propTypes = {
-  githubId: PropTypes.string.isRequired, // GitHub ID는 필수 문자열
   onLogout: PropTypes.func.isRequired, // 로그아웃 함수는 필수 함수
 };
 

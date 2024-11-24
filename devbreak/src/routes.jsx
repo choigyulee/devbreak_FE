@@ -14,7 +14,7 @@ import PrivateRoute from "./PrivateRoute";
 
 const routes = [
   {
-    path: "/",
+    path: "/sitemap",
     element: <SitemapPage />,
     name: "00.이동 페이지",
   },
@@ -29,7 +29,7 @@ const routes = [
     name: "02. 로그인 페이지",
   },
   {
-    path: "/home",
+    path: "/",
     element: <HomePage />,
     name: "03. 홈 메인 페이지",
   },
