@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"; // Link 컴포넌트 import
 
 const BlogBox = ({ blogId, blogName, description }) => {
   return (
-    <Link to={`/blog/non-member/${blogId}`} style={{ textDecoration: "none" }}>
+    <Link to={`/blog/${blogId}`} style={{ textDecoration: "none" }}>
       <Box>
         <BlogName>{blogName}</BlogName>
         <Content>{description}</Content>
