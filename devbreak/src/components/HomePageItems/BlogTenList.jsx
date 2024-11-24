@@ -28,8 +28,8 @@ const BlogTenList = ({ items }) => {
       <ListContainer>
         <InnerListContainer ref={innerListRef} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
           {items.slice(0, 10).map((item, index) => (
-            <BlogBoxWrapper key={item.blogId || index}>
-              <BlogBox blogName={item.blog_name} description={item.description} blogId={item.blogId} />
+            <BlogBoxWrapper key={item.blog_id || index}>
+              <BlogBox blogName={item.blog_name} description={item.description} blogId={item.blog_id} />
             </BlogBoxWrapper>
           ))}
         </InnerListContainer>
@@ -43,7 +43,7 @@ BlogTenList.propTypes = {
     PropTypes.shape({
       blog_name: PropTypes.string.isRequired, // 블로그 이름은 필수 문자열
       description: PropTypes.string.isRequired, // 설명은 필수 문자열
-      blogId: PropTypes.string.isRequired, // 블로그 ID는 필수 문자열
+      blog_id: PropTypes.string.isRequired, // 블로그 ID는 필수 문자열
     })
   ).isRequired, // items는 필수 배열
 };

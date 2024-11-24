@@ -3,7 +3,7 @@ import BreakthroughPage from "./pages/breakthrough/BreakthroughPage";
 import ContentsPage from "./pages/home/ContentsPage";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/LoginPage";
-import SitemapPage from "./pages/SiteMapPage";
+import SitemapPage from "./pages/SitemapPage";
 import StartPage from "./pages/StartPage";
 import MakeBlogPage from "./pages/workspace/MakeBlogPage";
 import MyBolgPage from "./pages/workspace/MyBolgPage";
@@ -34,7 +34,7 @@ const routes = [
     name: "03. 홈 메인 페이지",
   },
   {
-    path: "/breakthrough/article/:articleId",
+    path: "/article/breakthrough/:articleId",
     element: <ContentsPage />,
     name: "04. breakthrough 열람 페이지",
   },
@@ -45,26 +45,42 @@ const routes = [
   },
   {
     path: "/workspace",
-    element: <PrivateRoute><WorkspacePage /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <WorkspacePage />
+      </PrivateRoute>
+    ),
     name: "06.워크스페이스 메인 페이지",
   },
   {
     path: "/workspace/makeblog",
-    element: <PrivateRoute><MakeBlogPage /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <MakeBlogPage />
+      </PrivateRoute>
+    ),
     name: "07. 블로그 작성 페이지",
   },
   {
     path: "/workspace/myblog",
-    element: <PrivateRoute><MyBolgPage /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <MyBolgPage />
+      </PrivateRoute>
+    ),
     name: "08. 내 블로그 열람 페이지",
   },
   {
     path: "/workspace/myblog/write",
-    element: <PrivateRoute><WritePage /></PrivateRoute>,
+    element: (
+      <PrivateRoute>
+        <WritePage />
+      </PrivateRoute>
+    ),
     name: "09. 브레잌스루 작성 페이지",
   },
   {
-    path: "/blog/:blogId",
+    path: "/blog/non-member/:blogId",
     element: <BlogPage />,
     name: "10. 블로그 열람 페이지",
   },
