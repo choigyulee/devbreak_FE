@@ -1,18 +1,20 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import routes from "./routes";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import routes from './routes';
+import { AuthProvider } from './context/AuthContext';
 
-function App() {
-  const elements = routes.map((item, index) => <Route key={index} path={item.path} element={item.element} />);
-
+const App = () => {
   return (
-    <>
+    <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/">{elements}</Route>
+          {routes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
         </Routes>
       </Router>
-    </>
+    </AuthProvider>
   );
-}
+};
 
 export default App;

@@ -36,15 +36,16 @@ const globalStyles = css`
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 10px;
-    vertical-align: baseline;
+    font-size: 1vw;
   }
 
   body {
-    line-height: 1;
-    font-family: "Pretendard", "Urbanist", sans-serif; /* 기본 폰트 설정 */
+    margin: 0;
+    padding: 0;
+    font-family: "Pretendard", "Urbanist", sans-serif;
     background-color: #181c22;
-    margin-bottom: 100px;
+    overflow-y: auto; /* 수직 스크롤 가능 */
+    overflow-x: auto; /* 수평 스크롤은 숨김 */
   }
 
   ol,
@@ -58,20 +59,14 @@ const globalStyles = css`
     cursor: pointer;
   }
 
-  html,
-  body {
-    overflow-x: hidden;
-    overflow-y: hidden;
-  }
-
   /* Firefox */
   html {
-    scrollbar-width: none;
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
   }
 
   /* Chrome, Safari, Edge, Opera */
   html::-webkit-scrollbar {
-    display: none;
+    display: none; /* 스크롤바 숨기기 */
   }
 `;
 
