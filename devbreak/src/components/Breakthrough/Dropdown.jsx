@@ -1,32 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import styled from "@emotion/styled";
 import { BsCaretDownFill } from 'react-icons/bs';
 
 const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (e) => {
+    e.stopPropagation(); 
     setIsDropdownVisible(prev => !prev);
   };
 
+  const handleItemClick = (e, item) => {
+    e.preventDefault();
+    e.stopPropagation(); 
+    setSelectedValue(item.html_url);
+    setIsDropdownVisible(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setIsDropdownVisible(false);
+    };
+
+    if (isDropdownVisible) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownVisible]);
+
+  // GitHub 저장소 이름을 표시하는 함수
+  const getDisplayValue = (item) => {
+    if (typeof item === 'object' && item !== null) {
+      return item.html_url || 'Select a repository';
+    }
+    return item || 'Select a repository';
+  };
+
+
   return (
     <DropdownContainer>
-      <Button onClick={toggleDropdown}>
-        <ButtonText>{selectedValue}</ButtonText>
+      <Button type="button" onClick={toggleDropdown}>
+        <ButtonText>{getDisplayValue(selectedValue)}</ButtonText>
         <BsCaretDownFill size={20} />
       </Button>
 
       {isDropdownVisible && (
         <DropdownMenu>
-          {items.map((item, index) => (
+          {items.map(( item, index) => (
             <DropdownItem
               key={index}
-              onClick={() => {
-                setSelectedValue(item.title);
-                setIsDropdownVisible(false);
-              }}
+              onClick={(e) => handleItemClick(e, item)}
             >
-              {item.title}
+              {getDisplayValue(item.html_url)}
             </DropdownItem>
           ))}
         </DropdownMenu>

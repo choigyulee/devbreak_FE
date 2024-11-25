@@ -17,13 +17,16 @@ const ProfileModal = ({ onLogout }) => {
       try {
         const data = await getAuthInfo();  // API 호출
         setGithubId(data.userName);  // API 응답에서 githubId를 상태에 저장
+        console.log('userName:', data.userName);
       } catch (error) {
         console.error("GitHub ID를 가져오는 중 오류 발생:", error);
       }
     };
-
+    if (isLoggedIn) {
+      fetchGithubId();
+    }
     fetchGithubId();
-  }, []);
+  }, [isLoggedIn]);
 
   // 로그아웃 처리
   const handleLogout = async () => {

@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
 import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
+import { useAuth } from "../context/AuthContext";
 
 const NavBar = () => {
   const location = useLocation();
@@ -54,7 +55,7 @@ const NavBar = () => {
 
   const handleWorkspaceClick = () => {
     if (!isLoggedIn) {
-      alert("로그인이 필요한 서비스입니다!\n로그인 후 이용 부탁드립니다.");
+      alert("Login is required to access this service!\nPlease log in to continue.");
       navigate("/login"); // 로그인 페이지로 이동
     }
   };

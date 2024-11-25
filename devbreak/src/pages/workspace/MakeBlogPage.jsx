@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
@@ -6,42 +7,53 @@ import FormField from "../../components/Workspace/FormField";
 import Input from "../../components/Workspace/Input";
 import TextArea from "../../components/Workspace/TextArea";
 import Dropdown from "../../components/Breakthrough/Dropdown";
-import PropTypes from "prop-types";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import getRepos from "../../APIs/get/getRepos";
+import getAuthInfo from "../../APIs/get/getAuthInfo";
 import postBlog from "../../APIs/post/postBlog";
 
-const githubRepos = [
-  { id: 1, title: "Tech Blog A" },
-  { id: 2, title: "Tech Blog B" },
-  { id: 3, title: "Tech Blog C" },
-  { id: 4, title: "Tech Blog D" },
-  { id: 5, title: "Tech Blog E" },
-];
 
 function MakeBlogPage() {
-  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth(); 
   const [formData, setFormData] = useState({
-    blogName: blogName,
-    description: description,
+    blogName: "",
+    description: "",
     gitRepoUrl: "pick one from your Github account",
-    blogMember: blogMember,
+    blogMember: [],
   });
 
   const [githubRepos, setGithubRepos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      fetchRepos(); // 로그인된 상태에서만 레포지토리 목록을 가져옴
-    }
-  }, [isLoggedIn]);
+    const fetchData = async () => {
+      if (!isLoggedIn) {
+        navigate('/login');
+        return;
+      }
+      try {
+        await fetchRepos();
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [isLoggedIn, navigate]);
 
   const fetchRepos = async () => {
     try {
       const repos = await getRepos();
+      const userData = await getAuthInfo();
+      console.log('userName:', userData.userName); 
       setGithubRepos(repos);
+      setLoading(false);
     } catch (error) {
-      console.error("Error fetching GitHub repos:", error);
+      setError(error);
+      setLoading(false);
     }
   };
 
@@ -56,32 +68,52 @@ function MakeBlogPage() {
   const handleGitRepoSelection = (repo) => {
     setFormData((prev) => ({
       ...prev,
-      gitRepoUrl: repo, // GitHub 리포지토리 URL 선택
+      gitRepoUrl: repo,
     }));
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { blogName, description, gitRepoUrl, blogMember } = formData;
 
-    const requestBody = {
-      blogName,
-      description,
-      gitRepoUrl,
-      blogMember,
+    const { blogName, description, gitRepoUrl, blogMember } = formData; // formData에서 값 가져오기
+
+    // 필수 항목들이 비어있다면 경고
+    if (!blogName || !description || gitRepoUrl === "pick one from your Github account") {
+      alert("Please fill out all required fields.");
+      return;
+    }
+  
+    // 전송할 블로그 데이터 구성
+    const blogData = {
+      blogName: blogName,
+      description: description,
+      gitRepoUrl: gitRepoUrl,
+      // blogMember: blogMember.length > 0 ? blogMember : ["default_member"], // blogMember가 없으면 기본값 설정
+      ...(blogMember.length > 0 && { blogMember }),
     };
 
+
     try {
-      const response = await postBlog(blogName, description, gitRepoUrl);
+      const response = await postBlog(blogData.blogName, blogData.description, blogData.gitRepoUrl, blogData.blogMember);
       console.log("Blog created successfully:", response);
+      navigate(`workspace/myblog`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  if (loading) return <div>Loading GitHub Repositories...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar onLogout={handleLogout} />
       <Container>
         <FormContainer>
           <Title>Create a new tech blog</Title>
@@ -90,13 +122,24 @@ function MakeBlogPage() {
             Please fill out all fields marked with an asterisk (*).
           </Subtitle>
 
-          <Form onSubmit={handleSubmit}>
+          <Form>
             <FormField label="Blog name" required>
-              <Input type="text" name="blogName" value={formData.blogName} onChange={handleChange} required />
+              <Input
+                type="text"
+                name="blogName"
+                value={formData.blogName}
+                onChange={handleChange}
+                required
+              />
             </FormField>
 
             <FormField label="Description" required>
-              <TextArea name="description" value={formData.description} onChange={handleChange} required />
+              <TextArea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                required
+              />
             </FormField>
 
             <FormField label="Github repository link" required>
@@ -108,7 +151,7 @@ function MakeBlogPage() {
             </FormField>
 
             <ButtonContainer>
-              <GoToButton text="create blog" onClick={handleSubmit} />
+              <GoToButton text="Create Blog" onClick={handleSubmit} type="button" />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -117,11 +160,8 @@ function MakeBlogPage() {
   );
 }
 
-// MakeBlogPage.propTypes = {
-//   isLoggedIn: PropTypes.bool.isRequired, // isLoggedIn prop validation 추가
-// };
-
 export default MakeBlogPage;
+
 
 const Container = styled.div`
   font-family: "Pretendard";

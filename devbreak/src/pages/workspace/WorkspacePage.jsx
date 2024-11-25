@@ -4,39 +4,42 @@ import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import { AiFillPlusCircle } from "react-icons/ai";
-import PropTypes from "prop-types";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
+import getBlog from "../../APIs/get/getBlog";
 
 function WorkspacePage() {
-  const { isLoggedIn } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태를 관리하는 로컬 상태
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMyBlogList = async () => {
       try {
-        // const response = await axios.get('YOUR_API_URL');
-        // setMyBlogList(response.data); // 받은 데이터를 상태에 저장
-
-        const data = [
-          {
-            blogName: "Tech Blog A",
-            description: "Description of Tech Blog A",
-          },
-          {
-            blogName: "Tech Blog B",
-            description: "Description of Tech Blog B",
-          },
-        ];
-        setMyBlogList(data);
+        const blogs = await getBlog();
+        setMyBlogList(blogs);
       } catch (error) {
-        console.error("Error fetching blogs:", error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchMyBlogList();
-  }, []);
+    if (isLoggedIn) {
+      fetchMyBlogList();
+    }
+  }, [isLoggedIn]);
+
+  const handleNavigateToMakeBlog = () => {
+    if (isLoggedIn) {
+      navigate('/workspace/makeblog');
+    } else {
+      // 액세스 토큰이 만료되었거나 로그인 상태가 아닌 경우
+      navigate('/login');
+    }
+  };
 
   return (
     <>
@@ -52,7 +55,7 @@ function WorkspacePage() {
               </MyBlogItem>
             ))}
             <MyBlogItem2>
-              <AiFillPlusCircle size={45} onClick={() => navigate(`/workspace/makeblog`)} />
+              <AiFillPlusCircle size={45} onClick={handleNavigateToMakeBlog} />
             </MyBlogItem2>
           </MyBlogContainer>
         ) : (
@@ -61,7 +64,7 @@ function WorkspacePage() {
               Add your project members <br />
               and transform GitHub repository into tech blog
             </CreateContainerText>
-            <GoToButton text="create a new tech blog" onClick={() => navigate(`/workspace/makeblog`)} />
+            <GoToButton text="create a new tech blog" onClick={handleNavigateToMakeBlog} />
           </CreateContainer>
         )}
       </Container>
@@ -69,11 +72,8 @@ function WorkspacePage() {
   );
 }
 
-// WorkspacePage.propTypes = {
-//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-// };
-
 export default WorkspacePage;
+
 
 const Container = styled.div`
   font-family: "Pretendard";

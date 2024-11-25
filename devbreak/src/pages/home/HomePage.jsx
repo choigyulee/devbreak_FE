@@ -7,6 +7,7 @@ import MyBlogList from "../../components/HomePageItems/MyBlogList";
 import styled from "@emotion/styled";
 import getHomeArticle from "../../APIs/get/getHomeArticle";
 import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
+import { useAuth } from "../../context/AuthContext";
 
 function HomePage() {
 

@@ -4,14 +4,14 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     // 초기 로그인 상태 체크
     const checkAuth = () => {
       const accessToken = sessionStorage.getItem('accessToken');
       const refreshToken = sessionStorage.getItem('refreshToken');
-      setIsAuthenticated(!!accessToken && !!refreshToken);
+      setIsLoggedIn(!!accessToken && !!refreshToken);
     };
 
     checkAuth();
@@ -21,18 +21,18 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.setItem('accessToken', accessToken);
     sessionStorage.setItem('refreshToken', refreshToken);
     sessionStorage.setItem('isLoggedIn', 'true');
-    setIsAuthenticated(true);
+    setIsLoggedIn(true);
   };
 
   const logout = () => {
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('refreshToken');
     sessionStorage.removeItem('isLoggedIn');
-    setIsAuthenticated(false);
+    setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

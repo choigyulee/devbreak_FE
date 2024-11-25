@@ -45,7 +45,7 @@ const routes = [
   },
   {
     path: "/workspace",
-    element: <WorkspacePage />,
+    element: <PrivateRoute element={<WorkspacePage />} />,
     name: "06.워크스페이스 메인 페이지",
   },
   {
