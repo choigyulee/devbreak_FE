@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 import getBlog from "../../APIs/get/getBlog";
 
 function WorkspacePage() {
-  const { isLoggedIn } = useAuth(); 
+  const { isLoggedIn, onLogout } = useAuth(); 
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
@@ -43,12 +43,12 @@ function WorkspacePage() {
 
   const handleNavigateToBlog = (blogId) => {
     // blogId를 이용해 해당 블로그의 상세 페이지로 이동
-    navigate(`/workspace/myblog/${blogId}`);
+    navigate(`/blog/${blogId}`);
   };
 
   return (
     <>
-      <NavBar isLoggedIn = {isLoggedIn}/>
+      <NavBar isLoggedIn = {isLoggedIn} onLogout={onLogout}/>
       <Container>
         {myBlogList.length > 0 ? (
           <MyBlogContainer>
