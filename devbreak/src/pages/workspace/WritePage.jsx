@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
 import Dropdown from "../../components/Breakthrough/Dropdown";
-import TextArea from "../../components/Workspace/TextArea";
+// import TextArea from "../../components/Workspace/TextArea";
 import PropTypes from "prop-types";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 
 

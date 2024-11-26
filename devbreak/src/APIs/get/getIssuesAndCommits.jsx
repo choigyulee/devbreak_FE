@@ -2,10 +2,10 @@
 import axiosInstance from "../axiosInstance";
 
 
-export default async function getIssuesAndCommits(){
+export default async function getIssuesAndCommits(html_url){
     try {
         const response = await axiosInstance.get(
-            `/api/issues-and-commits`,
+            `/api/issues-and-commits/?html_url=${encodeURIComponent(html_url)}`
         )
         return response.data;
     }  catch (error) {

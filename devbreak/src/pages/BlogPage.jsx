@@ -7,19 +7,24 @@ import GoToButton from "../components/GoToButton";
 import List from "../components/Breakthrough/List";
 import PropTypes from "prop-types";
 import getBlogBlogId from "../APIs/get/getBlogBlogId";
+import getIssuesAndCommits from "../APIs/get/getIssuesAndCommits";
+import { useAuth } from "../context/AuthContext";
 
 function BlogPage() {
   const { blogId } = useParams(); // URL에서 blogId 가져오기
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
+  // const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
+  const { isLoggedIn, onLogout } = useAuth();
+ 
   const [blogData, setBlogData] = useState(null); // 블로그 데이터 상태
+  const [issuesAndCommits, setIssuesAndCommits] = useState([]); 
   const [favButton, setFavButton] = useState(false); // 좋아요 버튼 상태
 
   // 로그인 상태를 sessionStorage에서 가져오기
-  useEffect(() => {
-    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 로컬 스토리지에서 로그인 상태 확인
-    setIsLoggedIn(loggedIn);
-  }, []);
+  // useEffect(() => {
+  //   const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 로컬 스토리지에서 로그인 상태 확인
+  //   setIsLoggedIn(loggedIn);
+  // }, []);
 
   useEffect(() => {
     const fetchBlogData = async () => {
@@ -47,17 +52,27 @@ function BlogPage() {
 
   // 연필 아이콘 클릭 핸들러
   const handlePencilClick = () => {
-    navigate("/workspace/myblog/write");
+    navigate(`/workspace/myblog/write/${blogId}`);
   };
+  
+    // 이슈 및 커밋 데이터 가져오기
+    const fetchIssuesAndCommits = async (html_url) => {
+      try {
+        const data = await getIssuesAndCommits(html_url); // 이슈 및 커밋 데이터 API 호출
+        setIssuesAndCommits(data);
+      } catch (error) {
+        console.error("Error fetching issues and commits:", error);
+      }
+    };
 
-  const ActivityItem = ({ activity }) => {
-    const dotColor = activity.state === "open" || activity.state === null ? "#4ADE80" : "#8250DF";
+  const ActivityItem = ({ data }) => {
+    const dotColor = data.state === "open" || data.state === null ? "#4ADE80" : "#8250DF";
     return (
       <ActivityItemContainer>
         <ActivityDot style={{ backgroundColor: dotColor }} />
         <ActivityContent>
-          <ActivityMessage>{activity.message}</ActivityMessage>
-          <ActivityDate>{activity.updatedAt}</ActivityDate>
+          <ActivityMessage>{data.title}</ActivityMessage>
+          <ActivityDate>{data.date}</ActivityDate>
         </ActivityContent>
       </ActivityItemContainer>
     );
@@ -77,16 +92,16 @@ function BlogPage() {
   };
 
   // 로그인 상태 변경 함수
-  const handleLogin = () => {
-    sessionStorage.setItem("isLoggedIn", "true"); // 로컬 스토리지에 로그인 상태 저장
-    setIsLoggedIn(true); // 로그인 상태 업데이트
-  };
+  // const handleLogin = () => {
+  //   sessionStorage.setItem("isLoggedIn", "true"); // 로컬 스토리지에 로그인 상태 저장
+  //   setIsLoggedIn(true); // 로그인 상태 업데이트
+  // };
 
   // 로그아웃 함수
-  const handleLogout = () => {
-    sessionStorage.setItem("isLoggedIn", "false"); // 로컬 스토리지에 로그인 상태 false로 설정
-    setIsLoggedIn(false); // 로그인 상태 업데이트
-  };
+  // const handleLogout = () => {
+  //   sessionStorage.setItem("isLoggedIn", "false"); // 로컬 스토리지에 로그인 상태 false로 설정
+  //   setIsLoggedIn(false); // 로그인 상태 업데이트
+  // };
 
   if (!blogData) {
     return <div>로딩 중...</div>; // 블로그 데이터 로딩 중 표시
@@ -94,7 +109,7 @@ function BlogPage() {
 
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+      <NavBar isLoggedIn={isLoggedIn} onLogout={onLogout} />
       <Container>
         <InfoContainer>
           <BlogInfo>
@@ -129,8 +144,8 @@ function BlogPage() {
                 <SectionTitle>Project Repository Activity</SectionTitle>
                 <ActivityContainer>
                   {blogData.repositoryActivity && blogData.repositoryActivity.length > 0 ? (
-                    blogData.repositoryActivity.map((activity, index) => (
-                      <ActivityItem key={index} activity={activity} />
+                    blogData.repositoryActivity.map((data, index) => (
+                      <ActivityItem key={index} activity={data} />
                     ))
                   ) : (
                     <NoActivityMessage>There is no Repository Activity !</NoActivityMessage>

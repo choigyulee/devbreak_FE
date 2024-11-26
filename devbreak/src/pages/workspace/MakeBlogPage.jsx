@@ -72,6 +72,40 @@ function MakeBlogPage() {
     }));
   };
   
+  // const handleMemberChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === "blogMember") {
+  //     // 쉼표로 구분된 값을 배열로 변환
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       blogMember: value.split(",").map(item => item.trim()).filter(item => item),
+  //     }));
+  //   } else {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
+
+  // 멤버 추가/수정 시 쉼표로 구분된 값 처리
+  const handleMemberChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "blogMember") {
+      // 쉼표로 구분된 값을 배열로 변환 (공백 제거)
+      setFormData((prev) => ({
+        ...prev,
+        blogMember: value.split(",").map(item => item.trim()).filter(item => item), // 공백 제거 및 빈 값 필터링
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,8 +113,13 @@ function MakeBlogPage() {
     const { blogName, description, gitRepoUrl, blogMember } = formData; // formData에서 값 가져오기
 
     // 필수 항목들이 비어있다면 경고
-    if (!blogName || !description || gitRepoUrl === "pick one from your Github account") {
+    if (!blogName || !description === "pick one from your Github account") {
       alert("Please fill out all required fields.");
+      return;
+    }
+
+    if (gitRepoUrl === "pick one from your Github account") {
+      alert("Please select a GitHub repository");
       return;
     }
   
@@ -89,15 +128,21 @@ function MakeBlogPage() {
       blogName: blogName,
       description: description,
       gitRepoUrl: gitRepoUrl,
-      // blogMember: blogMember.length > 0 ? blogMember : ["default_member"], // blogMember가 없으면 기본값 설정
-      ...(blogMember.length > 0 && { blogMember }),
+      blogMember: blogMember, // blogMember가 없으면 기본값 설정
     };
 
+    setFormData(blogData)
 
     try {
-      const response = await postBlog(blogData.blogName, blogData.description, blogData.gitRepoUrl, blogData.blogMember);
+
+      if (!isLoggedIn) {
+        await refreshTokenAndLogin();
+      }
+
+      const response = await postBlog( blogData.blogName, blogData.description, blogData.gitRepoUrl, blogData.blogMember);
+
       console.log("Blog created successfully:", response);
-      navigate(`workspace/myblog`);
+      navigate(`/workspace/myblog/${blog_id}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -110,6 +155,8 @@ function MakeBlogPage() {
 
   if (loading) return <div>Loading GitHub Repositories...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
+
 
   return (
     <>
@@ -147,6 +194,16 @@ function MakeBlogPage() {
                 selectedValue={formData.gitRepoUrl}
                 setSelectedValue={handleGitRepoSelection}
                 items={githubRepos}
+              />
+            </FormField>
+
+            <FormField label="Additional contributors' Github Id" required>
+              <Input
+                type="text"
+                name="blogMember"
+                value={formData.blogMember} // 배열을 문자열로 표s시
+                onChange={handleMemberChange}
+                required
               />
             </FormField>
 

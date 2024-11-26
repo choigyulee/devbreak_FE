@@ -31,8 +31,21 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false);
   };
 
+// 액세스 토큰 갱신 함수
+const refreshTokenAndLogin = async () => {
+  try {
+    const accessToken = await refreshAccessToken();
+    sessionStorage.setItem('accessToken', accessToken);
+    setIsLoggedIn(true); // 액세스 토큰 갱신 후 로그인 상태 유지
+    return accessToken;  // 갱신된 토큰 반환
+  } catch (error) {
+    logout();  // 리프레시 토큰 갱신 실패 시 로그아웃
+    throw error;
+  }
+};
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, refreshTokenAndLogin }}>
       {children}
     </AuthContext.Provider>
   );

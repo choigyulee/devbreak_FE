@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 import getBlog from "../../APIs/get/getBlog";
 
 function WorkspacePage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태를 관리하는 로컬 상태
+  const { isLoggedIn } = useAuth(); 
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
@@ -41,15 +41,20 @@ function WorkspacePage() {
     }
   };
 
+  const handleNavigateToBlog = (blogId) => {
+    // blogId를 이용해 해당 블로그의 상세 페이지로 이동
+    navigate(`/workspace/myblog/${blogId}`);
+  };
+
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar isLoggedIn = {isLoggedIn}/>
       <Container>
         {myBlogList.length > 0 ? (
           <MyBlogContainer>
             <MyBlogContainerText> You are currently running these blogs.</MyBlogContainerText>
             {myBlogList.map((blog, index) => (
-              <MyBlogItem key={index}>
+              <MyBlogItem key={index} onClick={() => handleNavigateToBlog(blog.blogId)}>
                 <BlogName>{blog.blogName}</BlogName>
                 <BlogDescription>{blog.description}</BlogDescription>
               </MyBlogItem>

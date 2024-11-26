@@ -15,27 +15,29 @@ function HomePage() {
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 직접 관리
+  // const { isLoggedIn } = useAuth(); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 로그인 상태 관리 (예시로 로컬 스토리지나 세션 스토리지를 통해 관리할 수 있음)
   useEffect(() => {
     const checkLoginStatus = () => {
       const accessToken = sessionStorage.getItem("accessToken");
       if (accessToken) {
         setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
       }
     };
 
-    checkLoginStatus();
+    checkLoginStatus(); // 로그인 상태를 체크
   }, []);
 
-    // 로그아웃 함수 추가
-    const onLogout = () => {
-      sessionStorage.removeItem("accessToken");
-      sessionStorage.removeItem("refreshToken");
-      setIsLoggedIn(false);
-      window.location.href = "/login"; // 로그아웃 후 로그인 페이지로 리디렉션
-    };
+  // 로그아웃 함수
+  const onLogout = () => {
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    setIsLoggedIn(false);
+    window.location.href = "/login"; // 로그아웃 후 로그인 페이지로 리디렉션
+  };
 
 
   useEffect(() => {

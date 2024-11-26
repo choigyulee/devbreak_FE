@@ -72,7 +72,7 @@ const ProfileModal = ({ onLogout }) => {
               <img src="/image/hand.png" alt="Waving Hand" />
             </span>
           </Greeting>
-          <GitHubId>GitHub ID: {githubId}</GitHubId>
+          <GitHubId>{githubId}</GitHubId>
           <ButtonContainer>
             <Logout onClick={handleLogout}>Logout</Logout>
             <Divider />
@@ -141,8 +141,8 @@ const Greeting = styled.div`
 `;
 
 const GitHubId = styled.div`
-  color: white;
-  font-size: 1vw;
+  color: #02f798;
+  font-size: 1.3vw;
   font-family: "pretendard";
   font-weight: 700;
 `;
