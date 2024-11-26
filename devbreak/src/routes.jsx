@@ -69,7 +69,7 @@ const routes = [
     name: "09. 브레잌스루 작성 페이지",
   },
   {
-    path: "/workspace/myblog/write/:blogId",
+    path: "/blog/:blogId/write",
     element: <PrivateRoute element={<WritePage />} />,
     name: "09. 브레잌스루 작성 페이지",
   },

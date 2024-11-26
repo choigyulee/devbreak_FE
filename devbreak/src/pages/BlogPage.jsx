@@ -166,7 +166,7 @@ function BlogPage() {
                 <SectionTitle>The Breakthroughs ({blogData.break_throughs.length})</SectionTitle>
                 {isLoggedIn && blogData.break_throughs.length > 0 && (
                   <GoToButton
-                    onClick={() => navigate("/workspace/myblog/write")}
+                    onClick={() => navigate(`/blog/${blogId}/write`)}
                     fontSize="20px"
                     text="Write"
                     width="100px"
@@ -186,7 +186,7 @@ function BlogPage() {
                       Share your <br /> breakthroughs with us!
                     </p>
                     <GoToButton
-                      onClick={() => navigate("/workspace/myblog/write")}
+                      onClick={() => navigate(`/blog/${blogId}/write`)}
                       fontSize="20px"
                       text="Post my own breakthroughs"
                       width="380px"

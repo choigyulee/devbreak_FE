@@ -8,7 +8,8 @@ import { useAuth } from "../../context/AuthContext";
 import getBlog from "../../APIs/get/getBlog";
 
 function WorkspacePage() {
-  const { isLoggedIn, onLogout } = useAuth(); 
+  // const { isLoggedIn, onLogout } = useAuth(); 
+  const [ isLoggedIn, setIsLoggedIn ] = useState(true);
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
@@ -48,7 +49,8 @@ function WorkspacePage() {
 
   return (
     <>
-      <NavBar isLoggedIn = {isLoggedIn} onLogout={onLogout}/>
+      {/* <NavBar isLoggedIn = {isLoggedIn} onLogout={onLogout}/> */}
+      <NavBar isLoggedIn = {isLoggedIn}/>
       <Container>
         {myBlogList.length > 0 ? (
           <MyBlogContainer>

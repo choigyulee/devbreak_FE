@@ -2,7 +2,7 @@
 import axiosInstance from "../axiosInstance";  
 
 
-export default async function postArticle( blogId, title, content ){
+export default async function postArticle( blogId, title, content, about, problem, solution){
   try {
 
       const response = await axiosInstance.post(
@@ -11,6 +11,10 @@ export default async function postArticle( blogId, title, content ){
             blogId: blogId,
             title: title,
             content: content,
+            about: about,
+            problem: problem,
+            solution: solution,
+
           }
         );
       return response.data;

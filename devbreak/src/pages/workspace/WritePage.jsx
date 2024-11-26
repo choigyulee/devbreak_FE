@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // useParams 추가
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
-import Dropdown from "../../components/Breakthrough/Dropdown";
-// import TextArea from "../../components/Workspace/TextArea";
-import PropTypes from "prop-types";
+import Dropdown from "../../components/WritePageItem/Dropdown";
 import { useAuth } from "../../context/AuthContext";
 import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
-
+import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
+import postArticle from "../../APIs/post/postArticle";
 
 function WritePage() {
-
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth(); 
   const navigate = useNavigate();
+  const { blogId } = useParams(); // blogId 받아오기
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate("/login"); // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
+      navigate("/login");
     }
   }, [isLoggedIn, navigate]);
 
@@ -29,24 +28,38 @@ function WritePage() {
     content: "",
   });
 
-  const [selectedAbout, setSelectedAbout] = useState("pick your programming language");
-  const [selectedProblem, setSelectedProblem] = useState("pick from the Github repository");
-  const [selectedSolution, setSelectedSolution] = useState("pick from the Github repository");
+  const [selectedAbout, setSelectedAbout] = useState(""); 
+  const [selectedProblem, setSelectedProblem] = useState("");
+  const [selectedSolution, setSelectedSolution] = useState("");
 
-  const [issuesAndCommits, setIssuesAndCommits] = useState([]);
+  const [issuesAndCommits, setIssuesAndCommits] = useState([]); 
 
-  const mockData = [
-    { type: "issue", title: "Issue 1" },
-    { type: "issue", title: "Issue 2" },
-    { type: "issue", title: "Issue 3" },
-    { type: "commit", title: "Commit 1" },
-    { type: "commit", title: "Commit 2" },
-    { type: "commit", title: "Commit 3" },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setIssuesAndCommits(mockData);
-  }, []);
+    const fetchIssuesAndCommits = async () => {
+      if (!isLoggedIn) {
+        navigate('/login');
+        return;
+      }
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        // user 객체에서 git_repo_url를 받아오도록 수정
+        const data = await getIssuesAndCommitsTitle(user.git_repo_url);
+        setIssuesAndCommits(data);
+      } catch (error) {
+        setError("Failed to fetch issues and commits");
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchIssuesAndCommits();
+  }, [isLoggedIn, navigate, user.git_repo_url]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,18 +69,37 @@ function WritePage() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 폼 기본 제출 동작 방지
-    const payload = {
-      title: formData.title,
-      content: formData.content,
-      language: selectedAbout,
-      problem: selectedProblem,
-      solution: selectedSolution,
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // 콘솔 로그에 JSON 형태로 출력
-    console.log("Form submitted:", JSON.stringify(payload, null, 2));
+    const { title, content } = formData;
+
+    if (!title || !content || !selectedAbout || !selectedProblem || !selectedSolution) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await postArticle(
+        blogId, // blogId 사용
+        title,
+        content,
+        selectedAbout,
+        selectedProblem,
+        selectedSolution
+      );
+
+      console.log("Article posted successfully:", response);
+      navigate(`/blog/${blogId}`); // 블로그 페이지로 이동
+    } catch (err) {
+      console.error("Failed to post article:", err);
+      setError("Failed to post article. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -75,15 +107,20 @@ function WritePage() {
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <FormContainer>
-          {/* form에 onSubmit 이벤트 핸들러 추가 */}
           <Form onSubmit={handleSubmit}>
             <FormField label="Breakthrough Title" required>
-              <Input type="text" name="title" value={formData.title} onChange={handleChange} required />
+              <Input 
+                type="text" 
+                name="title" 
+                value={formData.title} 
+                onChange={handleChange} 
+                required 
+              />
             </FormField>
 
             <FormField label="Add related issue or commit (optional)">
               <FormItem>
-                <Label>language</Label>
+                <Label>Language</Label>
                 <Dropdown
                   label="language"
                   selectedValue={selectedAbout}
@@ -92,7 +129,7 @@ function WritePage() {
                 />
               </FormItem>
               <FormItem>
-                <Label>problem</Label>
+                <Label>Problem</Label>
                 <Dropdown
                   label="Problem"
                   selectedValue={selectedProblem}
@@ -101,7 +138,7 @@ function WritePage() {
                 />
               </FormItem>
               <FormItem>
-                <Label>solution</Label>
+                <Label>Solution</Label>
                 <Dropdown
                   label="Solution"
                   selectedValue={selectedSolution}
@@ -119,8 +156,12 @@ function WritePage() {
             </FormField>
 
             <ButtonContainer>
-              {/* 버튼에서 handleSubmit를 호출하지 않아도 form의 onSubmit으로 처리 */}
-              <GoToButton text="Post" />
+              <GoToButton 
+                type="submit" 
+                text="Post"
+                disabled={isLoading}
+              />
+              {/* {error && <ErrorMessage>{error}</ErrorMessage>} */}
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -129,64 +170,60 @@ function WritePage() {
   );
 }
 
-// WritePage.propTypes = {
-//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-// };
-
-
 export default WritePage;
-
-const Container = styled.div`
-  font-family: "Pretendard";
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const FormContainer = styled.div`
-  margin: 3vh 20vw 3vh 20vw;
-  align-items: center;
-  min-width: 930px;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FormItem = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 67px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.05);
-  font-size: 20px;
-  color: #ffffff;
-  padding: 30px;
-  margin-top: 10px;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const Label = styled.div`
-  font-size: 25px;
-  height: 67px;
-  width: 150px;
-  padding: 25px 20px 0 0;
-`;
-
-const ButtonContainer = styled.div`
-  margin-top: 3vh;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-`;
+  
+  const Container = styled.div`
+    font-family: "Pretendard";
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  `;
+  
+  const FormContainer = styled.div`
+    margin: 3vh 20vw 3vh 20vw;
+    align-items: center;
+    min-width: 930px;
+  `;
+  
+  const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+  `;
+  
+  const FormItem = styled.div`
+    display: flex;
+    flex-direction: row;
+  `;
+  
+  const Input = styled.input`
+    width: 100%;
+    height: 67px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 20px;
+    color: #ffffff;
+    padding: 30px;
+    margin-top: 10px;
+  
+    &:focus {
+      outline: none;
+    }
+  `;
+  
+  const Label = styled.div`
+    font-size: 25px;
+    height: 67px;
+    width: 150px;
+    padding: 25px 20px 0 0;
+  `;
+  
+  const ButtonContainer = styled.div`
+    margin-top: 3vh;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  `;
+  
