@@ -8,42 +8,67 @@ import getBlogBlogId from "../APIs/get/getBlogBlogId";
 import BlogInfo from "../components/BlogPageItems/BlogInfo";
 import BlogContent from "../components/BlogPageItems/BlogContent";
 import getAuthInfo from "../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API 추가
+import getIssuesAndCommits from "../APIs/get/getIssuesAndCommits"; // 수정된 API 호출
 
 function BlogPage() {
-  const { blogId } = useParams();
+  const { blogId } = useParams(); // 기존에 사용했던 blogId
   const navigate = useNavigate();
-  const { isLoggedIn, onLogout } = useAuth(); // 로그인 상태 및 로그아웃 함수
+  const { isLoggedIn, onLogout } = useAuth();
   const [blogData, setBlogData] = useState(null);
   const [favButton, setFavButton] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState(null); // 현재 사용자 ID 상태 추가
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [activities, setActivities] = useState([]); // 활동 정보 상태
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBlogData = async () => {
+      if (!isLoggedIn) {
+        navigate("/login");
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+
       try {
+        // blogId로 블로그 정보를 가져옴
         const fetchedBlogData = await getBlogBlogId(blogId);
         setBlogData(fetchedBlogData);
         setFavButton(fetchedBlogData.fav_button);
+
+        // blogData에서 git_repo_url 추출 후, 이슈 및 커밋 제목 가져오기
+        const { git_repo_url } = fetchedBlogData;
+        const issuesData = await getIssuesAndCommits(git_repo_url); // git_repo_url을 직접 전달
+        setActivities(issuesData); // 활동 정보 상태 저장
       } catch (error) {
-        console.error("Error fetching blog data:", error);
+        setError("Failed to fetch blog data or activities.");
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     const fetchAuthInfo = async () => {
       try {
-        const authInfo = await getAuthInfo(); // 사용자 정보 가져오기
-        setCurrentUserId(authInfo.userName); // user_name을 currentUserId로 설정
+        const authInfo = await getAuthInfo();
+        setCurrentUserId(authInfo.userName);
       } catch (error) {
         console.error("Error fetching auth info:", error);
       }
     };
 
     fetchBlogData();
-    fetchAuthInfo(); // 사용자 정보 가져오기 함수 호출
-  }, [blogId]);
+    fetchAuthInfo();
+  }, [blogId, isLoggedIn, navigate]);
 
   const handleFavButtonClick = () => setFavButton(!favButton);
 
-  if (!blogData) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
+
+  if (error) return <div>{error}</div>;
+
+  if (!blogData) return <div>Blog not found.</div>;
 
   return (
     <>
@@ -55,14 +80,15 @@ function BlogPage() {
           handleFavButtonClick={handleFavButtonClick}
           isLoggedIn={isLoggedIn}
           blogId={blogId}
-          currentUserId={currentUserId} // 현재 사용자 ID 전달
+          currentUserId={currentUserId}
         />
         <BlogContent
           blogData={blogData}
           isLoggedIn={isLoggedIn}
           blogId={blogId}
           navigate={navigate}
-          currentUserId={currentUserId} // BlogContent에도 currentUserId 전달
+          currentUserId={currentUserId}
+          activities={activities}
         />
       </Container>
     </>
@@ -70,15 +96,15 @@ function BlogPage() {
 }
 
 BlogPage.propTypes = {
-  blogId: PropTypes.string,
-  isLoggedIn: PropTypes.bool,
-  blogData: PropTypes.object,
+  blogId: PropTypes.string.isRequired, // 블로그 ID 필수
+  isLoggedIn: PropTypes.bool.isRequired, // 로그인 여부 필수
+  blogData: PropTypes.object.isRequired, // 블로그 데이터
 };
 
 export default BlogPage;
 
 const Container = styled.div`
-  margin: 3vh 20vw 20vh 20vw;
+  margin: 0vh 13vw; /* 좌우 마진을 20vw에서 10vw로 조정하여 반응형 개선 */
   display: flex;
   flex-direction: column;
   gap: 3vh;

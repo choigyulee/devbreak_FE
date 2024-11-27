@@ -64,19 +64,22 @@ const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 930px;
+  width: 52vw;
 `;
+
 const NameContainer = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 16px;
-  margin-bottom: 20px;
+  gap: 1.6vw;
+  margin-bottom: 2vh;
 `;
+
 const BlogName = styled.div`
-  font-size: 35px;
+  font-size: 3.5vh;
   font-weight: bold;
   margin: 0;
 `;
+
 const StarButton = styled.button`
   background: none;
   border: none;
@@ -84,6 +87,7 @@ const StarButton = styled.button`
   padding: 0;
   opacity: 0.9;
 `;
+
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -93,15 +97,17 @@ const DescriptionContainer = styled.div`
   white-space: normal;
   word-break: break-word;
 `;
+
 const BlogDescription = styled.div`
-  font-size: 25px;
+  font-size: 2.5vh;
   max-width: 60vw;
   display: flex;
   flex-direction: row;
   justify-content: baseline;
   align-items: baseline;
 `;
+
 const IconContainer = styled.div`
-  margin-left: 15px;
+  margin-left: 1.5vw;
   cursor: pointer;
 `;
