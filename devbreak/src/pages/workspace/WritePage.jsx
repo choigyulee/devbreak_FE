@@ -4,52 +4,57 @@ import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
-import Dropdown from "../../components/WritePageItem/Dropdown";
+import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
+import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
 import { useAuth } from "../../context/AuthContext";
 import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import postArticle from "../../APIs/post/postArticle";
+import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 
 function WritePage() {
-  const { isLoggedIn, user } = useAuth(); 
-  const navigate = useNavigate();
   const { blogId } = useParams(); // blogId 받아오기
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
-
-  if (!isLoggedIn) return null; 
+  const { isLoggedIn } = useAuth();
 
   const [formData, setFormData] = useState({
     title: "",
     content: "",
   });
-
   const [selectedAbout, setSelectedAbout] = useState(""); 
   const [selectedProblem, setSelectedProblem] = useState("");
   const [selectedSolution, setSelectedSolution] = useState("");
 
-  const [issuesAndCommits, setIssuesAndCommits] = useState([]); 
-
+  const [issuesAndCommits, setIssuesAndCommits] = useState([]);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [gitRepoUrl, setGitRepoUrl] = useState('');
+
+  const languageOptions = [
+    "Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"
+  ];
 
   useEffect(() => {
-    const fetchIssuesAndCommits = async () => {
+    const fetchBlogData = async () => {
       if (!isLoggedIn) {
-        navigate('/login');
+        navigate("/login");
         return;
       }
+
       setIsLoading(true);
       setError(null);
 
       try {
-        // user 객체에서 git_repo_url를 받아오도록 수정
-        const data = await getIssuesAndCommitsTitle(user.git_repo_url);
-        setIssuesAndCommits(data);
+        // 블로그 ID로 블로그 정보 가져오기
+        const blogData = await getBlogBlogId(blogId);
+        const { git_repo_url } = blogData; // git_repo_url 추출
+        setGitRepoUrl(git_repo_url); // 상태에 저장
+
+        // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
+        const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
+        setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
       } catch (error) {
         setError("Failed to fetch issues and commits");
         console.error(error);
@@ -58,8 +63,10 @@ function WritePage() {
       }
     };
 
-    fetchIssuesAndCommits();
-  }, [isLoggedIn, navigate, user.git_repo_url]);
+    if (blogId && isLoggedIn) {
+      fetchBlogData(); // 블로그 ID가 존재하고 로그인된 경우에만 데이터 fetch
+    }
+  }, [isLoggedIn, blogId, navigate, gitRepoUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -107,7 +114,7 @@ function WritePage() {
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <FormContainer>
-          <Form onSubmit={handleSubmit}>
+          <Form>
             <FormField label="Breakthrough Title" required>
               <Input 
                 type="text" 
@@ -121,16 +128,16 @@ function WritePage() {
             <FormField label="Add related issue or commit (optional)">
               <FormItem>
                 <Label>Language</Label>
-                <Dropdown
+                <LanguageDropdown
                   label="language"
                   selectedValue={selectedAbout}
                   setSelectedValue={setSelectedAbout}
-                  items={issuesAndCommits}
+                  items={languageOptions}
                 />
               </FormItem>
               <FormItem>
                 <Label>Problem</Label>
-                <Dropdown
+                <GitTitleDropdown
                   label="Problem"
                   selectedValue={selectedProblem}
                   setSelectedValue={setSelectedProblem}
@@ -139,7 +146,7 @@ function WritePage() {
               </FormItem>
               <FormItem>
                 <Label>Solution</Label>
-                <Dropdown
+                <GitTitleDropdown
                   label="Solution"
                   selectedValue={selectedSolution}
                   setSelectedValue={setSelectedSolution}
@@ -159,9 +166,9 @@ function WritePage() {
               <GoToButton 
                 type="submit" 
                 text="Post"
+                onClick={handleSubmit}
                 disabled={isLoading}
               />
-              {/* {error && <ErrorMessage>{error}</ErrorMessage>} */}
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -171,6 +178,7 @@ function WritePage() {
 }
 
 export default WritePage;
+
   
   const Container = styled.div`
     font-family: "Pretendard";

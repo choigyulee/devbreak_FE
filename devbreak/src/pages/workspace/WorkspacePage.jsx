@@ -8,38 +8,35 @@ import { useAuth } from "../../context/AuthContext";
 import getBlog from "../../APIs/get/getBlog";
 
 function WorkspacePage() {
-  // const { isLoggedIn, onLogout } = useAuth(); 
-  const [ isLoggedIn, setIsLoggedIn ] = useState(true);
+  const { isLoggedIn } = useAuth(); 
+  // const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchMyBlogList = async () => {
-      try {
-        const blogs = await getBlog();
-        setMyBlogList(blogs);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (isLoggedIn) {
-      fetchMyBlogList();
+useEffect(() => {
+  const fetchMyBlogList = async () => {
+    try {
+      const blogs = await getBlog();
+      setMyBlogList(blogs);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
     }
-  }, [isLoggedIn]);
+  };
+
+  if (isLoggedIn) {
+    fetchMyBlogList();
+  }
+}, [isLoggedIn]);
 
   const handleNavigateToMakeBlog = () => {
     if (isLoggedIn) {
       navigate('/workspace/makeblog');
-    } else {
-      // 액세스 토큰이 만료되었거나 로그인 상태가 아닌 경우
-      navigate('/login');
-    }
+    } 
   };
 
   const handleNavigateToBlog = (blogId) => {
@@ -47,9 +44,12 @@ function WorkspacePage() {
     navigate(`/blog/${blogId}`);
   };
 
+  if (!isLoggedIn) {
+    return null;  // 로그인 상태가 아니면 내용 표시하지 않음
+  }
+
   return (
     <>
-      {/* <NavBar isLoggedIn = {isLoggedIn} onLogout={onLogout}/> */}
       <NavBar isLoggedIn = {isLoggedIn}/>
       <Container>
         {myBlogList.length > 0 ? (
@@ -110,7 +110,7 @@ const MyBlogContainerText = styled.div`
 const MyBlogItem = styled.div`
   align-items: center;
   margin: 0 auto;
-  min-width: 930px;
+  width: 930px;
   min-height: 155px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -182,9 +182,3 @@ const CreateContainerText = styled.div`
   line-height: 40px;
   text-align: center;
 `;
-
-// const LoadingText = styled.div`
-//   font-size: 25px;
-//   color: #ffffff;
-//   margin-top: 100px;
-// `;

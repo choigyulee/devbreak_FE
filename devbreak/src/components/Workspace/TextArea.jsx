@@ -1,8 +1,14 @@
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
-const TextArea = ({ name, value, onChange, required }) => (
-  <TextAreaContainer name={name} value={value} onChange={onChange} required={required} />
+const TextArea = ({ name, value, onChange, required, placeholder }) => (
+  <TextAreaContainer
+    name={name}
+    value={value}
+    onChange={onChange}
+    required={required}
+    placeholder={placeholder}
+  />
 );
 
 const TextAreaContainer = styled.textarea`

@@ -23,6 +23,8 @@ function MakeBlogPage() {
   });
 
   const [githubRepos, setGithubRepos] = useState([]);
+  const [newMember, setNewMember] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -47,7 +49,7 @@ function MakeBlogPage() {
     try {
       const repos = await getRepos();
       const userData = await getAuthInfo();
-      console.log("userName:", userData.userName);
+      console.log('userName:', userData.userName);
       setGithubRepos(repos);
       setLoading(false);
     } catch (error) {
@@ -71,23 +73,26 @@ function MakeBlogPage() {
     }));
   };
 
+  
   const handleMemberChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
+    setNewMember(value); // 새로운 GitHub ID 입력값 업데이트
+  };
 
-    if (name === "blogMember") {
-      setFormData((prev) => ({
-        ...prev,
-        blogMember: value
-          .split(",")
-          .map((item) => item.trim())
-          .filter((item) => item),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+  const handleAddContributor = () => {
+    if (newMember.trim() === "") return; // 빈 값은 추가하지 않음
+    setFormData((prev) => ({
+      ...prev,
+      blogMember: [...prev.blogMember, newMember.trim()],
+    }));
+    setNewMember(""); // 입력란 비우기
+  };
+
+  const handleDeleteMember = (memberToDelete) => {
+    setFormData((prev) => ({
+      ...prev,
+      blogMember: prev.blogMember.filter(member => member !== memberToDelete),
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -108,16 +113,15 @@ function MakeBlogPage() {
     };
 
     try {
-      const response = await postBlog(
-        blogData.blogName,
-        blogData.description,
-        blogData.gitRepoUrl,
-        blogData.blogMember
-      );
-      console.log("Blog created successfully:", response);
 
-      // 블로그 생성 후 해당 페이지로 이동
-      navigate(`/workspace/myblog/${response.blog_id}`);
+      if (!isLoggedIn) {
+        await refreshTokenAndLogin();
+      }
+
+      const response = await postBlog(blogData.blogName, blogData.description, blogData.gitRepoUrl, blogData.blogMember);
+
+      console.log("Blog created successfully:", response);
+      navigate(`/workspace/myblog/${response.blogId}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -148,7 +152,13 @@ function MakeBlogPage() {
             </FormField>
 
             <FormField label="Description" required>
-              <TextArea name="description" value={formData.description} onChange={handleChange} required />
+              <TextArea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="You can write up to 4000 bytes."
+                required
+              />
             </FormField>
 
             <FormField label="Github repository link" required>
@@ -159,16 +169,32 @@ function MakeBlogPage() {
               />
             </FormField>
 
-            <FormField label="Additional contributors' Github Id" required>
-              <Input
-                type="text"
-                name="blogMember"
-                value={formData.blogMember.join(", ")} // 배열을 문자열로 표시
-                onChange={handleMemberChange}
-                required
-              />
-            </FormField>
+            <FormSemiContainer>
+              <FormField label="Additional contributors' Github Id" required>
+                <Input
+                  type="text"
+                  name="blogMember"
+                  value={newMember}
+                  onChange={handleMemberChange}
+                  required
+                  placeholder="Enter the exact GitHub ID of the contributors one by one."
+                />
+              </FormField>
+              <AddButton type="button" onClick={handleAddContributor}>+ Add</AddButton>
+            </FormSemiContainer>
 
+            <ContributorsList>
+              {formData.blogMember.length > 0 && (
+                <div>
+                  {formData.blogMember.map((member, index) => (
+                    <MemberList>
+                      <MemberItem key={index}>{member}</MemberItem>
+                      <DeleteMember onClick={() => handleDeleteMember(member)}>X</DeleteMember>
+                    </MemberList>
+                  ))}
+                </div>
+              )}
+            </ContributorsList>
             <ButtonContainer>
               <GoToButton text="Create Blog" type="submit" />
             </ButtonContainer>
@@ -225,3 +251,51 @@ const ButtonContainer = styled.div`
   justify-content: center;
   width: 100%;
 `;
+
+const FormSemiContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const AddButton = styled.button`
+  width: 100px;
+  height: 67px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  font-size: 20px;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin-bottom: 10px;
+`
+
+const ContributorsList = styled.div`
+  color: #ffffff;
+`;
+
+const MemberList = styled.div`
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  width: 200px;
+  height: 47px;
+  padding-top: 3.5px;
+  text-align: center;
+  justify-content: center;
+`
+
+const MemberItem = styled.div`
+margin-right: 10px;
+font-size: 25px;
+
+`
+
+const DeleteMember = styled.span`
+  margin-left: 10px;
+  font-size: 20px;
+  padding-top: 5px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+`

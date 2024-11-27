@@ -2,8 +2,15 @@
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
-const Input = ({ type, name, value, onChange, required }) => (
-  <StyledInput type={type} name={name} value={value} onChange={onChange} required={required} />
+const Input = ({ type, name, value, onChange, required, placeholder }) => (
+  <StyledInput
+    type={type}
+    name={name}
+    value={value}
+    onChange={onChange}
+    required={required}
+    placeholder={placeholder}
+  />
 );
 
 const StyledInput = styled.input`
