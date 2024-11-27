@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import getAuthGithub from '../APIs/get/getAuthGithub';
+import { useAuth } from '../context/AuthContext';
 
 const GithubLogin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     const handleGithubAuth = async () => {
@@ -29,7 +31,7 @@ const GithubLogin = () => {
     };
 
     handleGithubAuth();
-  }, []);
+  }, [login]);
 
   // const handleLoginSuccess = async (accessToken, refreshToken, state) => {
   //   // 세션 스토리지에 토큰 저장

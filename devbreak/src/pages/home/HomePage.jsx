@@ -11,13 +11,13 @@ import { useAuth } from "../../context/AuthContext";
 
 function HomePage() {
 
-
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const { isLoggedIn } = useAuth(); 
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // 로그인 상태 확인
   useEffect(() => {
     const checkLoginStatus = () => {
       const accessToken = sessionStorage.getItem("accessToken");
@@ -28,7 +28,7 @@ function HomePage() {
       }
     };
 
-    checkLoginStatus(); // 로그인 상태를 체크
+    checkLoginStatus();
   }, []);
 
   // 로그아웃 함수
