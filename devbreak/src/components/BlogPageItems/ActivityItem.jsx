@@ -1,64 +1,43 @@
-// ActivityItem.jsx
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 
-const ActivityItem = ({ activities }) => {
+const ActivityItem = ({ activity }) => {
   return (
-    <Container>
-      {activities && activities.length > 0 ? (
-        activities.map((activity, index) => (
-          <ItemContainer key={index}>
-            <Dot
-              style={{
-                backgroundColor: activity.state === "open" || activity.state === null ? "#4ADE80" : "#8250DF",
-              }}
-            />
-            <Content>
-              <Message>{activity.title}</Message>
-              <Date>{activity.date}</Date>
-            </Content>
-          </ItemContainer>
-        ))
-      ) : (
-        <NoActivityMessage>There is no Repository Activity!</NoActivityMessage>
-      )}
-    </Container>
+    <ItemContainer>
+      <Dot
+        style={{
+          backgroundColor: activity.type === "Commit" ? "#4ADE80" : "#8250DF", // 타입별 색상 지정
+        }}
+      />
+      <Content>
+        <Message>{activity.title}</Message>
+        <TypeLabel>{activity.type.toUpperCase()}</TypeLabel> {/* 타입 표시 */}
+      </Content>
+    </ItemContainer>
   );
 };
 
 ActivityItem.propTypes = {
-  activities: PropTypes.arrayOf(
-    PropTypes.shape({
-      state: PropTypes.string,
-      title: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+  activity: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired, // "commit" 또는 "issue" 등
+  }).isRequired,
 };
 
 export default ActivityItem;
 
-const Container = styled.div`
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 8px;
-  padding: 20px;
-  max-height: 400px;
-  overflow-y: auto;
-`;
-
 const ItemContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-bottom: 15px;
-  gap: 10px;
+  margin-bottom: 1.5vh;
+  gap: 1vw;
 `;
 
 const Dot = styled.div`
-  width: 8px;
-  height: 8px;
+  width: 0.8vh;
+  height: 0.8vh;
   border-radius: 50%;
-  margin-top: 6px;
+  margin-top: 0.6vh;
 `;
 
 const Content = styled.div`
@@ -66,16 +45,12 @@ const Content = styled.div`
 `;
 
 const Message = styled.div`
-  font-size: 20px;
-  margin-bottom: 4px;
+  font-size: 1.8vh;
+  margin-bottom: 0.4vh;
 `;
 
-const Date = styled.div`
-  font-size: 20px;
+const TypeLabel = styled.div`
+  font-size: 1.8vh;
   color: #888;
-`;
-
-const NoActivityMessage = styled.div`
-  font-size: 2vh;
-  color: #888;
+  font-style: italic;
 `;
