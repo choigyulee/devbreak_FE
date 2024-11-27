@@ -9,12 +9,15 @@ import LikesItem from "../../components/ContentsPageItems/LikesItem";
 import LinkItem from "../../components/ContentsPageItems/LinkItem";
 import { useAuth } from "../../context/AuthContext";
 import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteModal";
 
 function ContentsPage() {
   const { articleId } = useParams();
   const [article, setArticle] = useState(null);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
 
@@ -47,6 +50,14 @@ function ContentsPage() {
     }
   };
 
+  const handleMenuClick = () => {
+    setIsModalOpen((prev) => !prev); // 모달 상태를 반전시켜서 열거나 닫음
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
   if (!article) {
     return <div>Loading...</div>;
   }
@@ -58,8 +69,16 @@ function ContentsPage() {
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <TextContainer>
-          <Title>{article.title}</Title>
-          <NameAndData>{article.blogName} | {article.createdAt}</NameAndData>
+          <FirstLineContainer>
+            <Title>{article.title}</Title>
+            <ButtonContaier>
+              {isModalOpen && <EditOrDeleteModal onClose={handleModalClose} />}
+              <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
+            </ButtonContaier>
+          </FirstLineContainer>
+          <NameAndData>
+            {article.blogName} | {article.createdAt}
+          </NameAndData>
           <ActivityItem language={about} problem={problem} solution={solution} />
           <ContentItem>{article.content}</ContentItem>
         </TextContainer>
@@ -72,12 +91,24 @@ function ContentsPage() {
 
 export default ContentsPage;
 
-
 const Container = styled.div`
   color: white;
   gap: 3vh;
   margin: 3vh 20vw 20vh 20vw;
   align-items: center;
+`;
+
+const FirstLineContainer = styled.div`
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ButtonContaier = styled.div`
+  justify-content: end;
+  display: flex;
+  flex-direction: row;
+  gap: 3vh;
 `;
 
 const TextContainer = styled.div`
@@ -97,4 +128,15 @@ const NameAndData = styled.div`
   font-size: 2.8vh;
   font-weight: 400;
   color: #a7a7a7;
+`;
+
+const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
+  cursor: pointer; /* 포인터 커서 */
+  font-size: 2rem; /* 아이콘 크기 */
+  color: white; /* 기본 색상 */
+  transition: color 0.3s;
+
+  &:hover {
+    color: #888; /* 호버 시 색상 변경 */
+  }
 `;
