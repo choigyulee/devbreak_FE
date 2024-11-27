@@ -120,7 +120,9 @@ function ContentItem({ children }) {
       />
     ),
     // 텍스트 기본 설정
-    p: ({ children }) => <p style={{ color: "#c9c9c9", margin: "0.5vh 0", lineHeight: "2.5vh" }}>{children}</p>,
+    p: ({ children }) => (
+      <p style={{ color: "#c9c9c9", margin: "0.5vh 0", lineHeight: "3vh", fontSize: "2.5vh" }}>{children}</p>
+    ),
   };
 
   return (

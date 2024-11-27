@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
-const ActivityItem = ({ about, problem, solution }) => {
+const ActivityItem = ({ language, problem, solution }) => {
   return (
     <ActivityContainer>
       <Language>
-        Language <p>{about}</p>
+        Language <p>{language}</p>
       </Language>
       <Problem>
         Problem <p>{problem}</p>
