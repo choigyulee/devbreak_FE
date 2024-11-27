@@ -1,10 +1,14 @@
 import styled from "@emotion/styled";
 import { BsStarFill, BsGithub, BsPencil } from "react-icons/bs";
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import putBlogBlogIdFavorites from "../../APIs/put/putBlogBlogIdFavorites";
+
 
 function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogId, currentUserId }) {
   const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(favButton); 
 
   const handleGitHubClick = () => window.open(blogData.git_repo_url, "_blank");
 
@@ -18,12 +22,31 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
   console.log("Blog Members:", blogData.members);
   console.log("Is Member:", isMember);
 
+  const handleFavoriteClick = async () => {
+    if (!isLoggedIn) {
+      // 로그인하지 않은 상태에서 즐겨찾기 버튼을 클릭했을 경우 처리
+      alert("Please log in to add to favorites.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      // 즐겨찾기 API 호출
+      const updatedBlogData = await putBlogBlogIdFavorites(blogId);
+      setIsFavorite(updatedBlogData.favButton); // 즐겨찾기 상태 업데이트
+      handleFavButtonClick(updatedBlogData.favButton); // 부모 컴포넌트에 상태 반영
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+    }
+  };
+
+
   return (
     <InfoContainer>
       <NameContainer>
         <BlogName>{blogData.blog_name}</BlogName>
         <StarButton
-          onClick={handleFavButtonClick}
+          onClick={handleFavoriteClick}
           style={{
             color: favButton ? "#FFEC4C" : "white",
           }}

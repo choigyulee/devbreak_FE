@@ -50,7 +50,7 @@ useEffect(() => {
             <MyBlogContainerText> Blogs what you followed</MyBlogContainerText>
             {myBlogList.map((blog, index) => (
               <MyBlogItem key={index} onClick={() => handleNavigateToBlog(blog.blogId)}>
-                <BlogName>{blog.blogName}</BlogName>
+                <BlogName>{blog.blog_name}</BlogName>
                 <BlogDescription>{blog.description}</BlogDescription>
               </MyBlogItem>
             ))}
