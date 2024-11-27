@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage";
 import SitemapPage from "./pages/SitemapPage";
 import StartPage from "./pages/StartPage";
 import MakeBlogPage from "./pages/workspace/MakeBlogPage";
-import MyBolgPage from "./pages/workspace/MyBolgPage";
 import WorkspacePage from "./pages/workspace/WorkspacePage";
 import WritePage from "./pages/workspace/WritePage";
 import GithubLogin from "./pages/GithubLogin";
@@ -54,19 +53,9 @@ const routes = [
     name: "07. 블로그 작성 페이지",
   },
   {
-    path: "/workspace/myblog",
-    element: <PrivateRoute element={<MyBolgPage />} />,
-    name: "08. 내 블로그 열람 페이지",
-  },
-  {
     path: "/workspace/myblog/:blog_id",
     element: <PrivateRoute element={<BlogPage />} />,
     name: "08. 내 블로그 열람 페이지",
-  },
-  {
-    path: "/workspace/myblog/write",
-    element: <PrivateRoute element={<WritePage />} />,
-    name: "09. 브레잌스루 작성 페이지",
   },
   {
     path: "/blog/:blogId/write",

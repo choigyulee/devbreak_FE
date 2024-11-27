@@ -19,7 +19,7 @@ const Box = styled.div`
   flex-direction: column; /* 세로 방향으로 정렬 */
   padding: 2.2vh 3vh;
   width: 20vw;
-  height: 14vh;
+  height: 12.5vh;
   justify-content: space-between;
   gap: 2vh;
   background: rgba(255, 255, 255, 0.15);

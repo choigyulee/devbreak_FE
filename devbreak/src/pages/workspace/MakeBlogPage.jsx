@@ -12,10 +12,9 @@ import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import postBlog from "../../APIs/post/postBlog";
 
-
 function MakeBlogPage() {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth(); 
+  const { isLoggedIn, logout } = useAuth();
   const [formData, setFormData] = useState({
     blogName: "",
     description: "",
@@ -30,7 +29,7 @@ function MakeBlogPage() {
   useEffect(() => {
     const fetchData = async () => {
       if (!isLoggedIn) {
-        navigate('/login');
+        navigate("/login");
         return;
       }
       try {
@@ -48,7 +47,7 @@ function MakeBlogPage() {
     try {
       const repos = await getRepos();
       const userData = await getAuthInfo();
-      console.log('userName:', userData.userName); 
+      console.log("userName:", userData.userName);
       setGithubRepos(repos);
       setLoading(false);
     } catch (error) {
@@ -71,33 +70,17 @@ function MakeBlogPage() {
       gitRepoUrl: repo,
     }));
   };
-  
-  // const handleMemberChange = (e) => {
-  //   const { name, value } = e.target;
 
-  //   if (name === "blogMember") {
-  //     // 쉼표로 구분된 값을 배열로 변환
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       blogMember: value.split(",").map(item => item.trim()).filter(item => item),
-  //     }));
-  //   } else {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [name]: value,
-  //     }));
-  //   }
-  // };
-
-  // 멤버 추가/수정 시 쉼표로 구분된 값 처리
   const handleMemberChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "blogMember") {
-      // 쉼표로 구분된 값을 배열로 변환 (공백 제거)
       setFormData((prev) => ({
         ...prev,
-        blogMember: value.split(",").map(item => item.trim()).filter(item => item), // 공백 제거 및 빈 값 필터링
+        blogMember: value
+          .split(",")
+          .map((item) => item.trim())
+          .filter((item) => item),
       }));
     } else {
       setFormData((prev) => ({
@@ -110,39 +93,31 @@ function MakeBlogPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { blogName, description, gitRepoUrl, blogMember } = formData; // formData에서 값 가져오기
+    const { blogName, description, gitRepoUrl, blogMember } = formData;
 
-    // 필수 항목들이 비어있다면 경고
-    if (!blogName || !description === "pick one from your Github account") {
+    if (!blogName || !description || gitRepoUrl === "pick one from your Github account") {
       alert("Please fill out all required fields.");
       return;
     }
 
-    if (gitRepoUrl === "pick one from your Github account") {
-      alert("Please select a GitHub repository");
-      return;
-    }
-  
-    // 전송할 블로그 데이터 구성
     const blogData = {
-      blogName: blogName,
-      description: description,
-      gitRepoUrl: gitRepoUrl,
-      blogMember: blogMember, // blogMember가 없으면 기본값 설정
+      blogName,
+      description,
+      gitRepoUrl,
+      blogMember,
     };
 
-    setFormData(blogData)
-
     try {
-
-      if (!isLoggedIn) {
-        await refreshTokenAndLogin();
-      }
-
-      const response = await postBlog( blogData.blogName, blogData.description, blogData.gitRepoUrl, blogData.blogMember);
-
+      const response = await postBlog(
+        blogData.blogName,
+        blogData.description,
+        blogData.gitRepoUrl,
+        blogData.blogMember
+      );
       console.log("Blog created successfully:", response);
-      navigate(`/workspace/myblog/${blog_id}`);
+
+      // 블로그 생성 후 해당 페이지로 이동
+      navigate(`/workspace/myblog/${response.blog_id}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -150,13 +125,11 @@ function MakeBlogPage() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   if (loading) return <div>Loading GitHub Repositories...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-
 
   return (
     <>
@@ -169,24 +142,13 @@ function MakeBlogPage() {
             Please fill out all fields marked with an asterisk (*).
           </Subtitle>
 
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <FormField label="Blog name" required>
-              <Input
-                type="text"
-                name="blogName"
-                value={formData.blogName}
-                onChange={handleChange}
-                required
-              />
+              <Input type="text" name="blogName" value={formData.blogName} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Description" required>
-              <TextArea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-              />
+              <TextArea name="description" value={formData.description} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Github repository link" required>
@@ -201,14 +163,14 @@ function MakeBlogPage() {
               <Input
                 type="text"
                 name="blogMember"
-                value={formData.blogMember} // 배열을 문자열로 표s시
+                value={formData.blogMember.join(", ")} // 배열을 문자열로 표시
                 onChange={handleMemberChange}
                 required
               />
             </FormField>
 
             <ButtonContainer>
-              <GoToButton text="Create Blog" onClick={handleSubmit} type="button" />
+              <GoToButton text="Create Blog" type="submit" />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -219,7 +181,7 @@ function MakeBlogPage() {
 
 export default MakeBlogPage;
 
-
+// Styled components
 const Container = styled.div`
   font-family: "Pretendard";
   color: #ffffff;
