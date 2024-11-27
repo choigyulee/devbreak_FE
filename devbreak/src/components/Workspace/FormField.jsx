@@ -1,6 +1,6 @@
 // components/FormField.js
-import React from 'react';
 import styled from "@emotion/styled";
+import PropTypes from "prop-types";
 
 const FormField = ({ label, required, children }) => {
   return (
@@ -25,9 +25,20 @@ const Label = styled.label`
 `;
 
 const Required = styled.span`
-  color: #FF0000;
+  color: #ff0000;
   font-size: 25px;
   font-weight: 500;
 `;
+
+FormField.propTypes = {
+  label: PropTypes.string.isRequired, // label은 필수 문자열
+  required: PropTypes.bool, // required는 선택적 불리언
+  children: PropTypes.node.isRequired, // children은 필수 노드
+};
+
+// 기본값 설정 (선택적)
+FormField.defaultProps = {
+  required: false, // required의 기본값은 false
+};
 
 export default FormField;

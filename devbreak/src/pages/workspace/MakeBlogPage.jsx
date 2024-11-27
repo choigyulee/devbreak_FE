@@ -12,7 +12,6 @@ import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import postBlog from "../../APIs/post/postBlog";
 
-
 function MakeBlogPage() {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
@@ -32,7 +31,7 @@ function MakeBlogPage() {
   useEffect(() => {
     const fetchData = async () => {
       if (!isLoggedIn) {
-        navigate('/login');
+        navigate("/login");
         return;
       }
       try {
@@ -74,7 +73,7 @@ function MakeBlogPage() {
     }));
   };
 
-
+  
   const handleMemberChange = (e) => {
     const { value } = e.target;
     setNewMember(value); // 새로운 GitHub ID 입력값 업데이트
@@ -99,28 +98,19 @@ function MakeBlogPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { blogName, description, gitRepoUrl, blogMember } = formData; // formData에서 값 가져오기
+    const { blogName, description, gitRepoUrl, blogMember } = formData;
 
-    // 필수 항목들이 비어있다면 경고
-    if (!blogName || !description === "pick one from your Github account") {
+    if (!blogName || !description || gitRepoUrl === "pick one from your Github account") {
       alert("Please fill out all required fields.");
       return;
     }
 
-    if (gitRepoUrl === "pick one from your Github account") {
-      alert("Please select a GitHub repository");
-      return;
-    }
-
-    // 전송할 블로그 데이터 구성
     const blogData = {
-      blogName: blogName,
-      description: description,
-      gitRepoUrl: gitRepoUrl,
-      blogMember: blogMember, // blogMember가 없으면 기본값 설정
+      blogName,
+      description,
+      gitRepoUrl,
+      blogMember,
     };
-
-    setFormData(blogData)
 
     try {
 
@@ -139,13 +129,11 @@ function MakeBlogPage() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   if (loading) return <div>Loading GitHub Repositories...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-
 
   return (
     <>
@@ -158,15 +146,9 @@ function MakeBlogPage() {
             Please fill out all fields marked with an asterisk (*).
           </Subtitle>
 
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <FormField label="Blog name" required>
-              <Input
-                type="text"
-                name="blogName"
-                value={formData.blogName}
-                onChange={handleChange}
-                required
-              />
+              <Input type="text" name="blogName" value={formData.blogName} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Description" required>
@@ -213,9 +195,8 @@ function MakeBlogPage() {
                 </div>
               )}
             </ContributorsList>
-
             <ButtonContainer>
-              <GoToButton text="Create Blog" onClick={handleSubmit} type="button" />
+              <GoToButton text="Create Blog" type="submit" />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -226,7 +207,7 @@ function MakeBlogPage() {
 
 export default MakeBlogPage;
 
-
+// Styled components
 const Container = styled.div`
   font-family: "Pretendard";
   color: #ffffff;
