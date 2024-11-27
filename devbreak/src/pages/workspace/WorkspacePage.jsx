@@ -16,20 +16,6 @@ function WorkspacePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-// // 로그인 상태 확인
-// useEffect(() => {
-//   const checkLoginStatus = () => {
-//     const accessToken = sessionStorage.getItem("accessToken");
-//     if (accessToken) {
-//       setIsLoggedIn(true);
-//     } else {
-//       setIsLoggedIn(false);
-//     }
-//   };
-//   checkLoginStatus();
-// }, []);
-
-
 useEffect(() => {
   const fetchMyBlogList = async () => {
     try {
@@ -124,7 +110,7 @@ const MyBlogContainerText = styled.div`
 const MyBlogItem = styled.div`
   align-items: center;
   margin: 0 auto;
-  min-width: 930px;
+  width: 930px;
   min-height: 155px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.5);

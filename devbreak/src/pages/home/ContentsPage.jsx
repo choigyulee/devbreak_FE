@@ -7,26 +7,26 @@ import ActivityItem from "../../components/ContentsPageItems/ActivityItem";
 import ContentItem from "../../components/ContentsPageItems/ContentItem";
 import LikesItem from "../../components/ContentsPageItems/LikesItem";
 import LinkItem from "../../components/ContentsPageItems/LinkItem";
+import { useAuth } from "../../context/AuthContext";
+import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
+
 
 function ContentsPage() {
   const { articleId } = useParams(); // URL에서 articleId 가져오기
   const [article, setArticle] = useState(null);
   const [liked, setLiked] = useState(false); // 좋아요 상태 관리
+  const [likeCount, setLikeCount] = useState(0); 
   const navigate = useNavigate(); // useNavigate 훅 사용
 
-  // 로그인 상태를 로컬 스토리지에서 가져오기
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 로컬 스토리지에서 로그인 상태 확인
-    setIsLoggedIn(loggedIn);
-  }, []);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
         const fetchedArticle = await getArticleArticleId(articleId); // API 호출
         setArticle(fetchedArticle);
+        setLiked(fetchedArticle.likeButton);
+        setLikeCount(fetchedArticle.likeCount); 
       } catch (error) {
         console.error("글을 가져오는 중 에러 발생:", error);
       }
@@ -35,18 +35,26 @@ function ContentsPage() {
     fetchArticle();
   }, [articleId]);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async () => {
     if (!isLoggedIn) {
       alert("로그인 후 이용해주세요!"); // 알림 표시
       navigate("/login"); // 로그인 페이지로 이동
     } else {
-      setLiked((prevLiked) => !prevLiked); // 좋아요 상태 토글
+      try {
+        const updatedData = await putArticleArticleIdLike(articleId); // 좋아요 상태 업데이트
+        setLiked(updatedData.likeButton);
+        setLikeCount(updatedData.likeCount); 
+      } catch (error) {
+        console.error("좋아요 처리 중 에러 발생:", error);
+      }
     }
   };
 
   if (!article) {
     return <div>로딩 중...</div>; // 기사 로딩 중 표시
   }
+
+  const { about, problem, solution } = article;
 
   return (
     <>
@@ -58,13 +66,13 @@ function ContentsPage() {
             {article.blogName} | {article.createdAt}
           </NameAndData>
           <ActivityItem
-            language="Programing Language"
-            problem="what a issue title"
-            solution="how to solve the problem"
+            language={about}
+            problem={problem}
+            solution={solution}
           />
           <ContentItem>{article.content}</ContentItem> {/* 마크다운 콘텐츠 렌더링 */}
         </TextContainer>
-        <LikesItem liked={liked} likeCount={article.likeCount} handleLikeClick={handleLikeClick} />
+        <LikesItem liked={article.likeButton} likeCount={article.likeCount} handleLikeClick={handleLikeClick} />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />
       </Container>
     </>

@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from "@emotion/styled";
 
-const TextArea = ({ name, value, onChange, required }) => (
+const TextArea = ({ name, value, onChange, required, placeholder }) => (
   <TextAreaContainer
     name={name}
     value={value}
     onChange={onChange}
     required={required}
+    placeholder={placeholder}
   />
 );
 

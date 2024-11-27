@@ -2,13 +2,14 @@
 import React from 'react';
 import styled from "@emotion/styled";
 
-const Input = ({ type, name, value, onChange, required }) => (
+const Input = ({ type, name, value, onChange, required, placeholder }) => (
   <StyledInput
     type={type}
     name={name}
     value={value}
     onChange={onChange}
     required={required}
+    placeholder={placeholder}
   />
 );
 

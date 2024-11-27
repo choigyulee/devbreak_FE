@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
-const ActivityItem = ({ language, problem, solution }) => {
+const ActivityItem = ({ about, problem, solution }) => {
   return (
     <ActivityContainer>
       <Language>
-        About <p>{language}</p>
+        Language <p>{about}</p>
       </Language>
       <Problem>
         Problem <p>{problem}</p>
@@ -33,7 +33,7 @@ const ActivityContainer = styled.div`
 `;
 
 const Language = styled.div`
-  font-size: 3vh;
+  font-size: 2.5vh;
   font-family: "pretendard";
   font-weight: 400;
   color: #a7a7a7;
@@ -55,7 +55,7 @@ const Problem = styled.div`
   line-height: 3.5vh;
   display: flex;
   flex-direction: row;
-  gap: 2vh;
+  gap: 4vh;
   p {
     font-size: 2.5vh;
     color: #ffffff;
@@ -70,7 +70,7 @@ const Solution = styled.div`
   line-height: 3.5vh;
   display: flex;
   flex-direction: row;
-  gap: 2vh;
+  gap: 4vh;
   p {
     font-size: 2.5vh;
     color: #ffffff;
