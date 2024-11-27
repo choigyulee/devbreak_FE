@@ -40,6 +40,9 @@ const StyledFaHeart = styled(FaHeart)`
   &:hover {
     color: #ff6060;
   }
+  &:active {
+    color: #ff6060;
+  }
 `;
 
 export default LikesItem;
