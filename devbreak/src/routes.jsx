@@ -10,6 +10,9 @@ import WorkspacePage from "./pages/workspace/WorkspacePage";
 import WritePage from "./pages/workspace/WritePage";
 import GithubLogin from "./pages/GithubLogin";
 import PrivateRoute from "./PrivateRoute";
+import LikedBreakthroughs from "./pages/home/LikedBreakthroughs";
+import FollowedBlogs from "./pages/home/FollowedBlogs";
+
 
 const routes = [
   {
@@ -31,6 +34,16 @@ const routes = [
     path: "/",
     element: <HomePage />,
     name: "03. 홈 메인 페이지",
+  },
+  {
+    path: "/like/breakthrough",
+    element: <LikedBreakthroughs />,
+    name: "03-1. 내가 좋아요 누른 breakthrough 페이지",
+  },
+  {
+    path: "/follow/blog",
+    element: <FollowedBlogs />,
+    name: "03-2. 내가 팔로우한 blog 페이지",
   },
   {
     path: "/breakthrough/:articleId",

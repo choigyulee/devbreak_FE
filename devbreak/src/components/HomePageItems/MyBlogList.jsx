@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { BsStar } from "react-icons/bs"; // BsStar 아이콘 import
 import { useState } from "react"; // 상태 관리를 위해 useState import
 
-const MyBlogList = () => {
+const MyBlogList = (onClick) => {
   const [isHovered, setIsHovered] = useState(false); // hover 상태 관리
 
   return (

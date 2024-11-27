@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BlogTenList from "../../components/HomePageItems/BlogTenList";
@@ -7,7 +8,7 @@ import MyBlogList from "../../components/HomePageItems/MyBlogList";
 import styled from "@emotion/styled";
 import getHomeArticle from "../../APIs/get/getHomeArticle";
 import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 
 function HomePage() {
 
@@ -16,6 +17,7 @@ function HomePage() {
   const [error, setError] = useState(null);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   // 로그인 상태 확인
   useEffect(() => {
@@ -77,8 +79,12 @@ function HomePage() {
               List of Your <BoldText>fav Breakthroughs & Blogs</BoldText>
             </Title>
             <span>
+            <Link to="/like/breakthrough">
               <MyBreakthroughList />
-              <MyBlogList />
+            </Link>
+            <Link to="/follow/blog">
+                <MyBlogList />
+              </Link>
             </span>
           </MyListBox>
         )}

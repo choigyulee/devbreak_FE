@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { BsHeart } from "react-icons/bs"; // BsHeart 아이콘 import
 import { useState } from "react"; // 상태 관리를 위해 useState import
 
-const MyBreakthroughList = () => {
+const MyBreakthroughList = (onClick) => {
   const [isHovered, setIsHovered] = useState(false); // hover 상태 관리
 
   return (
