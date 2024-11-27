@@ -176,7 +176,6 @@ function MakeBlogPage() {
                   name="blogMember"
                   value={newMember}
                   onChange={handleMemberChange}
-                  required
                   placeholder="Enter the exact GitHub ID of the contributors one by one."
                 />
               </FormField>
@@ -272,6 +271,13 @@ const AddButton = styled.button`
 
 const ContributorsList = styled.div`
   color: #ffffff;
+  margin-top: 0;
+
+  div {
+  display: flex;
+  flex-direction: row;
+  margin-right: 10px;
+  }
 `;
 
 const MemberList = styled.div`
