@@ -12,7 +12,8 @@ import GithubLogin from "./pages/GithubLogin";
 import PrivateRoute from "./PrivateRoute";
 import LikedBreakthroughs from "./pages/home/LikedBreakthroughs";
 import FollowedBlogs from "./pages/home/FollowedBlogs";
-
+import EditWritePage from "./pages/workspace/EditWritePage";
+import EditBlogPage from "./pages/workspace/EditBlogPage";
 
 const routes = [
   {
@@ -76,9 +77,19 @@ const routes = [
     name: "09. 브레잌스루 작성 페이지",
   },
   {
+    path: "/blog/:blogId/breakthrough/:articleId/edit",
+    element: <PrivateRoute element={<EditWritePage />} />,
+    name: "09-1. 브레잌스루 수정 페이지",
+  },
+  {
     path: "/blog/:blogId",
     element: <BlogPage />,
     name: "10. 블로그 열람 페이지",
+  },
+  {
+    path: "/blog/:blogId/edit",
+    element: <PrivateRoute element={<EditBlogPage />} />,
+    name: "10-1. 블로그 수정 페이지",
   },
   {
     path: "/github",

@@ -13,7 +13,7 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
   const handleGitHubClick = () => window.open(blogData.git_repo_url, "_blank");
 
   const handlePencilClick = () => {
-    navigate(`/blog/${blogId}/write`); // 블로그 수정 페이지로 이동
+    navigate(`/blog/${blogId}/edit`); // 블로그 수정 페이지로 이동
   };
 
   // 사용자가 블로그의 멤버인지 확인
