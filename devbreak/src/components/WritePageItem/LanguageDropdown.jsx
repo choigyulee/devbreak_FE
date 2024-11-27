@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from "@emotion/styled";
 import { BsCaretDownFill } from 'react-icons/bs';
 
-const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
+const LanguageDropdown = ({ selectedValue, items, setSelectedValue }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const toggleDropdown = (e) => {
@@ -13,7 +13,7 @@ const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
   const handleItemClick = (e, item) => {
     e.preventDefault();
     e.stopPropagation(); 
-    setSelectedValue(item.title);
+    setSelectedValue(item);
     setIsDropdownVisible(false);
   };
 
@@ -33,9 +33,9 @@ const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
 
   const getDisplayValue = (item) => {
     if (typeof item === 'object' && item !== null) {
-      return item.title || '';
+      return item || 'Select your project language';
     }
-    return item || '';
+    return item || 'Select your project language';
   };
 
   return (
@@ -52,7 +52,7 @@ const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
               key={index}
               onClick={(e) => handleItemClick(e, item)}
             >
-              {getDisplayValue(item.title)}
+              {getDisplayValue(item)}
             </DropdownItem>
           ))}
         </DropdownMenu>
@@ -131,4 +131,4 @@ const DropdownItem = styled.div`
   }
 `;
 
-export default Dropdown;
+export default LanguageDropdown;
