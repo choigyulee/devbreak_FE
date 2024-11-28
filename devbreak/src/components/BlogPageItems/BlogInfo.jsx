@@ -1,14 +1,17 @@
 import styled from "@emotion/styled";
 import { BsStarFill, BsGithub, BsPencil } from "react-icons/bs";
+import { FaRegTrashCan } from "react-icons/fa6";
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import putBlogBlogIdFavorites from "../../APIs/put/putBlogBlogIdFavorites";
-
+import BlogDeleteModal from "./BlogDeleteModal";
+import deleteBlogBlogId from "../../APIs/delete/deleteBlogBlogId";
 
 function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogId, currentUserId }) {
   const navigate = useNavigate();
-  const [isFavorite, setIsFavorite] = useState(favButton); 
+  const [isFavorite, setIsFavorite] = useState(favButton);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
 
   const handleGitHubClick = () => window.open(blogData.git_repo_url, "_blank");
 
@@ -16,59 +19,81 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
     navigate(`/blog/${blogId}/edit`); // 블로그 수정 페이지로 이동
   };
 
-  // 사용자가 블로그의 멤버인지 확인
+  // 휴지통 아이콘 클릭 시 모달 열기
+  const handleTrashClick = () => {
+    setIsModalOpen(true);
+  };
+
+  // 블로그 삭제 확인 후 삭제 실행
+  const handleConfirmDelete = async () => {
+    try {
+      console.log(`블로그 삭제 중: ${blogId}`);
+      // 블로그 삭제 API 호출
+      await deleteBlogBlogId(blogId);
+      setIsModalOpen(false);
+      alert("블로그가 성공적으로 삭제되었습니다.");
+      navigate("/workspace"); // 삭제 후 홈 화면으로 이동
+    } catch (error) {
+      console.error("블로그 삭제 오류:", error);
+      alert("블로그 삭제에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const isMember = blogData.members.includes(currentUserId);
-  console.log("Current User ID:", currentUserId);
-  console.log("Blog Members:", blogData.members);
-  console.log("Is Member:", isMember);
 
   const handleFavoriteClick = async () => {
     if (!isLoggedIn) {
-      // 로그인하지 않은 상태에서 즐겨찾기 버튼을 클릭했을 경우 처리
-      alert("Please log in to add to favorites.");
+      alert("로그인 후 즐겨찾기를 추가할 수 있습니다.");
       navigate("/login");
       return;
     }
 
     try {
-      // 즐겨찾기 API 호출
       const updatedBlogData = await putBlogBlogIdFavorites(blogId);
-      setIsFavorite(updatedBlogData.favButton); // 즐겨찾기 상태 업데이트
-      handleFavButtonClick(updatedBlogData.favButton); // 부모 컴포넌트에 상태 반영
+      setIsFavorite(updatedBlogData.favButton);
+      handleFavButtonClick(updatedBlogData.favButton);
     } catch (error) {
-      console.error("Error updating favorite status:", error);
+      console.error("즐겨찾기 업데이트 오류:", error);
     }
   };
 
-
   return (
-    <InfoContainer>
-      <NameContainer>
-        <BlogName>{blogData.blog_name}</BlogName>
-        <StarButton
-          onClick={handleFavoriteClick}
-          style={{
-            color: favButton ? "#FFEC4C" : "white",
-          }}
-        >
-          <BsStarFill size={30} />
-        </StarButton>
-      </NameContainer>
-      <DescriptionContainer>
-        <BlogDescription>
-          {blogData.description}
-          <IconContainer onClick={handleGitHubClick}>
-            <BsGithub size={24} />
-          </IconContainer>
-          {isLoggedIn &&
-            isMember && ( // 로그인 상태이고 블로그 멤버일 때만 연필 아이콘 표시
-              <IconContainer onClick={handlePencilClick}>
-                <BsPencil size={24} />
+    <>
+      <InfoContainer>
+        <NameContainer>
+          <BlogName>{blogData.blog_name}</BlogName>
+          <StarButton
+            onClick={handleFavoriteClick}
+            style={{
+              color: favButton ? "#FFEC4C" : "white",
+            }}
+          >
+            <BsStarFill size={30} />
+          </StarButton>
+        </NameContainer>
+        <DescriptionContainer>
+          <BlogDescription>
+            {blogData.description}
+            <IconContainer onClick={handleGitHubClick}>
+              <BsGithub size={24} />
+            </IconContainer>
+            {isLoggedIn && isMember && (
+              <IconContainer>
+                <BsPencil size={24} onClick={handlePencilClick} />
+                <FaRegTrashCan size={24} onClick={handleTrashClick} />
               </IconContainer>
             )}
-        </BlogDescription>
-      </DescriptionContainer>
-    </InfoContainer>
+          </BlogDescription>
+        </DescriptionContainer>
+      </InfoContainer>
+
+      {/* 삭제 모달 */}
+      {isModalOpen && <BlogDeleteModal onClose={handleCloseModal} onConfirm={handleConfirmDelete} />}
+    </>
   );
 }
 
@@ -78,7 +103,7 @@ BlogInfo.propTypes = {
   handleFavButtonClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   blogId: PropTypes.string.isRequired,
-  currentUserId: PropTypes.string.isRequired, // 현재 사용자 ID prop 추가
+  currentUserId: PropTypes.string.isRequired,
 };
 
 export default BlogInfo;
@@ -131,6 +156,9 @@ const BlogDescription = styled.div`
 `;
 
 const IconContainer = styled.div`
-  margin-left: 1.5vw;
+  margin-left: 0.7vw;
+  display: flex;
+  flex-direction: row;
+  gap: 0.7vw;
   cursor: pointer;
 `;
