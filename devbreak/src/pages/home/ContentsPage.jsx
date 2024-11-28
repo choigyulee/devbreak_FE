@@ -12,6 +12,7 @@ import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteModal";
 
+
 function ContentsPage() {
   const { articleId } = useParams();
   const [article, setArticle] = useState(null);
@@ -26,8 +27,17 @@ function ContentsPage() {
       try {
         const fetchedArticle = await getArticleArticleId(articleId);
         setArticle(fetchedArticle);
-        setLiked(fetchedArticle.likeButton);
         setLikeCount(fetchedArticle.likeCount);
+
+        // localStorage에서 'liked' 상태를 불러와서 설정
+        const storedLikeStatus = localStorage.getItem(`liked_${articleId}`);
+        if (storedLikeStatus !== null) {
+          setLiked(JSON.parse(storedLikeStatus)); // 저장된 상태로 설정
+        } else {
+          // 처음 로드 시 서버에서 받은 likeButton 상태로 설정하고, 그 값을 localStorage에 저장
+          setLiked(fetchedArticle.likeButton);
+          localStorage.setItem(`liked_${articleId}`, JSON.stringify(fetchedArticle.likeButton));
+        }
       } catch (error) {
         console.error("Error fetching article:", error);
       }
@@ -39,14 +49,17 @@ function ContentsPage() {
     if (!isLoggedIn) {
       alert("Please log in to use this feature.");
       navigate("/login");
-    } else {
-      try {
-        const updatedData = await putArticleArticleIdLike(articleId);
-        setLiked(updatedData.likeButton);
-        setLikeCount(updatedData.likeCount);
-      } catch (error) {
-        console.error("Error updating like:", error);
-      }
+      return;
+    }
+    try {
+      const updatedData = await putArticleArticleIdLike(articleId);
+      setLiked(updatedData.likeButton);
+      setLikeCount(updatedData.likeCount);
+      
+      // 상태가 업데이트되면 localStorage에도 반영
+      localStorage.setItem(`liked_${articleId}`, JSON.stringify(updatedData.likeButton));
+    } catch (error) {
+      console.error("Error updating like:", error);
     }
   };
 
