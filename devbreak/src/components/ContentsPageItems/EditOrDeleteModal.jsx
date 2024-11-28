@@ -1,14 +1,51 @@
 import styled from "@emotion/styled";
-import PropTypes from "prop-types"; // PropTypes 임포트
+import PropTypes from "prop-types";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import ContentsDeleteModal from "../ContentsDeleteModal";
+import deleteArticleArticleId from "../../APIs/delete/deleteArticleArticleId";
 
 const EditOrDeleteModal = ({ onClose }) => {
+  const { articleId } = useParams();
+  const navigate = useNavigate();
+  
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleEditClick = () => {
+    navigate(`/breakthrough/${articleId}/edit`);
+    onClose();
+  };
+
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true); // 모달 표시
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteArticleArticleId(articleId); // API 호출하여 글 삭제
+      alert('글이 삭제되었습니다.');
+      onClose(); // 삭제 후 모달 닫기
+    } catch (error) {
+      alert('글 삭제에 실패했습니다.');
+    }
+  };
+  
+
   return (
     <Overlay onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
-        <Button variant="edit">Edit</Button>
+        <Button variant="edit" onClick={handleEditClick}>Edit</Button>
         <ButtonDivider />
-        <Button variant="delete">Delete</Button>
+        <Button variant="delete" onClick={handleDeleteClick}>Delete</Button>
       </ModalContainer>
+
+      {/* Delete Modal이 표시될 때만 ContentsDeleteModal 컴포넌트를 렌더링 */}
+      {showDeleteModal && (
+        <ContentsDeleteModal
+          onClose={() => setShowDeleteModal(false)} // Cancel 버튼 클릭 시 모달 닫기
+          onConfirm={handleDeleteConfirm} // Delete 버튼 클릭 시 삭제 실행
+        />
+      )}
     </Overlay>
   );
 };
@@ -21,9 +58,9 @@ EditOrDeleteModal.propTypes = {
 export default EditOrDeleteModal;
 
 const Overlay = styled.div`
-  position: fixed; /* 화면 전체를 덮기 위한 고정 위치 */
+  position: fixed;
   margin-right: 4vh;
-  z-index: 1000; /* 모달이 다른 콘텐츠 위에 오도록 설정 */
+  z-index: 1000;
 `;
 
 const ModalContainer = styled.div`
@@ -36,7 +73,7 @@ const ModalContainer = styled.div`
   border-radius: 18px;
   display: flex;
   flex-direction: column;
-  gap: 1vh; /* 버튼 간의 여백을 더 추가 */
+  gap: 1vh;
 `;
 
 const Button = styled.button`
@@ -46,15 +83,16 @@ const Button = styled.button`
   border-radius: 4px;
   font-size: 2vh;
   cursor: pointer;
-  width: 100%; /* 버튼을 전체 너비로 확장 */
+  width: 100%;
 
   &:hover {
-    color: ${(props) => (props.variant === "edit" ? "#02f798" : props.variant === "delete" ? "#ff4f4f" : "#ffffff")};
+    color: ${(props) =>
+      props.variant === "edit" ? "#02f798" : props.variant === "delete" ? "#ff4f4f" : "#ffffff"};
   }
 `;
 
 const ButtonDivider = styled.div`
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.3); /* 버튼 사이의 구분선 색상 */
-  width: 100%; /* 구분선이 버튼 전체 너비를 차지하도록 */
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 100%;
 `;

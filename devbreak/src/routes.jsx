@@ -77,7 +77,7 @@ const routes = [
     name: "09. 브레잌스루 작성 페이지",
   },
   {
-    path: "/blog/:blogId/breakthrough/:articleId/edit",
+    path: "breakthrough/:articleId/edit",
     element: <PrivateRoute element={<EditWritePage />} />,
     name: "09-1. 브레잌스루 수정 페이지",
   },

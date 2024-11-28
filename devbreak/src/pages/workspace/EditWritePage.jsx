@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // useParams 추가
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
@@ -9,27 +9,26 @@ import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
 import { useAuth } from "../../context/AuthContext";
 import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
-import postArticle from "../../APIs/post/postArticle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 import putArticleArticleId from "../../APIs/put/putArtticleArticleId";
 import getArticleArticleId from "../../APIs/get/getArticleArticleId";
 
-
 function EditWritePage() {
-  const { blogId, articleId } = useParams(); // blogId 받아오기
+  const { articleId } = useParams();
   const navigate = useNavigate();
+
   const { isLoggedIn } = useAuth();
 
   const [formData, setFormData] = useState({
     title: "",
     content: "",
   });
-  const [selectedAbout, setSelectedAbout] = useState("");
+  const [selectedAbout, setSelectedAbout] = useState(""); 
   const [selectedProblem, setSelectedProblem] = useState("");
   const [selectedSolution, setSelectedSolution] = useState("");
 
   const [issuesAndCommits, setIssuesAndCommits] = useState([]);
-
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [gitRepoUrl, setGitRepoUrl] = useState('');
@@ -39,7 +38,7 @@ function EditWritePage() {
   ];
 
   useEffect(() => {
-    const fetchBlogData = async () => {
+    const fetchArticleData = async () => {
       if (!isLoggedIn) {
         navigate("/login");
         return;
@@ -49,38 +48,42 @@ function EditWritePage() {
       setError(null);
 
       try {
-        // 블로그 ID로 블로그 정보 가져오기
-        const blogData = await getBlogBlogId(blogId);
-        const { git_repo_url } = blogData; // git_repo_url 추출
-        setGitRepoUrl(git_repo_url); // 상태에 저장
+        // Fetch the specific article data
+        const articleData = await getArticleArticleId(articleId);
+        
+        // Populate form data
+        setFormData({
+          blogId: articleData.blogId,
+          title: articleData.title,
+          content: articleData.content
+        });
 
-        // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
-        const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
-        setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
+        // Set selected values
+        setSelectedAbout(articleData.about);
+        setSelectedProblem(articleData.problem);
+        setSelectedSolution(articleData.solution);
 
-        if (articleId) {
-          // 기존 글 수정일 경우, articleId로 글 정보 가져오기
-          const articleData = await getArticleArticleId(articleId); // 이 함수는 글 데이터를 가져오는 API입니다.
-          setFormData({
-            title: articleData.title,
-            content: articleData.content,
-          });
-          setSelectedAbout(articleData.about);
-          setSelectedProblem(articleData.problem);
-          setSelectedSolution(articleData.solution);
-        }
+        // Fetch blog data to get git repo URL
+        const blogData = await getBlogBlogId(articleData.blogId);
+        const { git_repo_url } = blogData;
+        setGitRepoUrl(git_repo_url);
+
+        // Fetch issues and commits
+        const issuesData = await getIssuesAndCommitsTitle(git_repo_url);
+        setIssuesAndCommits(issuesData);
+
       } catch (error) {
-        setError("Failed to fetch issues and commits");
+        setError("Failed to fetch article data");
         console.error(error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (blogId && isLoggedIn) {
-      fetchBlogData(); // 블로그 ID가 존재하고 로그인된 경우에만 데이터 fetch
+    if (articleId && isLoggedIn) {
+      fetchArticleData();
     }
-  }, [isLoggedIn, blogId, navigate, gitRepoUrl]);
+  }, [isLoggedIn, articleId, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,42 +95,39 @@ function EditWritePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { title, content } = formData;
-
+  
+    const { blogId, title, content } = formData;
+  
     if (!title || !content || !selectedAbout || !selectedProblem || !selectedSolution) {
       setError("Please fill in all required fields");
       return;
     }
-
+  
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      let response;
-      if (articleId) {
-        // 글 수정 (PUT)
-        response = await putArticleArticleId(
-          articleId, blogId, title, content, selectedAbout, selectedProblem, selectedSolution
-        );
-        console.log("Article updated successfully:", response);
-      } else {
-        // 글 작성 (POST)
-        response = await postArticle(
-          blogId, title, content, selectedAbout, selectedProblem, selectedSolution
-        );
-        console.log("Article posted successfully:", response);
-      }
-
-      navigate(`/blog/${blogId}`); // 블로그 페이지로 이동
+      const response = await putArticleArticleId({
+        articleId, // Pass articleId as part of the object
+        blogId, // Use the original blogId from fetched data
+        title,
+        content,
+        about: selectedAbout,
+        problem: selectedProblem,
+        solution: selectedSolution
+      });
+  
+      console.log("Article updated successfully:", response);
+      navigate(`/blog/${blogId}`); // Navigate back to blog page
     } catch (err) {
-      console.error("Failed to post article:", err);
-      setError("Failed to post article. Please try again.");
+      console.error("Failed to update article:", err);
+      setError("Failed to update article. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Rest of the component remains the same as in the previous version
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -135,12 +135,12 @@ function EditWritePage() {
         <FormContainer>
           <Form>
             <FormField label="Breakthrough Title" required>
-              <Input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
+              <Input 
+                type="text" 
+                name="title" 
+                value={formData.title} 
+                onChange={handleChange} 
+                required 
               />
             </FormField>
 
@@ -182,11 +182,11 @@ function EditWritePage() {
             </FormField>
 
             <ButtonContainer>
-              <GoToButton
-                type="submit"
-                text="Post"
-                onClick={handleSubmit}
+              <GoToButton 
+                type="submit" 
+                text="Update"
                 disabled={isLoading}
+                onClick={handleSubmit}
               />
             </ButtonContainer>
           </Form>
