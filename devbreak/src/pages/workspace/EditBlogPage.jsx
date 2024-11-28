@@ -123,8 +123,8 @@ function EditBlogPage() {
     }
 
     try {
-      const updatedBlogData = await putBlogBlogId(blogId, blogName, description);  // 블로그 수정 API 호출
-      navigate(`/workspace/myblog/${updatedBlogData.blogId}`);
+      const updatedBlogData = await putBlogBlogId(blogId, blogName, description, gitRepoUrl, blogMember);
+      navigate(`/blog/${blogId}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
