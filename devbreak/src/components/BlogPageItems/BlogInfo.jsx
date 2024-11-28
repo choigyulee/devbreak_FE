@@ -2,16 +2,38 @@ import styled from "@emotion/styled";
 import { BsStarFill, BsGithub, BsPencil } from "react-icons/bs";
 import { FaRegTrashCan } from "react-icons/fa6";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import putBlogBlogIdFavorites from "../../APIs/put/putBlogBlogIdFavorites";
 import BlogDeleteModal from "./BlogDeleteModal";
 import deleteBlogBlogId from "../../APIs/delete/deleteBlogBlogId";
+import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 
 function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogId, currentUserId }) {
+
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(favButton);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      try {
+        const blog = await getBlogBlogId(blogId); // API 호출로 블로그 정보 얻기
+
+        // localStorage에서 즐겨찾기 상태 확인
+        const storedFavoriteStatus = localStorage.getItem(`fav_button_${blogId}`);
+        if (storedFavoriteStatus !== null) {
+          setIsFavorite(JSON.parse(storedFavoriteStatus));  // 저장된 상태로 설정
+        } else {
+          setIsFavorite(blog.fav_button); // API 응답에서 받은 fav_button 값으로 설정
+          localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(blog.fav_button)); // localStorage에 저장
+        }
+      } catch (error) {
+        console.error("블로그 팔로우 정보 가져오기 실패:", error);
+      }
+    };
+    fetchBlogData();
+  }, [blogId]); 
 
   const handleGitHubClick = () => window.open(blogData.git_repo_url, "_blank");
 
@@ -31,6 +53,7 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
 
   const isMember = blogData.members.includes(currentUserId);
 
+
   const handleFavoriteClick = async () => {
     if (!isLoggedIn) {
       alert("로그인 후 즐겨찾기를 추가할 수 있습니다.");
@@ -39,13 +62,16 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
     }
 
     try {
-      const updatedBlogData = await putBlogBlogIdFavorites(blogId);
-      setIsFavorite(updatedBlogData.favButton);
-      handleFavButtonClick(updatedBlogData.favButton);
+      const updatedBlogData = await putBlogBlogIdFavorites(blogId);  // 즐겨찾기 상태 서버에 반영
+      const newFavStatus = !isFavorite;  // 상태 반전
+      setIsFavorite(newFavStatus);  // 상태 갱신
+      localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(newFavStatus));  // localStorage에 반영
+      handleFavButtonClick(newFavStatus);  // 부모 컴포넌트로 상태 전달
     } catch (error) {
       console.error("즐겨찾기 업데이트 오류:", error);
     }
   };
+
 
   return (
     <>
@@ -55,7 +81,7 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
           <StarButton
             onClick={handleFavoriteClick}
             style={{
-              color: favButton ? "#FFEC4C" : "white",
+              color: isFavorite ? "white" : "#FFEC4C",
             }}
           >
             <BsStarFill size={30} />
