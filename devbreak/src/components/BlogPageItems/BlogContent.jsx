@@ -44,7 +44,7 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
           <SectionTitle>The Breakthroughs ({breakThroughs.length})</SectionTitle>
           {isLoggedIn && isMember && breakThroughs.length > 0 && (
             <GoToButton
-              onClick={() => navigate(`/blog/${blogId}/write`)}
+              onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
               fontSize="20px"
               text="Write"
               width="100px"

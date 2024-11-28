@@ -4,81 +4,77 @@ import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
-import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
-import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
+import Input from "../../components/Workspace/Input";
+import TextArea from "../../components/Workspace/TextArea";
+import Dropdown from "../../components/Breakthrough/Dropdown";
 import { useAuth } from "../../context/AuthContext";
-import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
-import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
+import getRepos from "../../APIs/get/getRepos";
+import getAuthInfo from "../../APIs/get/getAuthInfo";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
-import putArticleArticleId from "../../APIs/put/putArtticleArticleId";
-import getArticleArticleId from "../../APIs/get/getArticleArticleId";
+import putBlogBlogId from "../../APIs/put/putBlogBlogId";
 
-function EditWritePage() {
-  const { blogId, articleId } = useParams();
+function EditBlogPage() {
+  const { blogId } = useParams(); 
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
-
+  const { isLoggedIn, logout } = useAuth();
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    about: '',
-    problem:'',
-    solution:'',
+    blogName: "",
+    description: "",
+    gitRepoUrl: "",
+    blogMember: [],
   });
 
-  const [issuesAndCommits, setIssuesAndCommits] = useState([]);
+  const [githubRepos, setGithubRepos] = useState([]);
+  const [newMember, setNewMember] = useState("");
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [gitRepoUrl, setGitRepoUrl] = useState('');
-
-  const languageOptions = [
-    "Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"
-  ];
 
   useEffect(() => {
-    const fetchBlogData = async () => {
+    const fetchData = async () => {
       if (!isLoggedIn) {
         navigate("/login");
         return;
       }
-
-      setIsLoading(true);
-      setError(null);
-
       try {
-        const blogData = await getBlogBlogId(blogId);
-        const { git_repo_url } = blogData; 
-        setGitRepoUrl(git_repo_url);
-
-        // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
-        const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
-        setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
-
-        if (articleId) {
-          // 기존 글 수정일 경우, articleId로 글 정보 가져오기
-          const articleData = await getArticleArticleId(articleId); // 이 함수는 글 데이터를 가져오는 API입니다.
-          setFormData({
-            articleId: articleData.articleId,
-            title: articleData.title,
-            content: articleData.content,
-            about: articleData.about,
-            problem: articleData.problem,
-            solution: articleData.solution,
-          });
-        }
+        await fetchBlogData();
+        await fetchRepos();
       } catch (error) {
-        setError("Failed to fetch issues and commits");
-        console.error(error);
+        setError(error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
+    fetchData();
+  }, [isLoggedIn, navigate, blogId]);
 
-    if (blogId && isLoggedIn) {
-      fetchBlogData(); // 블로그 ID가 존재하고 로그인된 경우에만 데이터 fetch
+  const fetchBlogData = async () => {
+    try {
+      const blogData = await getBlogBlogId(blogId);
+      setFormData((prev) => ({
+        ...prev,
+        blogName: blogData.blog_name,
+        description: blogData.description,
+        gitRepoUrl: blogData.git_repo_url,
+        blogMember: blogData.members,
+      }));
+    } catch (error) {
+      setError(error);
     }
-  }, [isLoggedIn, blogId, navigate, articleId]);
+  };
+
+  const fetchRepos = async () => {
+    try {
+      const repos = await getRepos();
+      const userData = await getAuthInfo();
+      console.log('userName:', userData.userName);
+      setGithubRepos(repos);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,98 +84,121 @@ function EditWritePage() {
     }));
   };
 
+  const handleGitRepoSelection = (repo) => {
+    setFormData((prev) => ({
+      ...prev,
+      gitRepoUrl: repo,
+    }));
+  };
+
+  
+  const handleMemberChange = (e) => {
+    const { value } = e.target;
+    setNewMember(value); // 새로운 GitHub ID 입력값 업데이트
+  };
+
+  const handleAddContributor = () => {
+    if (newMember.trim() === "") return; // 빈 값은 추가하지 않음
+    setFormData((prev) => ({
+      ...prev,
+      blogMember: [...prev.blogMember, newMember.trim()],
+    }));
+    setNewMember(""); // 입력란 비우기
+  };
+
+  const handleDeleteMember = (memberToDelete) => {
+    setFormData((prev) => ({
+      ...prev,
+      blogMember: prev.blogMember.filter(member => member !== memberToDelete),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { blogName, description, gitRepoUrl, blogMember } = formData;
 
-    const { title, content, about, problem, solution } = formData;
-
-    if (!title || !content || !about || !problem || !solution) {
-      setError("Please fill in all required fields");
+    if (!blogName || !description || gitRepoUrl === "pick one from your Github account") {
+      alert("Please fill out all required fields.");
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
-
     try {
-      let response;
-      if (articleId) {
-        // 글 수정 (PUT)
-        response = await putArticleArticleId(
-          articleId, blogId, title, content, about, problem, solution
-        );
-        console.log("Article updated successfully:", response);
-      }
-
-      navigate(`/breakthrough/${articleId}`);
-    } catch (err) {
-      console.error("Failed to post article:", err);
-      setError("Failed to post article. Please try again.");
-    } finally {
-      setIsLoading(false);
+      const updatedBlogData = await putBlogBlogId(blogId, blogName, description, gitRepoUrl, blogMember);
+      navigate(`/blog/${blogId}`);
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  if (loading) return <div>Loading GitHub Repositories...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} />
+      <NavBar onLogout={handleLogout} />
       <Container>
         <FormContainer>
-          <Form>
-            <FormField label="Breakthrough Title" required>
-              <Input
-                type="text"
-                name="title"
-                value={formData.title}
+          <Title>Edit your tech blog</Title>
+          <Subtitle>
+            A little note: Anyone on the Internet can see this tech blog. <br />
+            Please fill out all fields marked with an asterisk (*).
+          </Subtitle>
+
+          <Form onSubmit={handleSubmit}>
+            <FormField label="Blog name" required>
+              <Input type="text" name="blogName" value={formData.blogName} onChange={handleChange} required />
+            </FormField>
+
+            <FormField label="Description" required>
+              <TextArea
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
+                placeholder="You can write up to 4000 bytes."
                 required
               />
             </FormField>
 
-            <FormField label="Add related issue or commit (optional)">
-              <FormItem>
-                <Label>Language</Label>
-                <LanguageDropdown
-                  label="language"
-                  selectedValue={formData.about}
-                  setSelectedValue={formData.about}
-                  items={languageOptions}
-                />
-              </FormItem>
-              <FormItem>
-                <Label>Problem</Label>
-                <GitTitleDropdown
-                  label="Problem"
-                  selectedValue={formData.problem}
-                  setSelectedValue={formData.problem}
-                  items={issuesAndCommits}
-                />
-              </FormItem>
-              <FormItem>
-                <Label>Solution</Label>
-                <GitTitleDropdown
-                  label="Solution"
-                  selectedValue={formData.solution}
-                  setSelectedValue={formData.solution}
-                  items={issuesAndCommits}
-                />
-              </FormItem>
-            </FormField>
-
-            <FormField label="Body" required>
-              <MarkdownEditor
-                content={formData.content}
-                setContent={(value) => setFormData((prev) => ({ ...prev, content: value }))}
+            <FormField label="Github repository link" required>
+              <Dropdown
+                selectedValue={formData.gitRepoUrl}
+                setSelectedValue={handleGitRepoSelection}
+                items={githubRepos}
               />
             </FormField>
 
+            <FormSemiContainer>
+              <FormField label="Additional contributors' Github Id" required>
+                <Input
+                  type="text"
+                  name="blogMember"
+                  value={newMember}
+                  onChange={handleMemberChange}
+                  placeholder="Enter the exact GitHub ID of the contributors one by one."
+                />
+              </FormField>
+              <AddButton type="button" onClick={handleAddContributor}>+ Add</AddButton>
+            </FormSemiContainer>
+
+            <ContributorsList>
+              {formData.blogMember.length > 0 && (
+                <div>
+                  {formData.blogMember.map((member, index) => (
+                    <MemberList>
+                      <MemberItem key={index}>{member}</MemberItem>
+                      <DeleteMember onClick={() => handleDeleteMember(member)}>X</DeleteMember>
+                    </MemberList>
+                  ))}
+                </div>
+              )}
+            </ContributorsList>
             <ButtonContainer>
-              <GoToButton
-                type="submit"
-                text="Update"
-                onClick={handleSubmit}
-                disabled={isLoading}
-              />
+              <GoToButton text="Edit Blog" type="submit" />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -188,60 +207,104 @@ function EditWritePage() {
   );
 }
 
-export default EditWritePage;
+export default EditBlogPage;
 
 // Styled components
 const Container = styled.div`
-    font-family: "Pretendard";
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  `;
+  font-family: "Pretendard";
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 300px;
+`;
 
 const FormContainer = styled.div`
-    margin: 3vh 20vw 3vh 20vw;
-    align-items: center;
-    min-width: 930px;
-  `;
+  margin: 60px auto;
+  align-items: center;
+  min-width: 930px;
+`;
+
+const Title = styled.h1`
+  font-size: 45px;
+  margin-bottom: 15px;
+  font-weight: 500;
+`;
+
+const Subtitle = styled.div`
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  line-height: 25px;
+  font-weight: 500;
+  margin-bottom: 64px;
+  padding: 10px 0;
+`;
 
 const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-  `;
-
-const FormItem = styled.div`
-    display: flex;
-    flex-direction: row;
-  `;
-
-const Input = styled.input`
-    width: 100%;
-    height: 67px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.05);
-    font-size: 20px;
-    color: #ffffff;
-    padding: 30px;
-    margin-top: 10px;
-  
-    &:focus {
-      outline: none;
-    }
-  `;
-
-const Label = styled.div`
-    font-size: 25px;
-    height: 67px;
-    width: 150px;
-    padding: 25px 20px 0 0;
-  `;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 100px;
+`;
 
 const ButtonContainer = styled.div`
-    margin-top: 3vh;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  `;
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const FormSemiContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const AddButton = styled.button`
+  width: 100px;
+  height: 67px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  font-size: 20px;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin-bottom: 10px;
+`
+
+const ContributorsList = styled.div`
+  color: #ffffff;
+  margin-top: 0;
+
+  div {
+  display: flex;
+  flex-direction: row;
+  margin-right: 10px;
+  }
+`;
+
+const MemberList = styled.div`
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  width: 200px;
+  height: 47px;
+  padding-top: 3.5px;
+  text-align: center;
+  justify-content: center;
+`
+
+const MemberItem = styled.div`
+margin-right: 10px;
+font-size: 25px;
+
+`
+
+const DeleteMember = styled.span`
+  margin-left: 10px;
+  font-size: 20px;
+  padding-top: 5px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+`

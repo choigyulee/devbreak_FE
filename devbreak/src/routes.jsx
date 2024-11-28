@@ -72,7 +72,7 @@ const routes = [
     name: "08. 내 블로그 열람 페이지",
   },
   {
-    path: "/blog/:blogId/write",
+    path: "/blog/:blogId/breakthrough/write",
     element: <PrivateRoute element={<WritePage />} />,
     name: "09. 브레잌스루 작성 페이지",
   },

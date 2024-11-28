@@ -4,11 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import ContentsDeleteModal from "../ContentsDeleteModal";
 import deleteArticleArticleId from "../../APIs/delete/deleteArticleArticleId";
+import axios from "axios";
 
 const EditOrDeleteModal = ({ onClose }) => {
   const { articleId } = useParams();
   const navigate = useNavigate();
-  
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleEditClick = () => {
@@ -16,20 +16,39 @@ const EditOrDeleteModal = ({ onClose }) => {
     onClose();
   };
 
-  const handleDeleteClick = () => {
-    setShowDeleteModal(true); // 모달 표시
+  const handleDeleteClick = async () => {
+    try {
+      // 1단계: 좋아요 상태를 false로 변경 (좋아요 취소)
+      const likeResponse = await axios.put(`/api/article/${articleId}/like`, { articleId: articleId });
+  
+      // 2단계: likeCount를 0으로 업데이트 (response에서 받아온 값 활용)
+      if (likeResponse.data && likeResponse.data.likeCount > 0) {
+        // 좋아요 상태가 true였다면, likeCount를 0으로 설정
+        await axios.put(`/api/article/${articleId}`, { likeCount: 0 });
+      }
+  
+      // 3단계: article 삭제 요청
+      await axios.delete(`/api/article/${articleId}`);
+  
+      // 삭제 후 페이지 이동 또는 알림 처리
+      navigate("/blog");
+    } catch (error) {
+      console.error("삭제 중 오류가 발생했습니다:", error);
+      // 에러 처리
+      alert("삭제를 완료할 수 없습니다.");
+    }
   };
+  
 
   const handleDeleteConfirm = async () => {
     try {
-      await deleteArticleArticleId(articleId); // API 호출하여 글 삭제
+      await deleteArticleArticleId(articleId);
       alert('글이 삭제되었습니다.');
-      onClose(); // 삭제 후 모달 닫기
+      onClose();
     } catch (error) {
       alert('글 삭제에 실패했습니다.');
     }
   };
-  
 
   return (
     <Overlay onClick={onClose}>
@@ -38,21 +57,18 @@ const EditOrDeleteModal = ({ onClose }) => {
         <ButtonDivider />
         <Button variant="delete" onClick={handleDeleteClick}>Delete</Button>
       </ModalContainer>
-
-      {/* Delete Modal이 표시될 때만 ContentsDeleteModal 컴포넌트를 렌더링 */}
       {showDeleteModal && (
         <ContentsDeleteModal
-          onClose={() => setShowDeleteModal(false)} // Cancel 버튼 클릭 시 모달 닫기
-          onConfirm={handleDeleteConfirm} // Delete 버튼 클릭 시 삭제 실행
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleDeleteConfirm}
         />
       )}
     </Overlay>
   );
 };
 
-// PropTypes로 프롭 검증
 EditOrDeleteModal.propTypes = {
-  onClose: PropTypes.func.isRequired, // onClose는 함수이며 필수입니다.
+  onClose: PropTypes.func.isRequired,
 };
 
 export default EditOrDeleteModal;
