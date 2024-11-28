@@ -1,10 +1,26 @@
 import styled from "@emotion/styled";
 import { IoIosWarning } from "react-icons/io";
 import PropTypes from "prop-types"; // PropTypes를 사용하여 prop 유효성 검사
+import { useNavigate } from "react-router-dom";
+import deleteBlogBlogId from "../../APIs/delete/deleteBlogBlogId";
 
-const BlogDeleteModal = ({ onClose, onConfirm }) => {
-  const handleDelete = async () => {
-    await onConfirm(); // 계정 삭제 실행
+const BlogDeleteModal = ({ onClose, blogId }) => {
+
+  const navigate = useNavigate();
+
+  console.log("Delete Modal blogId:", blogId);
+
+const handleDelete = async () => {
+    try {
+      await deleteBlogBlogId(blogId); // 블로그 삭제 API 호출
+      alert("블로그가 성공적으로 삭제되었습니다.");
+      navigate("/workspace");
+    } catch (error) {
+      console.error("블로그 삭제 오류:", error);
+      alert("블로그 삭제에 실패했습니다. 다시 시도해 주세요.");
+    }
+
+    onClose(); // 모달 닫기
   };
 
   return (

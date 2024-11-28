@@ -21,22 +21,8 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
 
   // 휴지통 아이콘 클릭 시 모달 열기
   const handleTrashClick = () => {
+    console.log("blogId:", blogId);
     setIsModalOpen(true);
-  };
-
-  // 블로그 삭제 확인 후 삭제 실행
-  const handleConfirmDelete = async () => {
-    try {
-      console.log(`블로그 삭제 중: ${blogId}`);
-      // 블로그 삭제 API 호출
-      await deleteBlogBlogId(blogId);
-      setIsModalOpen(false);
-      alert("블로그가 성공적으로 삭제되었습니다.");
-      navigate("/workspace"); // 삭제 후 홈 화면으로 이동
-    } catch (error) {
-      console.error("블로그 삭제 오류:", error);
-      alert("블로그 삭제에 실패했습니다. 다시 시도해 주세요.");
-    }
   };
 
   const handleCloseModal = () => {
@@ -92,7 +78,7 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
       </InfoContainer>
 
       {/* 삭제 모달 */}
-      {isModalOpen && <BlogDeleteModal onClose={handleCloseModal} onConfirm={handleConfirmDelete} />}
+      {isModalOpen && <BlogDeleteModal blogId={blogId} onClose={handleCloseModal}/>}
     </>
   );
 }
