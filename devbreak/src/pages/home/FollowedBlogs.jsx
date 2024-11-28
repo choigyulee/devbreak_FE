@@ -8,7 +8,6 @@ import getHomeBlogLike from "../../APIs/get/getHomeBlogLike";
 
 function FollowedBlogs() {
   const { isLoggedIn } = useAuth(); 
-  // const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
@@ -19,6 +18,7 @@ useEffect(() => {
   const fetchMyBlogList = async () => {
     try {
       const blogs = await getHomeBlogLike();
+      console.log("Fetched Blogs:", blogs); 
       setMyBlogList(blogs);
     } catch (error) {
       setError(error);
@@ -34,7 +34,7 @@ useEffect(() => {
 
 
   const handleNavigateToBlog = (blogId) => {
-    // blogId를 이용해 해당 블로그의 상세 페이지로 이동
+    console.log("Navigating to blog with ID:", blogId);
     navigate(`/blog/${blogId}`);
   };
 
@@ -49,7 +49,7 @@ useEffect(() => {
           <MyBlogContainer>
             <MyBlogContainerText> Blogs what you followed</MyBlogContainerText>
             {myBlogList.map((blog, index) => (
-              <MyBlogItem key={index} onClick={() => handleNavigateToBlog(blog.blogId)}>
+              <MyBlogItem key={index} onClick={() => handleNavigateToBlog(blog.blog_id)}>
                 <BlogName>{blog.blog_name}</BlogName>
                 <BlogDescription>{blog.description}</BlogDescription>
               </MyBlogItem>
