@@ -22,19 +22,15 @@ function WritePage() {
     title: "",
     content: "",
   });
-  const [selectedAbout, setSelectedAbout] = useState(""); 
+  const [selectedAbout, setSelectedAbout] = useState("");
   const [selectedProblem, setSelectedProblem] = useState("");
   const [selectedSolution, setSelectedSolution] = useState("");
 
   const [issuesAndCommits, setIssuesAndCommits] = useState([]);
-  
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [gitRepoUrl, setGitRepoUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태만 유지
+  const [gitRepoUrl, setGitRepoUrl] = useState("");
 
-  const languageOptions = [
-    "Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"
-  ];
+  const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
 
   useEffect(() => {
     const fetchBlogData = async () => {
@@ -44,7 +40,6 @@ function WritePage() {
       }
 
       setIsLoading(true);
-      setError(null);
 
       try {
         // 블로그 ID로 블로그 정보 가져오기
@@ -56,8 +51,7 @@ function WritePage() {
         const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
         setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
       } catch (error) {
-        setError("Failed to fetch issues and commits");
-        console.error(error);
+        console.error("Failed to fetch issues and commits", error); // 로그만 남김
       } finally {
         setIsLoading(false);
       }
@@ -82,12 +76,11 @@ function WritePage() {
     const { title, content } = formData;
 
     if (!title || !content || !selectedAbout || !selectedProblem || !selectedSolution) {
-      setError("Please fill in all required fields");
+      console.error("Please fill in all required fields"); // 에러 메시지를 로그로만 처리
       return;
     }
 
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await postArticle(
@@ -102,8 +95,7 @@ function WritePage() {
       console.log("Article posted successfully:", response);
       navigate(`/blog/${blogId}`); // 블로그 페이지로 이동
     } catch (err) {
-      console.error("Failed to post article:", err);
-      setError("Failed to post article. Please try again.");
+      console.error("Failed to post article:", err); // 에러 로그만 남김
     } finally {
       setIsLoading(false);
     }
@@ -116,13 +108,7 @@ function WritePage() {
         <FormContainer>
           <Form>
             <FormField label="Breakthrough Title" required>
-              <Input 
-                type="text" 
-                name="title" 
-                value={formData.title} 
-                onChange={handleChange} 
-                required 
-              />
+              <Input type="text" name="title" value={formData.title} onChange={handleChange} required />
             </FormField>
 
             <FormField label="Add related issue or commit (optional)">
@@ -163,12 +149,7 @@ function WritePage() {
             </FormField>
 
             <ButtonContainer>
-              <GoToButton 
-                type="submit" 
-                text="Post"
-                onClick={handleSubmit}
-                disabled={isLoading}
-              />
+              <GoToButton type="submit" text="Post" onClick={handleSubmit} disabled={isLoading} />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -179,59 +160,58 @@ function WritePage() {
 
 export default WritePage;
 
-  
-  const Container = styled.div`
-    font-family: "Pretendard";
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  `;
-  
-  const FormContainer = styled.div`
-    margin: 3vh 20vw 3vh 20vw;
-    align-items: center;
-    min-width: 930px;
-  `;
-  
-  const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-  `;
-  
-  const FormItem = styled.div`
-    display: flex;
-    flex-direction: row;
-  `;
-  
-  const Input = styled.input`
-    width: 100%;
-    height: 67px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.05);
-    font-size: 20px;
-    color: #ffffff;
-    padding: 30px;
-    margin-top: 10px;
-  
-    &:focus {
-      outline: none;
-    }
-  `;
-  
-  const Label = styled.div`
-    font-size: 25px;
-    height: 67px;
-    width: 150px;
-    padding: 25px 20px 0 0;
-  `;
-  
-  const ButtonContainer = styled.div`
-    margin-top: 3vh;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  `;
-  
+// 스타일 정의는 기존 그대로 유지
+const Container = styled.div`
+  font-family: "Pretendard";
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FormContainer = styled.div`
+  margin: 3vh 20vw 3vh 20vw;
+  align-items: center;
+  min-width: 930px;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const FormItem = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  height: 67px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.05);
+  font-size: 20px;
+  color: #ffffff;
+  padding: 30px;
+  margin-top: 10px;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Label = styled.div`
+  font-size: 25px;
+  height: 67px;
+  width: 150px;
+  padding: 25px 20px 0 0;
+`;
+
+const ButtonContainer = styled.div`
+  margin-top: 3vh;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;

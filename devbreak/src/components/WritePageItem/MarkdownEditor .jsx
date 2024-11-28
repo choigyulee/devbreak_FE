@@ -4,30 +4,38 @@ import { useState } from "react";
 import ContentItem from "../ContentsPageItems/ContentItem";
 
 function MarkdownEditor({ content, setContent }) {
-  const [isPreviewVisible, setPreviewVisible] = useState(false); // 프리뷰를 볼지 여부
-  const [isLoading, setLoading] = useState(false); // 로딩 상태
+  const [isPreviewVisible, setPreviewVisible] = useState(false); // 프리뷰 상태 관리
+  const [isLoading, setLoading] = useState(false); // 로딩 상태 관리
 
   const handleInputChange = (e) => {
-    setContent(e.target.value);
+    setContent(e.target.value); // 사용자가 입력한 내용을 상태로 저장
   };
 
   const handlePreviewToggle = () => {
-    setLoading(true); // 프리뷰 로딩 시작
-    setPreviewVisible((prev) => !prev);
-    setLoading(false); // 로딩 종료 (프리뷰가 나타날 때)
+    // 프리뷰 상태만 전환하며 로그아웃 상태에 영향을 주지 않음
+    setLoading(true); // 로딩 시작
+    setTimeout(() => {
+      setPreviewVisible((prev) => !prev); // 프리뷰 상태 전환
+      setLoading(false); // 로딩 종료
+    }, 300); // 지연 시간 추가로 로딩 효과 구현
   };
 
   return (
     <>
-      <PreviewButton onClick={handlePreviewToggle}>Toggle Preview</PreviewButton>
+      <PreviewButton
+        onClick={(e) => {
+          e.preventDefault(); // 버튼 클릭 시 기본 동작 방지
+          handlePreviewToggle();
+        }}
+      >
+        Toggle Preview
+      </PreviewButton>
       <MarkdownContainer>
-        {!isPreviewVisible && (
+        {!isPreviewVisible ? (
           <Editor>
             <textarea value={content} onChange={handleInputChange} placeholder="Write your content in Markdown..." />
           </Editor>
-        )}
-
-        {isPreviewVisible && (
+        ) : (
           <Preview>
             {isLoading ? <LoadingMessage>Loading...</LoadingMessage> : <ContentItem>{content}</ContentItem>}
           </Preview>
@@ -42,6 +50,8 @@ MarkdownEditor.propTypes = {
   setContent: PropTypes.func.isRequired,
 };
 
+export default MarkdownEditor;
+
 const MarkdownContainer = styled.div`
   display: flex;
   gap: 20px;
@@ -49,7 +59,7 @@ const MarkdownContainer = styled.div`
 `;
 
 const Editor = styled.div`
-  width: 100%; /* 텍스트 에디터가 전면에 나옴 */
+  width: 100%;
   textarea {
     width: 100%;
     height: 300px;
@@ -91,7 +101,7 @@ const Preview = styled.div`
   padding: 15px;
   color: #ffffff;
   overflow-y: auto;
-  height: 500px; /* 프리뷰 높이 늘리기 */
+  height: 500px;
 `;
 
 const LoadingMessage = styled.p`
@@ -99,5 +109,3 @@ const LoadingMessage = styled.p`
   font-size: 18px;
   text-align: center;
 `;
-
-export default MarkdownEditor;
