@@ -1,60 +1,48 @@
-import styled from "@emotion/styled";
-import { BsStarFill, BsGithub, BsPencil } from "react-icons/bs";
-import { FaRegTrashCan } from "react-icons/fa6";
 import PropTypes from "prop-types";
+import { BsGithub, BsPencil } from "react-icons/bs";
+import { FaRegTrashCan } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import putBlogBlogIdFavorites from "../../APIs/put/putBlogBlogIdFavorites";
 import BlogDeleteModal from "./BlogDeleteModal";
-import deleteBlogBlogId from "../../APIs/delete/deleteBlogBlogId";
+import styled from "@emotion/styled";
+import StarItem from "./StarItem"; 
+import putBlogBlogIdFavorites from "../../APIs/put/putBlogBlogIdFavorites";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 
-function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogId, currentUserId }) {
-
+function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
+  
   const navigate = useNavigate();
-  const [isFavorite, setIsFavorite] = useState(favButton);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [followed, setFollowed] = useState(false); // 즐겨찾기 상태
 
+  // blogId로 블로그 정보 불러오기
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
         const blog = await getBlogBlogId(blogId); // API 호출로 블로그 정보 얻기
 
-        // localStorage에서 즐겨찾기 상태 확인
+        // 로컬 저장소에서 즐겨찾기 상태 확인
         const storedFavoriteStatus = localStorage.getItem(`fav_button_${blogId}`);
         if (storedFavoriteStatus !== null) {
-          setIsFavorite(JSON.parse(storedFavoriteStatus));  // 저장된 상태로 설정
+          setFollowed(JSON.parse(storedFavoriteStatus)); // 로컬 저장소에 저장된 값 사용
         } else {
-          setIsFavorite(blog.fav_button); // API 응답에서 받은 fav_button 값으로 설정
-          localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(blog.fav_button)); // localStorage에 저장
+          // 로컬 저장소에 없는 경우 서버에서 받은 fav_button 값으로 설정
+          setFollowed(blog.fav_button);
+          localStorage.setItem(
+            `fav_button_${blogId}`,
+            JSON.stringify(blog.fav_button)
+          ); // 로컬 저장소에 설정
         }
       } catch (error) {
-        console.error("블로그 팔로우 정보 가져오기 실패:", error);
+        console.error("블로그 즐겨찾기 정보 가져오기 실패:", error);
       }
     };
+
     fetchBlogData();
-  }, [blogId]); 
+  }, [blogId]); // blogId가 변경될 때마다 재호출
 
-  const handleGitHubClick = () => window.open(blogData.git_repo_url, "_blank");
-
-  const handlePencilClick = () => {
-    navigate(`/blog/${blogId}/edit`); // 블로그 수정 페이지로 이동
-  };
-
-  // 휴지통 아이콘 클릭 시 모달 열기
-  const handleTrashClick = () => {
-    console.log("blogId:", blogId);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const isMember = blogData.members.includes(currentUserId);
-
-
-  const handleFavoriteClick = async () => {
+  // 즐겨찾기 상태 변경
+  const handleFollowClick = async () => {
     if (!isLoggedIn) {
       alert("로그인 후 즐겨찾기를 추가할 수 있습니다.");
       navigate("/login");
@@ -62,30 +50,49 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
     }
 
     try {
-      const updatedBlogData = await putBlogBlogIdFavorites(blogId);  // 즐겨찾기 상태 서버에 반영
-      const newFavStatus = !isFavorite;  // 상태 반전
-      setIsFavorite(newFavStatus);  // 상태 갱신
-      localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(newFavStatus));  // localStorage에 반영
-      handleFavButtonClick(newFavStatus);  // 부모 컴포넌트로 상태 전달
+      // 즐겨찾기 API 호출 (서버에서 상태 반영)
+      const updatedBlogData = await putBlogBlogIdFavorites(blogId);
+      
+      // 상태 반전
+      const newFavStatus = !followed;
+      setFollowed(newFavStatus);
+      
+      // 로컬 저장소에 반영
+      localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(newFavStatus));
     } catch (error) {
       console.error("즐겨찾기 업데이트 오류:", error);
     }
   };
 
+  // GitHub 클릭 시
+  const handleGitHubClick = () => window.open(blogData.git_repo_url, "_blank");
+
+  // 수정 페이지로 이동
+  const handlePencilClick = () => {
+    navigate(`/blog/${blogId}/edit`);
+  };
+
+  // 휴지통 아이콘 클릭 시 모달 열기
+  const handleTrashClick = () => {
+    setIsModalOpen(true);
+  };
+
+  // 모달 닫기
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const isMember = blogData.members.includes(currentUserId);
 
   return (
     <>
       <InfoContainer>
         <NameContainer>
           <BlogName>{blogData.blog_name}</BlogName>
-          <StarButton
-            onClick={handleFavoriteClick}
-            style={{
-              color: isFavorite ? "white" : "#FFEC4C",
-            }}
-          >
-            <BsStarFill size={30} />
-          </StarButton>
+          <StarItem 
+            followed={followed} 
+            handleFollowClick={handleFollowClick} 
+          />
         </NameContainer>
         <DescriptionContainer>
           <BlogDescription>
@@ -104,21 +111,20 @@ function BlogInfo({ blogData, favButton, handleFavButtonClick, isLoggedIn, blogI
       </InfoContainer>
 
       {/* 삭제 모달 */}
-      {isModalOpen && <BlogDeleteModal blogId={blogId} onClose={handleCloseModal}/>}
+      {isModalOpen && <BlogDeleteModal blogId={blogId} onClose={handleCloseModal} />}
     </>
   );
 }
 
 BlogInfo.propTypes = {
   blogData: PropTypes.object.isRequired,
-  favButton: PropTypes.bool.isRequired,
-  handleFavButtonClick: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   blogId: PropTypes.string.isRequired,
   currentUserId: PropTypes.string.isRequired,
 };
 
 export default BlogInfo;
+
 
 const InfoContainer = styled.div`
   display: flex;
@@ -138,14 +144,6 @@ const BlogName = styled.div`
   font-size: 3.5vh;
   font-weight: bold;
   margin: 0;
-`;
-
-const StarButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  opacity: 0.9;
 `;
 
 const DescriptionContainer = styled.div`
