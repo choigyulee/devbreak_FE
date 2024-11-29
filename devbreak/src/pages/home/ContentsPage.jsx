@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteModal";
-
+import getAuthInfo from "../../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API
 
 function ContentsPage() {
   const { articleId } = useParams();
@@ -19,12 +19,30 @@ function ContentsPage() {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [isWriter, setIsWriter] = useState(false); // 작성자 여부 상태
+  const [currentUserId, setCurrentUserId] = useState(null); // 현재 로그인한 사용자 ID 상태
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    const fetchArticle = async () => {
+    const fetchAuthInfo = async () => {
       try {
+        // 로그인한 사용자 정보 가져오기
+        const authInfo = await getAuthInfo();
+        setCurrentUserId(authInfo.userId); // 현재 사용자 ID를 state에 저장
+      } catch (error) {
+        console.error("Error fetching auth info:", error);
+      }
+    };
+
+    const fetchArticle = async () => {
+      if (!isLoggedIn) {
+        navigate("/login");
+        return;
+      }
+
+      try {
+        // 기사 정보를 가져옵니다.
         const fetchedArticle = await getArticleArticleId(articleId);
         setArticle(fetchedArticle);
         setLikeCount(fetchedArticle.likeCount);
@@ -38,12 +56,20 @@ function ContentsPage() {
           setLiked(fetchedArticle.likeButton);
           localStorage.setItem(`liked_${articleId}`, JSON.stringify(fetchedArticle.likeButton));
         }
+
+        // 작성자(userId)가 currentUserId와 같으면 isWriter를 true로 설정
+        setIsWriter(fetchedArticle.userId === currentUserId);
       } catch (error) {
         console.error("Error fetching article:", error);
       }
     };
-    fetchArticle();
-  }, [articleId]);
+
+    if (currentUserId) {
+      fetchArticle();
+    } else {
+      fetchAuthInfo();
+    }
+  }, [articleId, isLoggedIn, currentUserId, navigate]);
 
   const handleLikeClick = async () => {
     if (!isLoggedIn) {
@@ -55,7 +81,7 @@ function ContentsPage() {
       const updatedData = await putArticleArticleIdLike(articleId);
       setLiked(updatedData.likeButton);
       setLikeCount(updatedData.likeCount);
-      
+
       // 상태가 업데이트되면 localStorage에도 반영
       localStorage.setItem(`liked_${articleId}`, JSON.stringify(updatedData.likeButton));
     } catch (error) {
@@ -84,10 +110,14 @@ function ContentsPage() {
         <TextContainer>
           <FirstLineContainer>
             <Title>{article.title}</Title>
-            <ButtonContaier>
-              {isModalOpen && <EditOrDeleteModal onClose={handleModalClose} />}
-              <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
-            </ButtonContaier>
+            {isWriter && (
+              <ButtonContaier>
+                {isModalOpen && (
+                  <EditOrDeleteModal blogId={article.blogId} articleId={articleId} onClose={handleModalClose} />
+                )}
+                <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
+              </ButtonContaier>
+            )}
           </FirstLineContainer>
           <NameAndData>
             {article.blogName} | {article.createdAt}
@@ -107,7 +137,7 @@ export default ContentsPage;
 const Container = styled.div`
   color: white;
   gap: 3vh;
-  margin: 3vh 20vw 20vh 20vw;
+  margin: 0vh 20vw 20vh 20vw;
   align-items: center;
 `;
 
@@ -121,7 +151,6 @@ const ButtonContaier = styled.div`
   justify-content: end;
   display: flex;
   flex-direction: row;
-  gap: 3vh;
 `;
 
 const TextContainer = styled.div`
