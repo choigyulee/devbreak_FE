@@ -1,217 +1,118 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // useParams 추가
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
-import GoToButton from "../../components/GoToButton";
-import FormField from "../../components/Workspace/FormField";
-import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
-import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
-import { useAuth } from "../../context/AuthContext";
-import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
-import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
-import postArticle from "../../APIs/post/postArticle";
-import getBlogBlogId from "../../APIs/get/getBlogBlogId";
+import List from "../../components/Breakthrough/List";
+import { useNavigate } from "react-router-dom";
+import Pagination from "../../components/Breakthrough/Pagination";
+import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
+import getBreakthrough from "../../APIs/get/getBreakthrough";
 
-function WritePage() {
-  const { blogId } = useParams(); // blogId 받아오기
+function BreakthroughPage() {
+  // 상태 관리
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [formData, setFormData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedLanguage, setSelectedLanguage] = useState(null); // 선택된 언어
   const navigate = useNavigate();
-
-  const { isLoggedIn } = useAuth();
-
-  const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-  });
-  const [selectedAbout, setSelectedAbout] = useState("");
-  const [selectedProblem, setSelectedProblem] = useState("");
-  const [selectedSolution, setSelectedSolution] = useState("");
-
-  const [issuesAndCommits, setIssuesAndCommits] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태만 유지
-  const [gitRepoUrl, setGitRepoUrl] = useState("");
 
   const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
 
+  // 로그인 상태 확인
   useEffect(() => {
-    const fetchBlogData = async () => {
-      if (!isLoggedIn) {
-        navigate("/login");
-        return;
-      }
+    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 세션 스토리지에서 로그인 상태 확인
+    setIsLoggedIn(loggedIn);
+  }, []);
 
-      setIsLoading(true);
-
+  // API 호출해서 데이터 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        // 블로그 ID로 블로그 정보 가져오기
-        const blogData = await getBlogBlogId(blogId);
-        const { git_repo_url } = blogData; // git_repo_url 추출
-        setGitRepoUrl(git_repo_url); // 상태에 저장
-
-        // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
-        const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
-        setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
+        const data = await getBreakthrough(); // API 호출
+        setFormData(data); // 상태에 데이터 저장
       } catch (error) {
-        console.error("Failed to fetch issues and commits", error); // 로그만 남김
-      } finally {
-        setIsLoading(false);
+        console.error("데이터 로딩 실패:", error);
       }
     };
 
-    if (blogId && isLoggedIn) {
-      fetchBlogData(); // 블로그 ID가 존재하고 로그인된 경우에만 데이터 fetch
-    }
-  }, [isLoggedIn, blogId, navigate, gitRepoUrl]);
+    fetchData(); // 컴포넌트 마운트 시 데이터 로딩
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const itemsPerPage = 10;
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const { title, content } = formData;
-
-    if (!title || !content || !selectedAbout || !selectedProblem || !selectedSolution) {
-      console.error("Please fill in all required fields"); // 에러 메시지를 로그로만 처리
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const response = await postArticle(
-        blogId, // blogId 사용
-        title,
-        content,
-        selectedAbout,
-        selectedProblem,
-        selectedSolution
-      );
-
-      console.log("Article posted successfully:", response);
-      navigate(`/blog/${blogId}`); // 블로그 페이지로 이동
-    } catch (err) {
-      console.error("Failed to post article:", err); // 에러 로그만 남김
-    } finally {
-      setIsLoading(false);
-    }
+  const handleItemClick = (articleId) => {
+    navigate(`/breakthrough/${articleId}`); // 해당 articleId로 이동
   };
+
+  // 선택된 언어를 기준으로 데이터 필터링
+  const filteredData = selectedLanguage
+    ? formData.filter((item) => item.language && item.language.toLowerCase() === selectedLanguage.toLowerCase())
+    : formData;
 
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
-        <FormContainer>
-          <Form>
-            <FormField label="Breakthrough Title" required>
-              <Input type="text" name="title" value={formData.title} onChange={handleChange} required />
-            </FormField>
-
-            <FormField label="Add related issue or commit (optional)">
-              <FormItem>
-                <Label>Language</Label>
-                <LanguageDropdown
-                  label="language"
-                  selectedValue={selectedAbout}
-                  setSelectedValue={setSelectedAbout}
-                  items={languageOptions}
-                />
-              </FormItem>
-              <FormItem>
-                <Label>Problem</Label>
-                <GitTitleDropdown
-                  label="Problem"
-                  selectedValue={selectedProblem}
-                  setSelectedValue={setSelectedProblem}
-                  items={issuesAndCommits}
-                />
-              </FormItem>
-              <FormItem>
-                <Label>Solution</Label>
-                <GitTitleDropdown
-                  label="Solution"
-                  selectedValue={selectedSolution}
-                  setSelectedValue={setSelectedSolution}
-                  items={issuesAndCommits}
-                />
-              </FormItem>
-            </FormField>
-
-            <FormField label="Body" required>
-              <MarkdownEditor
-                content={formData.content}
-                setContent={(value) => setFormData((prev) => ({ ...prev, content: value }))}
-              />
-            </FormField>
-
-            <ButtonContainer>
-              <GoToButton type="submit" text="Post" onClick={handleSubmit} disabled={isLoading} />
-            </ButtonContainer>
-          </Form>
-        </FormContainer>
+        <BreakthroughContainer>
+          <FirstLineContainer>
+            <Title>Let’s Explore all breakthroughs!</Title>
+            <LanguageToggle
+              selectedValue={selectedLanguage}
+              setSelectedValue={setSelectedLanguage}
+              items={languageOptions}
+            />
+          </FirstLineContainer>
+          <List
+            items={filteredData}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemClick={handleItemClick}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(filteredData.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+          />
+        </BreakthroughContainer>
       </Container>
     </>
   );
 }
 
-export default WritePage;
+export default BreakthroughPage;
 
-// 스타일 정의는 기존 그대로 유지
 const Container = styled.div`
+  margin: 3vh 15vw 13vh 15vw;
   font-family: "Pretendard";
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 `;
 
-const FormContainer = styled.div`
-  margin: 3vh 20vw 3vh 20vw;
-  align-items: center;
-  min-width: 930px;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FormItem = styled.div`
+const FirstLineContainer = styled.div`
+  width: 60vw;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 `;
 
-const Input = styled.input`
-  width: 100%;
-  height: 67px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.05);
-  font-size: 20px;
-  color: #ffffff;
-  padding: 30px;
-  margin-top: 10px;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const Label = styled.div`
-  font-size: 25px;
-  height: 67px;
-  width: 150px;
-  padding: 25px 20px 0 0;
-`;
-
-const ButtonContainer = styled.div`
-  margin-top: 3vh;
+const BreakthroughContainer = styled.div`
+  width: 75vw;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  flex-grow: 1;
+`;
+
+const Title = styled.div`
+  color: #ffffff;
+  font-size: 25px;
+  margin-bottom: 50px;
+  min-width: 930px;
 `;
