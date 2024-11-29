@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 import deleteBlogBlogId from "../../APIs/delete/deleteBlogBlogId";
 
 const BlogDeleteModal = ({ onClose, blogId }) => {
-
   const navigate = useNavigate();
 
   console.log("Delete Modal blogId:", blogId);
 
-const handleDelete = async () => {
+  const handleDelete = async () => {
     try {
       await deleteBlogBlogId(blogId); // 블로그 삭제 API 호출
       alert("블로그가 성공적으로 삭제되었습니다.");
@@ -48,6 +47,7 @@ const handleDelete = async () => {
 BlogDeleteModal.propTypes = {
   onClose: PropTypes.func.isRequired, // onClose는 필수 prop
   onConfirm: PropTypes.func.isRequired,
+  blogId: PropTypes.number.isRequired,
 };
 
 const ModalOverlay = styled.div`

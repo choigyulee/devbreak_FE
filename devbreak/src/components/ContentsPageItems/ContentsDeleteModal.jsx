@@ -1,14 +1,21 @@
 import styled from "@emotion/styled";
 import { IoIosWarning } from "react-icons/io";
 import PropTypes from "prop-types";
+import deleteArticleArticleId from "../../APIs/delete/deleteArticleArticleId";
+import { useNavigate } from "react-router-dom";
 
-const ContentsDeleteModal = ({ onClose, onConfirm }) => {
+const ContentsDeleteModal = ({ blogId, articleId, onClose, onConfirm }) => {
+  const navigate = useNavigate();
+
   const handleDelete = async () => {
     try {
-      await onConfirm(); 
-      onClose(); // 삭제 후 모달 닫기
+      await deleteArticleArticleId(articleId); // API 호출로 삭제
+      alert("The Breakthrough is deleted."); // 알림 표시
+      navigate(`/blog/${blogId}`); // 블로그 페이지로 이동
+      onConfirm(); // 삭제 완료 후 추가 동작
     } catch (error) {
-      console.error("삭제 중 오류 발생:", error);
+      console.error("Error deleting article:", error);
+      alert("Failed to delete the article.");
     }
   };
 
@@ -29,8 +36,9 @@ const ContentsDeleteModal = ({ onClose, onConfirm }) => {
   );
 };
 
-// PropTypes 유효성 검사
 ContentsDeleteModal.propTypes = {
+  blogId: PropTypes.number.isRequired,
+  articleId: PropTypes.number.isRequired,
   onClose: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
 };
@@ -47,7 +55,7 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1001;
+  z-index: 2000;
 `;
 
 const ModalContainer = styled.div`
@@ -94,12 +102,18 @@ const ButtonContainer = styled.div`
 const ConfirmButton = styled.button`
   color: #ff4f4f;
   font-size: 1.3rem;
-  padding: 0.5rem 2rem;
+  width: 8vw;
   font-weight: 500;
   font-family: "pretendard";
   border: 1px solid #ff4f4f;
   cursor: pointer;
-  background: linear-gradient(122.72deg, rgba(79, 79, 79, 0.1) 1.74%, rgba(79, 79, 79, 0.1) 1.75%, rgba(255, 255, 255, 0.1) 33.05%, rgba(79, 79, 79, 0.1) 97.16%);
+  background: linear-gradient(
+    122.72deg,
+    rgba(79, 79, 79, 0.1) 1.74%,
+    rgba(79, 79, 79, 0.1) 1.75%,
+    rgba(255, 255, 255, 0.1) 33.05%,
+    rgba(79, 79, 79, 0.1) 97.16%
+  );
   border-radius: 3vh;
 `;
 
@@ -109,8 +123,15 @@ const CancelButton = styled.button`
   font-size: 1.3rem;
   font-weight: 500;
   font-family: "pretendard";
-  padding: 0.5rem 1rem;
+  padding: 1vh 0;
+  width: 8vw;
   cursor: pointer;
-  background: linear-gradient(122.72deg, rgba(79, 79, 79, 0.1) 1.74%, rgba(79, 79, 79, 0.1) 1.75%, rgba(255, 255, 255, 0.1) 33.05%, rgba(79, 79, 79, 0.1) 97.16%);
+  background: linear-gradient(
+    122.72deg,
+    rgba(79, 79, 79, 0.1) 1.74%,
+    rgba(79, 79, 79, 0.1) 1.75%,
+    rgba(255, 255, 255, 0.1) 33.05%,
+    rgba(79, 79, 79, 0.1) 97.16%
+  );
   border-radius: 3vh;
 `;

@@ -66,11 +66,11 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
                     Share your <br /> breakthroughs with us!
                   </p>
                   <GoToButton
-                    onClick={() => navigate(`/blog/${blogId}/write`)}
-                    fontSize="20px"
+                    onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
+                    fontSize="2vh"
                     text="Post my own breakthroughs"
-                    width="380px"
-                    height="40px"
+                    width="20vw"
+                    height="5vh"
                     style={{
                       position: "absolute",
                       right: "0",
@@ -195,8 +195,8 @@ const EmptyState = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 25vw;
   text-align: center;
-  width: 83%;
   min-height: 56vh;
   background-color: rgba(255, 255, 255, 0.1);
   border: 0.1vw solid rgba(255, 255, 255, 0.7);

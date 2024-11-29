@@ -16,22 +16,34 @@ function ContentItem({ children }) {
     em: ({ children }) => <em style={{ fontStyle: "italic", color: "#71FFC9" }}>{children}</em>,
     del: ({ children }) => <del style={{ textDecoration: "line-through", color: "white" }}>{children}</del>,
     // 헤더
-    h1: ({ children }) => <h1 style={{ fontSize: "3.9vh", fontWeight: "700", color: "white" }}>{children}</h1>,
-    h2: ({ children }) => <h2 style={{ fontSize: "3.5vh", fontWeight: "700", color: "white" }}>{children}</h2>,
-    h3: ({ children }) => <h3 style={{ fontSize: "3.1vh", fontWeight: "700", color: "white" }}>{children}</h3>,
-    h4: ({ children }) => <h4 style={{ fontSize: "2.7vh", fontWeight: "700", color: "white" }}>{children}</h4>,
-    h5: ({ children }) => <h5 style={{ fontSize: "2.8vh", fontWeight: "700", color: "white" }}>{children}</h5>,
-    h6: ({ children }) => <h6 style={{ fontSize: "2.5vh", fontWeight: "700", color: "white" }}>{children}</h6>,
+    h1: ({ children }) => (
+      <h1 style={{ fontSize: "3.9vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h1>
+    ),
+    h2: ({ children }) => (
+      <h2 style={{ fontSize: "3.5vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h2>
+    ),
+    h3: ({ children }) => (
+      <h3 style={{ fontSize: "3.1vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h3>
+    ),
+    h4: ({ children }) => (
+      <h4 style={{ fontSize: "2.7vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h4>
+    ),
+    h5: ({ children }) => (
+      <h5 style={{ fontSize: "2.8vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h5>
+    ),
+    h6: ({ children }) => (
+      <h6 style={{ fontSize: "2.5vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h6>
+    ),
     // 리스트
     ul: ({ children }) => <ul style={{ listStyleType: "circle", paddingLeft: "2vh", color: "white" }}>{children}</ul>,
     ol: ({ children }) => <ol style={{ listStyleType: "decimal", paddingLeft: "2vh", color: "white" }}>{children}</ol>,
-    li: ({ children }) => <li style={{ marginBottom: "1.2vh", color: "white" }}>{children}</li>,
+    li: ({ children }) => <li style={{ marginBottom: "1vh", color: "white" }}>{children}</li>,
     // 인용문
     blockquote: ({ children }) => (
       <blockquote
         style={{
           borderLeft: "0.5vh solid #71FFC9",
-          paddingLeft: "1.5vh",
+          paddingLeft: "2vh",
           color: "#71FFC9",
           fontStyle: "italic",
           margin: "1vh 0",
@@ -59,9 +71,10 @@ function ContentItem({ children }) {
         style={{
           backgroundColor: "#424347",
           color: "#71FFC9",
-          padding: "2vh",
+          padding: "1vh 2vh",
           borderRadius: "1vh",
           overflowX: "auto",
+          margin: "1.5vh 0",
         }}
       >
         {children}
