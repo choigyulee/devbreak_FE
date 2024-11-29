@@ -19,7 +19,7 @@ function HomePage() {
   useEffect(() => {
     const checkLoginStatus = () => {
       const accessToken = sessionStorage.getItem("accessToken");
-      
+
       // 페이지 첫 로드 시 항상 리로드
       if (!sessionStorage.getItem("homePageLoaded")) {
         sessionStorage.setItem("homePageLoaded", "true");
@@ -102,12 +102,11 @@ function HomePage() {
 
 export default HomePage;
 
-
 const Container = styled.div`
-  margin: 3vh 15vw 13vh 15vw;
+  margin: 0vh 15vw 13vh 15vw;
   display: flex;
   flex-direction: column;
-  gap: 9vh;
+  gap: 7vh;
 `;
 
 const ListContainer = styled.div`
