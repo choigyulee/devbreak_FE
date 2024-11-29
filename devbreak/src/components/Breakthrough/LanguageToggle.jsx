@@ -80,7 +80,8 @@ const Button = styled.button`
   border: 1px solid ${({ selected }) => (selected ? "#02f798" : "rgba(255, 255, 255, 0.5)")};
   border-radius: 20vw;
   background-color: rgba(255, 255, 255, 0.05);
-  font-size: 20px;
+  white-space: nowrap; // 줄바꿈 방지
+  font-size: 2vh;
   font-weight: 500;
   padding: 1.5vh 4vh;
   color: ${({ selected }) => (selected ? "#02f798" : "rgba(255, 255, 255, 0.5)")};
@@ -90,7 +91,7 @@ const Button = styled.button`
 
   svg {
     font-size: 20px;
-    margin-right: 20px;
+    margin-right: 0vw;
   }
 `;
 
