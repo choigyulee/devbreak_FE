@@ -5,12 +5,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BlogDeleteModal from "./BlogDeleteModal";
 import styled from "@emotion/styled";
-import StarItem from "./StarItem"; 
+import StarItem from "./StarItem";
 import putBlogBlogIdFavorites from "../../APIs/put/putBlogBlogIdFavorites";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 
 function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
-  
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [followed, setFollowed] = useState(false); // 즐겨찾기 상태
@@ -28,10 +27,7 @@ function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
         } else {
           // 로컬 저장소에 없는 경우 서버에서 받은 fav_button 값으로 설정
           setFollowed(blog.fav_button);
-          localStorage.setItem(
-            `fav_button_${blogId}`,
-            JSON.stringify(blog.fav_button)
-          ); // 로컬 저장소에 설정
+          localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(blog.fav_button)); // 로컬 저장소에 설정
         }
       } catch (error) {
         console.error("블로그 즐겨찾기 정보 가져오기 실패:", error);
@@ -52,11 +48,11 @@ function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
     try {
       // 즐겨찾기 API 호출 (서버에서 상태 반영)
       const updatedBlogData = await putBlogBlogIdFavorites(blogId);
-      
+
       // 상태 반전
       const newFavStatus = !followed;
       setFollowed(newFavStatus);
-      
+
       // 로컬 저장소에 반영
       localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(newFavStatus));
     } catch (error) {
@@ -89,10 +85,7 @@ function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
       <InfoContainer>
         <NameContainer>
           <BlogName>{blogData.blog_name}</BlogName>
-          <StarItem 
-            followed={followed} 
-            handleFollowClick={handleFollowClick} 
-          />
+          <StarItem followed={followed} handleFollowClick={handleFollowClick} />
         </NameContainer>
         <DescriptionContainer>
           <BlogDescription>
@@ -125,7 +118,6 @@ BlogInfo.propTypes = {
 
 export default BlogInfo;
 
-
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -136,7 +128,7 @@ const InfoContainer = styled.div`
 const NameContainer = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 1.6vw;
+  gap: 0.8vw;
   margin-bottom: 2vh;
 `;
 
