@@ -25,22 +25,7 @@ function ContentsPage() {
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    const fetchAuthInfo = async () => {
-      try {
-        // 로그인한 사용자 정보 가져오기
-        const authInfo = await getAuthInfo();
-        setCurrentUserId(authInfo.userId); // 현재 사용자 ID를 state에 저장
-      } catch (error) {
-        console.error("Error fetching auth info:", error);
-      }
-    };
-
     const fetchArticle = async () => {
-      if (!isLoggedIn) {
-        navigate("/login");
-        return;
-      }
-
       try {
         // 기사 정보를 가져옵니다.
         const fetchedArticle = await getArticleArticleId(articleId);
@@ -57,19 +42,19 @@ function ContentsPage() {
           localStorage.setItem(`liked_${articleId}`, JSON.stringify(fetchedArticle.likeButton));
         }
 
-        // 작성자(userId)가 currentUserId와 같으면 isWriter를 true로 설정
-        setIsWriter(fetchedArticle.userId === currentUserId);
+        if (isLoggedIn) {
+          // 로그인한 경우에만 사용자 정보를 가져오기
+          const authInfo = await getAuthInfo();
+          setCurrentUserId(authInfo.userId); // 현재 사용자 ID를 state에 저장
+          setIsWriter(fetchedArticle.userId === authInfo.userId); // 작성자 여부 체크
+        }
       } catch (error) {
-        console.error("Error fetching article:", error);
+        console.error("Error fetching article or user info:", error);
       }
     };
 
-    if (currentUserId) {
-      fetchArticle();
-    } else {
-      fetchAuthInfo();
-    }
-  }, [articleId, isLoggedIn, currentUserId, navigate]);
+    fetchArticle();
+  }, [articleId, isLoggedIn]);
 
   const handleLikeClick = async () => {
     if (!isLoggedIn) {
@@ -110,14 +95,15 @@ function ContentsPage() {
         <TextContainer>
           <FirstLineContainer>
             <Title>{article.title}</Title>
-            {isWriter && (
-              <ButtonContaier>
-                {isModalOpen && (
-                  <EditOrDeleteModal blogId={article.blogId} articleId={articleId} onClose={handleModalClose} />
-                )}
-                <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
-              </ButtonContaier>
-            )}
+            {isLoggedIn &&
+              isWriter && ( // 로그인 상태이면서 작성자일 때만 보여주기
+                <ButtonContaier>
+                  {isModalOpen && (
+                    <EditOrDeleteModal blogId={article.blogId} articleId={articleId} onClose={handleModalClose} />
+                  )}
+                  <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
+                </ButtonContaier>
+              )}
           </FirstLineContainer>
           <NameAndData>
             {article.blogName} | {article.createdAt}

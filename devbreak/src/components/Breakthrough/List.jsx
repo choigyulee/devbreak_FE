@@ -62,7 +62,7 @@ const ListItem = styled.div`
 `;
 
 const Title = styled.h3`
-  font-size: 3vh;
+  font-size: 2.5vh;
   margin-bottom: 17px;
   word-wrap: break-word;
   white-space: normal;
@@ -71,7 +71,7 @@ const Title = styled.h3`
 `;
 
 const Info = styled.p`
-  font-size: 25px;
+  font-size: 2.5vh;
   word-wrap: break-word;
   white-space: normal;
   word-break: break-word;

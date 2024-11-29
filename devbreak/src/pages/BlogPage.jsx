@@ -23,11 +23,6 @@ function BlogPage() {
 
   useEffect(() => {
     const fetchBlogData = async () => {
-      if (!isLoggedIn) {
-        navigate("/login");
-        return;
-      }
-
       setIsLoading(true);
       setError(null);
 
@@ -49,17 +44,20 @@ function BlogPage() {
       }
     };
 
-    const fetchAuthInfo = async () => {
-      try {
-        const authInfo = await getAuthInfo();
-        setCurrentUserId(authInfo.userName);
-      } catch (error) {
-        console.error("Error fetching auth info:", error);
-      }
-    };
+    if (isLoggedIn) {
+      const fetchAuthInfo = async () => {
+        try {
+          const authInfo = await getAuthInfo();
+          setCurrentUserId(authInfo.userName);
+        } catch (error) {
+          console.error("Error fetching auth info:", error);
+        }
+      };
 
-    fetchBlogData();
-    fetchAuthInfo();
+      fetchAuthInfo(); // 로그인한 경우에만 사용자 정보 호출
+    }
+
+    fetchBlogData(); // 블로그 데이터는 항상 호출
   }, [blogId, isLoggedIn, navigate]);
 
   const handleFavButtonClick = () => setFavButton(!favButton);
@@ -104,7 +102,7 @@ BlogPage.propTypes = {
 export default BlogPage;
 
 const Container = styled.div`
-  margin: 0vh 13vw; /* 좌우 마진을 20vw에서 10vw로 조정하여 반응형 개선 */
+  margin: 0vh 13vw 10vh 13vw; /* 좌우 마진을 20vw에서 10vw로 조정하여 반응형 개선 */
   display: flex;
   flex-direction: column;
   gap: 3vh;
