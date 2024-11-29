@@ -6,7 +6,7 @@ import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
 import Input from "../../components/Workspace/Input";
 import TextArea from "../../components/Workspace/TextArea";
-import Dropdown from "../../components/Breakthrough/Dropdown";
+import Dropdown from "../../components/Workspace/Dropdown";
 import { useAuth } from "../../context/AuthContext";
 import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
@@ -49,7 +49,7 @@ function MakeBlogPage() {
     try {
       const repos = await getRepos();
       const userData = await getAuthInfo();
-      console.log('userName:', userData.userName);
+      console.log("userName:", userData.userName);
       setGithubRepos(repos);
       setLoading(false);
     } catch (error) {
@@ -73,7 +73,6 @@ function MakeBlogPage() {
     }));
   };
 
-  
   const handleMemberChange = (e) => {
     const { value } = e.target;
     setNewMember(value); // 새로운 GitHub ID 입력값 업데이트
@@ -91,7 +90,7 @@ function MakeBlogPage() {
   const handleDeleteMember = (memberToDelete) => {
     setFormData((prev) => ({
       ...prev,
-      blogMember: prev.blogMember.filter(member => member !== memberToDelete),
+      blogMember: prev.blogMember.filter((member) => member !== memberToDelete),
     }));
   };
 
@@ -113,12 +112,16 @@ function MakeBlogPage() {
     };
 
     try {
-
       if (!isLoggedIn) {
         await refreshTokenAndLogin();
       }
 
-      const response = await postBlog(blogData.blogName, blogData.description, blogData.gitRepoUrl, blogData.blogMember);
+      const response = await postBlog(
+        blogData.blogName,
+        blogData.description,
+        blogData.gitRepoUrl,
+        blogData.blogMember
+      );
 
       console.log("Blog created successfully:", response);
       navigate(`/workspace/myblog/${response.blogId}`);
@@ -179,7 +182,9 @@ function MakeBlogPage() {
                   placeholder="Enter the exact GitHub ID of the contributors one by one."
                 />
               </FormField>
-              <AddButton type="button" onClick={handleAddContributor}>+ Add</AddButton>
+              <AddButton type="button" onClick={handleAddContributor}>
+                + Add
+              </AddButton>
             </FormSemiContainer>
 
             <ContributorsList>
@@ -256,7 +261,7 @@ const FormSemiContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 const AddButton = styled.button`
   width: 100px;
@@ -267,16 +272,16 @@ const AddButton = styled.button`
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.05);
   margin-bottom: 10px;
-`
+`;
 
 const ContributorsList = styled.div`
   color: #ffffff;
   margin-top: 0;
 
   div {
-  display: flex;
-  flex-direction: row;
-  margin-right: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-right: 10px;
   }
 `;
 
@@ -290,13 +295,12 @@ const MemberList = styled.div`
   padding-top: 3.5px;
   text-align: center;
   justify-content: center;
-`
+`;
 
 const MemberItem = styled.div`
-margin-right: 10px;
-font-size: 25px;
-
-`
+  margin-right: 10px;
+  font-size: 25px;
+`;
 
 const DeleteMember = styled.span`
   margin-left: 10px;
@@ -304,4 +308,4 @@ const DeleteMember = styled.span`
   padding-top: 5px;
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-`
+`;
