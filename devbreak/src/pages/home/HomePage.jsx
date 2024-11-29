@@ -113,22 +113,10 @@ const ListContainer = styled.div`
   margin-right: -15vw;
 `;
 
-const MyListBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0vh 3vh;
-  gap: 3vh;
-  span {
-    display: flex;
-    flex-direction: row;
-    gap: 3vh;
-    justify-content: space-between;
-  }
-`;
-
 const Title = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: baseline;
   gap: 1vh;
   font-size: 3vh;
   font-weight: 400;
@@ -140,4 +128,16 @@ const BoldText = styled.span`
   font-weight: 700;
   font-size: 3vh;
   font-family: "Pretendard";
+`;
+
+const MyListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0vh 3vh;
+  gap: 3vh;
+  span {
+    display: flex;
+    flex-direction: row;
+    gap: 2vh;
+  }
 `;
