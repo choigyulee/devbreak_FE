@@ -4,6 +4,7 @@ import { refreshTokenAndLogin } from '../context/AuthContext';
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
   timeout: 1000000,
+  withCredentials: false, 
 });
 
 axiosInstance.interceptors.request.use(
