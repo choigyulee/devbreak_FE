@@ -7,64 +7,111 @@ import ActivityItem from "../../components/ContentsPageItems/ActivityItem";
 import ContentItem from "../../components/ContentsPageItems/ContentItem";
 import LikesItem from "../../components/ContentsPageItems/LikesItem";
 import LinkItem from "../../components/ContentsPageItems/LinkItem";
+import { useAuth } from "../../context/AuthContext";
+import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteModal";
+import getAuthInfo from "../../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API
 
 function ContentsPage() {
-  const { articleId } = useParams(); // URL에서 articleId 가져오기
+  const { articleId } = useParams();
   const [article, setArticle] = useState(null);
-  const [liked, setLiked] = useState(false); // 좋아요 상태 관리
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
-  // 로그인 상태를 로컬 스토리지에서 가져오기
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 로컬 스토리지에서 로그인 상태 확인
-    setIsLoggedIn(loggedIn);
-  }, []);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [isWriter, setIsWriter] = useState(false); // 작성자 여부 상태
+  const [currentUserId, setCurrentUserId] = useState(null); // 현재 로그인한 사용자 ID 상태
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const fetchedArticle = await getArticleArticleId(articleId); // API 호출
+        // 기사 정보를 가져옵니다.
+        const fetchedArticle = await getArticleArticleId(articleId);
         setArticle(fetchedArticle);
+        setLikeCount(fetchedArticle.likeCount);
+
+        // localStorage에서 'liked' 상태를 불러와서 설정
+        const storedLikeStatus = localStorage.getItem(`liked_${articleId}`);
+        if (storedLikeStatus !== null) {
+          setLiked(JSON.parse(storedLikeStatus)); // 저장된 상태로 설정
+        } else {
+          // 처음 로드 시 서버에서 받은 likeButton 상태로 설정하고, 그 값을 localStorage에 저장
+          setLiked(fetchedArticle.likeButton);
+          localStorage.setItem(`liked_${articleId}`, JSON.stringify(fetchedArticle.likeButton));
+        }
+
+        if (isLoggedIn) {
+          // 로그인한 경우에만 사용자 정보를 가져오기
+          const authInfo = await getAuthInfo();
+          setCurrentUserId(authInfo.userId); // 현재 사용자 ID를 state에 저장
+          setIsWriter(fetchedArticle.userId === authInfo.userId); // 작성자 여부 체크
+        }
       } catch (error) {
-        console.error("글을 가져오는 중 에러 발생:", error);
+        console.error("Error fetching article or user info:", error);
       }
     };
 
     fetchArticle();
-  }, [articleId]);
+  }, [articleId, isLoggedIn]);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async () => {
     if (!isLoggedIn) {
-      alert("로그인 후 이용해주세요!"); // 알림 표시
-      navigate("/login"); // 로그인 페이지로 이동
-    } else {
-      setLiked((prevLiked) => !prevLiked); // 좋아요 상태 토글
+      alert("Please log in to use this feature.");
+      navigate("/login");
+      return;
+    }
+    try {
+      const updatedData = await putArticleArticleIdLike(articleId);
+      setLiked(updatedData.likeButton);
+      setLikeCount(updatedData.likeCount);
+
+      // 상태가 업데이트되면 localStorage에도 반영
+      localStorage.setItem(`liked_${articleId}`, JSON.stringify(updatedData.likeButton));
+    } catch (error) {
+      console.error("Error updating like:", error);
     }
   };
 
+  const handleMenuClick = () => {
+    setIsModalOpen((prev) => !prev); // 모달 상태를 반전시켜서 열거나 닫음
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
   if (!article) {
-    return <div>로딩 중...</div>; // 기사 로딩 중 표시
+    return <div>Loading...</div>;
   }
+
+  const { about, problem, solution } = article;
 
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <TextContainer>
-          <Title>{article.title}</Title>
+          <FirstLineContainer>
+            <Title>{article.title}</Title>
+            {isLoggedIn &&
+              isWriter && ( // 로그인 상태이면서 작성자일 때만 보여주기
+                <ButtonContaier>
+                  {isModalOpen && (
+                    <EditOrDeleteModal blogId={article.blogId} articleId={articleId} onClose={handleModalClose} />
+                  )}
+                  <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
+                </ButtonContaier>
+              )}
+          </FirstLineContainer>
           <NameAndData>
             {article.blogName} | {article.createdAt}
           </NameAndData>
-          <ActivityItem
-            language="Programing Language"
-            problem="what a issue title"
-            solution="how to solve the problem"
-          />
-          <ContentItem>{article.content}</ContentItem> {/* 마크다운 콘텐츠 렌더링 */}
+          <ActivityItem language={about} problem={problem} solution={solution} />
+          <ContentItem>{article.content}</ContentItem>
         </TextContainer>
-        <LikesItem liked={liked} likeCount={article.likeCount} handleLikeClick={handleLikeClick} />
+        <LikesItem liked={liked} likeCount={likeCount} handleLikeClick={handleLikeClick} />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />
       </Container>
     </>
@@ -73,12 +120,23 @@ function ContentsPage() {
 
 export default ContentsPage;
 
-
 const Container = styled.div`
   color: white;
   gap: 3vh;
-  margin: 3vh 20vw 20vh 20vw;
+  margin: 0vh 20vw 20vh 20vw;
   align-items: center;
+`;
+
+const FirstLineContainer = styled.div`
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ButtonContaier = styled.div`
+  justify-content: end;
+  display: flex;
+  flex-direction: row;
 `;
 
 const TextContainer = styled.div`
@@ -98,4 +156,15 @@ const NameAndData = styled.div`
   font-size: 2.8vh;
   font-weight: 400;
   color: #a7a7a7;
+`;
+
+const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
+  cursor: pointer; /* 포인터 커서 */
+  font-size: 2rem; /* 아이콘 크기 */
+  color: white; /* 기본 색상 */
+  transition: color 0.3s;
+
+  &:hover {
+    color: #888; /* 호버 시 색상 변경 */
+  }
 `;

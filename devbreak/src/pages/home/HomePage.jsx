@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BlogTenList from "../../components/HomePageItems/BlogTenList";
@@ -9,34 +10,44 @@ import getHomeArticle from "../../APIs/get/getHomeArticle";
 import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
 
 function HomePage() {
-
-
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 직접 관리
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 로그인 상태 관리 (예시로 로컬 스토리지나 세션 스토리지를 통해 관리할 수 있음)
+  // 로그인 상태 확인 및 강제 리로드 로직 개선
   useEffect(() => {
     const checkLoginStatus = () => {
       const accessToken = sessionStorage.getItem("accessToken");
+
+      // 페이지 첫 로드 시 항상 리로드
+      if (!sessionStorage.getItem("homePageLoaded")) {
+        sessionStorage.setItem("homePageLoaded", "true");
+        window.location.reload();
+        return;
+      }
+
+      // 로그인 상태 확인
       if (accessToken) {
         setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
       }
     };
 
     checkLoginStatus();
   }, []);
 
-    // 로그아웃 함수 추가
-    const onLogout = () => {
-      sessionStorage.removeItem("accessToken");
-      sessionStorage.removeItem("refreshToken");
-      setIsLoggedIn(false);
-      window.location.href = "/login"; // 로그아웃 후 로그인 페이지로 리디렉션
-    };
+  // 로그아웃 함수 수정
+  const onLogout = () => {
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("homePageLoaded"); // 로그아웃 시 리로드 상태 초기화
+    setIsLoggedIn(false);
+    window.location.reload(); // 로그아웃 후 리로드
+  };
 
-
+  // 홈 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,7 +55,7 @@ function HomePage() {
           getHomeArticle(), // 기사 데이터 가져오기
           getHomeBlog(), // 블로그 데이터 가져오기
         ]);
-        setData({ breakthroughs: articleResult, blogs: blogResult }); // API에서 받은 데이터를 상태에 저장
+        setData({ breakthroughs: articleResult, blogs: blogResult });
       } catch (err) {
         setError(err);
       } finally {
@@ -55,6 +66,7 @@ function HomePage() {
     fetchData();
   }, []);
 
+  // 로딩 및 오류 처리
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -74,8 +86,12 @@ function HomePage() {
               List of Your <BoldText>fav Breakthroughs & Blogs</BoldText>
             </Title>
             <span>
-              <MyBreakthroughList />
-              <MyBlogList />
+              <Link to="/like/breakthrough">
+                <MyBreakthroughList />
+              </Link>
+              <Link to="/follow/blog">
+                <MyBlogList />
+              </Link>
             </span>
           </MyListBox>
         )}
@@ -87,32 +103,20 @@ function HomePage() {
 export default HomePage;
 
 const Container = styled.div`
-  margin: 3vh 15vw 13vh 15vw;
+  margin: 0vh 15vw 13vh 15vw;
   display: flex;
   flex-direction: column;
-  gap: 9vh;
+  gap: 7vh;
 `;
 
 const ListContainer = styled.div`
   margin-right: -15vw;
 `;
 
-const MyListBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0vh 3vh;
-  gap: 3vh;
-  span {
-    display: flex;
-    flex-direction: row;
-    gap: 3vh;
-    justify-content: space-between;
-  }
-`;
-
 const Title = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: baseline;
   gap: 1vh;
   font-size: 3vh;
   font-weight: 400;
@@ -124,4 +128,16 @@ const BoldText = styled.span`
   font-weight: 700;
   font-size: 3vh;
   font-family: "Pretendard";
+`;
+
+const MyListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0vh 3vh;
+  gap: 3vh;
+  span {
+    display: flex;
+    flex-direction: row;
+    gap: 2vh;
+  }
 `;

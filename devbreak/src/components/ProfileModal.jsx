@@ -17,13 +17,16 @@ const ProfileModal = ({ onLogout }) => {
       try {
         const data = await getAuthInfo();  // API 호출
         setGithubId(data.userName);  // API 응답에서 githubId를 상태에 저장
+        console.log('userName:', data.userName);
       } catch (error) {
         console.error("GitHub ID를 가져오는 중 오류 발생:", error);
       }
     };
-
+    if (isLoggedIn) {
+      fetchGithubId();
+    }
     fetchGithubId();
-  }, []);
+  }, [isLoggedIn]);
 
   // 로그아웃 처리
   const handleLogout = async () => {
@@ -69,7 +72,7 @@ const ProfileModal = ({ onLogout }) => {
               <img src="/image/hand.png" alt="Waving Hand" />
             </span>
           </Greeting>
-          <GitHubId>GitHub ID: {githubId}</GitHubId>
+          <GitHubId>{githubId}</GitHubId>
           <ButtonContainer>
             <Logout onClick={handleLogout}>Logout</Logout>
             <Divider />
@@ -138,8 +141,8 @@ const Greeting = styled.div`
 `;
 
 const GitHubId = styled.div`
-  color: white;
-  font-size: 1vw;
+  color: #02f798;
+  font-size: 1.3vw;
   font-family: "pretendard";
   font-weight: 700;
 `;

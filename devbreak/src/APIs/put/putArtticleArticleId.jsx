@@ -1,22 +1,35 @@
-// 글 수정
 import axiosInstance from "../axiosInstance";
 
-export default async function putArticleArticleId(articleId, blogId, title, blogName, content, about, problem, solution) {
+export default async function putArticleArticleId(articleData) {
   try {
     const response = await axiosInstance.put(
-      `/api/article/${articleId}`,
+      `/api/article/${articleData.articleId}`, // Use articleId from the passed object
       {
-        blogId: blogId,
-        title: title,
-        content: content,
-        about: about,
-        problem: problem,
-        solution: solution
+        blogId: articleData.blogId,
+        title: articleData.title,
+        content: articleData.content,
+        about: articleData.about,
+        problem: articleData.problem,
+        solution: articleData.solution
       }
     );
-
-    const { articleId, blogId, userId, title, blogName, content, about, problem, solution, likeCount, likeButton, createdAt, updatedAt } = response.data;
-
+    
+    const {
+      articleId,
+      blogId,
+      userId,
+      title,
+      blogName,
+      content,
+      about,
+      problem,
+      solution,
+      likeCount,
+      likeButton,
+      createdAt,
+      updatedAt
+    } = response.data;
+    
     return {
       articleId,
       blogId,

@@ -1,10 +1,13 @@
 import styled from "@emotion/styled";
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
 import NavBar from "../components/NavBar";
+import { useAuth } from "../context/AuthContext";
 
 function StartPage() {
-  // 로컬 스토리지에서 로그인 상태를 가져옵니다.
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'; // 'true' 문자열로 저장되어 있을 가능성 있음.
+  // // 로컬 스토리지에서 로그인 상태를 가져옵니다.
+  // const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'; // 'true' 문자열로 저장되어 있을 가능성 있음.
+
+  const { isLoggedIn } = useAuth(); 
 
   return (
     <>

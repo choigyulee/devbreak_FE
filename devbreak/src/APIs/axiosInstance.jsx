@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { refreshTokenAndLogin } from '../context/AuthContext';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
-  timeout: 10000,
+  timeout: 1000000,
 });
 
 axiosInstance.interceptors.request.use(
@@ -25,24 +26,13 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = sessionStorage.getItem('refreshToken'); // 세션 스토리지에서 리프레시 토큰 가져오기
-        if (!refreshToken) {
-          throw new Error('No refresh token available');
-        }
-
-        // 리프레시 토큰을 사용하여 액세스 토큰 갱신
-        const response = await axiosInstance.post('/api/auth/refresh', { refreshToken });
-
-        const { accessToken } = response.data;
-        sessionStorage.setItem('accessToken', accessToken); // 갱신된 액세스 토큰을 세션 스토리지에 저장
-
+        const accessToken = await refreshTokenAndLogin(); // 리프레시 토큰을 통해 액세스 토큰을 갱신
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-        return axiosInstance(originalRequest);
+        return axiosInstance(originalRequest); // 요청 재시도
       } catch (refreshError) {
-        // 오류 발생 시 로그인 페이지로 리디렉션
         sessionStorage.removeItem('accessToken');
         sessionStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        window.location.href = '/login'; // 로그인 페이지로 리디렉션
         return Promise.reject(refreshError);
       }
     }

@@ -11,10 +11,8 @@ const List = ({ items = [], currentPage = 1, itemsPerPage = 15, maxWidth = "933p
       <ListItemsContainer>
         {currentItems.map((item) => (
           <ListItem key={item.articleId} onClick={() => onItemClick(item.articleId)}>
-            <Title>{item.title}</Title>
-            <Info>
-              {item.createdAt} | {item.blogName}
-            </Info>
+            <Title>{item.articleTitle}</Title>
+            <Info>{item.createdAt}</Info>
           </ListItem>
         ))}
       </ListItemsContainer>
@@ -71,7 +69,7 @@ const Title = styled.h3`
 `;
 
 const Info = styled.p`
-  font-size: 2.5vh;
+  font-size: 2.3vh;
   word-wrap: break-word;
   white-space: normal;
   word-break: break-word;

@@ -1,7 +1,7 @@
 // 리프레시 토큰
 import axiosInstance from "../axiosInstance";
 
-export default async function postAuthLogout() {
+export default async function postAuthRefresh() {
   try {
 
     const response = await axiosInstance.post(

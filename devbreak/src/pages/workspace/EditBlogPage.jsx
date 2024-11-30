@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
@@ -10,15 +10,17 @@ import Dropdown from "../../components/Workspace/Dropdown";
 import { useAuth } from "../../context/AuthContext";
 import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
-import postBlog from "../../APIs/post/postBlog";
+import getBlogBlogId from "../../APIs/get/getBlogBlogId";
+import putBlogBlogId from "../../APIs/put/putBlogBlogId";
 
-function MakeBlogPage() {
+function EditBlogPage() {
+  const { blogId } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
   const [formData, setFormData] = useState({
     blogName: "",
     description: "",
-    gitRepoUrl: "pick one from your Github account",
+    gitRepoUrl: "",
     blogMember: [],
   });
 
@@ -35,6 +37,7 @@ function MakeBlogPage() {
         return;
       }
       try {
+        await fetchBlogData();
         await fetchRepos();
       } catch (error) {
         setError(error);
@@ -43,7 +46,22 @@ function MakeBlogPage() {
       }
     };
     fetchData();
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, navigate, blogId]);
+
+  const fetchBlogData = async () => {
+    try {
+      const blogData = await getBlogBlogId(blogId);
+      setFormData((prev) => ({
+        ...prev,
+        blogName: blogData.blog_name,
+        description: blogData.description,
+        gitRepoUrl: blogData.git_repo_url,
+        blogMember: blogData.members,
+      }));
+    } catch (error) {
+      setError(error);
+    }
+  };
 
   const fetchRepos = async () => {
     try {
@@ -96,7 +114,6 @@ function MakeBlogPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { blogName, description, gitRepoUrl, blogMember } = formData;
 
     if (!blogName || !description || gitRepoUrl === "pick one from your Github account") {
@@ -104,27 +121,9 @@ function MakeBlogPage() {
       return;
     }
 
-    const blogData = {
-      blogName,
-      description,
-      gitRepoUrl,
-      blogMember,
-    };
-
     try {
-      if (!isLoggedIn) {
-        await refreshTokenAndLogin();
-      }
-
-      const response = await postBlog(
-        blogData.blogName,
-        blogData.description,
-        blogData.gitRepoUrl,
-        blogData.blogMember
-      );
-
-      console.log("Blog created successfully:", response);
-      navigate(`/workspace/myblog/${response.blogId}`);
+      const updatedBlogData = await putBlogBlogId(blogId, blogName, description, gitRepoUrl, blogMember);
+      navigate(`/blog/${blogId}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -143,7 +142,7 @@ function MakeBlogPage() {
       <NavBar onLogout={handleLogout} />
       <Container>
         <FormContainer>
-          <Title>Create a new tech blog</Title>
+          <Title>Edit your tech blog</Title>
           <Subtitle>
             A little note: Anyone on the Internet can see this tech blog. <br />
             Please fill out all fields marked with an asterisk (*).
@@ -200,7 +199,7 @@ function MakeBlogPage() {
               )}
             </ContributorsList>
             <ButtonContainer>
-              <GoToButton text="Create Blog" type="submit" />
+              <GoToButton text="Edit Blog" type="submit" />
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -209,7 +208,7 @@ function MakeBlogPage() {
   );
 }
 
-export default MakeBlogPage;
+export default EditBlogPage;
 
 // Styled components
 const Container = styled.div`

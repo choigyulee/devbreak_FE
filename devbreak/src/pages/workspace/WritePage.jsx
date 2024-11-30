@@ -1,51 +1,66 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom"; // useParams 추가
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
-import Dropdown from "../../components/Breakthrough/Dropdown";
-import TextArea from "../../components/Workspace/TextArea";
-import PropTypes from "prop-types";
-// import { useAuth } from "../../context/AuthContext";
+import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
+import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
+import { useAuth } from "../../context/AuthContext";
 import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
-
+import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
+import postArticle from "../../APIs/post/postArticle";
+import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 
 function WritePage() {
-
-  const { isLoggedIn } = useAuth();
+  const { blogId } = useParams(); // blogId 받아오기
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login"); // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
-    }
-  }, [isLoggedIn, navigate]);
-
-  if (!isLoggedIn) return null; 
+  const { isLoggedIn } = useAuth();
 
   const [formData, setFormData] = useState({
     title: "",
     content: "",
   });
-
-  const [selectedAbout, setSelectedAbout] = useState("pick your programming language");
-  const [selectedProblem, setSelectedProblem] = useState("pick from the Github repository");
-  const [selectedSolution, setSelectedSolution] = useState("pick from the Github repository");
+  const [selectedAbout, setSelectedAbout] = useState("");
+  const [selectedProblem, setSelectedProblem] = useState("");
+  const [selectedSolution, setSelectedSolution] = useState("");
 
   const [issuesAndCommits, setIssuesAndCommits] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태만 유지
+  const [gitRepoUrl, setGitRepoUrl] = useState("");
 
-  const mockData = [
-    { type: "issue", title: "Issue 1" },
-    { type: "issue", title: "Issue 2" },
-    { type: "issue", title: "Issue 3" },
-    { type: "commit", title: "Commit 1" },
-    { type: "commit", title: "Commit 2" },
-    { type: "commit", title: "Commit 3" },
-  ];
+  const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
 
   useEffect(() => {
-    setIssuesAndCommits(mockData);
-  }, []);
+    const fetchBlogData = async () => {
+      if (!isLoggedIn) {
+        navigate("/login");
+        return;
+      }
+
+      setIsLoading(true);
+
+      try {
+        // 블로그 ID로 블로그 정보 가져오기
+        const blogData = await getBlogBlogId(blogId);
+        const { git_repo_url } = blogData; // git_repo_url 추출
+        setGitRepoUrl(git_repo_url); // 상태에 저장
+
+        // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
+        const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
+        setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
+      } catch (error) {
+        console.error("Failed to fetch issues and commits", error); // 로그만 남김
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (blogId && isLoggedIn) {
+      fetchBlogData(); // 블로그 ID가 존재하고 로그인된 경우에만 데이터 fetch
+    }
+  }, [isLoggedIn, blogId, navigate, gitRepoUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,18 +70,35 @@ function WritePage() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 폼 기본 제출 동작 방지
-    const payload = {
-      title: formData.title,
-      content: formData.content,
-      language: selectedAbout,
-      problem: selectedProblem,
-      solution: selectedSolution,
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // 콘솔 로그에 JSON 형태로 출력
-    console.log("Form submitted:", JSON.stringify(payload, null, 2));
+    const { title, content } = formData;
+
+    if (!title || !content || !selectedAbout || !selectedProblem || !selectedSolution) {
+      console.error("Please fill in all required fields"); // 에러 메시지를 로그로만 처리
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await postArticle(
+        blogId, // blogId 사용
+        title,
+        content,
+        selectedAbout,
+        selectedProblem,
+        selectedSolution
+      );
+
+      console.log("Article posted successfully:", response);
+      navigate(`/blog/${blogId}`); // 블로그 페이지로 이동
+    } catch (err) {
+      console.error("Failed to post article:", err); // 에러 로그만 남김
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -74,25 +106,25 @@ function WritePage() {
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <FormContainer>
-          {/* form에 onSubmit 이벤트 핸들러 추가 */}
           <Form onSubmit={handleSubmit}>
+            {" "}
+            {/* onSubmit 이벤트로 변경 */}
             <FormField label="Breakthrough Title" required>
               <Input type="text" name="title" value={formData.title} onChange={handleChange} required />
             </FormField>
-
             <FormField label="Add related issue or commit (optional)">
               <FormItem>
-                <Label>language</Label>
-                <Dropdown
+                <Label>Language</Label>
+                <LanguageDropdown
                   label="language"
                   selectedValue={selectedAbout}
                   setSelectedValue={setSelectedAbout}
-                  items={issuesAndCommits}
+                  items={languageOptions}
                 />
               </FormItem>
               <FormItem>
-                <Label>problem</Label>
-                <Dropdown
+                <Label>Problem</Label>
+                <GitTitleDropdown
                   label="Problem"
                   selectedValue={selectedProblem}
                   setSelectedValue={setSelectedProblem}
@@ -100,8 +132,8 @@ function WritePage() {
                 />
               </FormItem>
               <FormItem>
-                <Label>solution</Label>
-                <Dropdown
+                <Label>Solution</Label>
+                <GitTitleDropdown
                   label="Solution"
                   selectedValue={selectedSolution}
                   setSelectedValue={setSelectedSolution}
@@ -109,17 +141,14 @@ function WritePage() {
                 />
               </FormItem>
             </FormField>
-
             <FormField label="Body" required>
               <MarkdownEditor
                 content={formData.content}
                 setContent={(value) => setFormData((prev) => ({ ...prev, content: value }))}
               />
             </FormField>
-
             <ButtonContainer>
-              {/* 버튼에서 handleSubmit를 호출하지 않아도 form의 onSubmit으로 처리 */}
-              <GoToButton text="Post" />
+              <GoToButton type="submit" text="Post" disabled={isLoading} /> {/* onClick 제거 */}
             </ButtonContainer>
           </Form>
         </FormContainer>
@@ -128,13 +157,9 @@ function WritePage() {
   );
 }
 
-// WritePage.propTypes = {
-//   isLoggedIn: PropTypes.bool.isRequired, // 이 부분은 더 이상 필요하지 않음
-// };
-
-
 export default WritePage;
 
+// 스타일 정의는 기존 그대로 유지
 const Container = styled.div`
   font-family: "Pretendard";
   color: #ffffff;
@@ -145,9 +170,9 @@ const Container = styled.div`
 `;
 
 const FormContainer = styled.div`
-  margin: 3vh 20vw 3vh 20vw;
+  margin: 0vh 13vw 3vh 13vw;
   align-items: center;
-  min-width: 930px;
+  min-width: 60vw;
 `;
 
 const Form = styled.form`

@@ -1,14 +1,15 @@
 // components/Input.js
-import React from 'react';
 import styled from "@emotion/styled";
+import PropTypes from "prop-types";
 
-const Input = ({ type, name, value, onChange, required }) => (
+const Input = ({ type, name, value, onChange, required, placeholder }) => (
   <StyledInput
     type={type}
     name={name}
     value={value}
     onChange={onChange}
     required={required}
+    placeholder={placeholder}
   />
 );
 
@@ -28,5 +29,18 @@ const StyledInput = styled.input`
     outline: none;
   }
 `;
+
+Input.propTypes = {
+  type: PropTypes.string.isRequired, // type은 필수 문자열
+  name: PropTypes.string.isRequired, // name은 필수 문자열
+  value: PropTypes.string.isRequired, // value는 필수 문자열
+  onChange: PropTypes.func.isRequired, // onChange는 필수 함수
+  required: PropTypes.bool, // required는 선택적 불리언
+};
+
+// 기본값 설정 (선택적)
+Input.defaultProps = {
+  required: false, // required의 기본값은 false
+};
 
 export default Input;

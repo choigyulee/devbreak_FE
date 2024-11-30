@@ -1,10 +1,25 @@
 import styled from "@emotion/styled";
 import { IoIosWarning } from "react-icons/io";
 import PropTypes from "prop-types"; // PropTypes를 사용하여 prop 유효성 검사
+import { useNavigate } from "react-router-dom";
+import deleteBlogBlogId from "../../APIs/delete/deleteBlogBlogId";
 
-const AccountDeleteModal = ({ onClose, onConfirm }) => {
+const BlogDeleteModal = ({ onClose, blogId }) => {
+  const navigate = useNavigate();
+
+  console.log("Delete Modal blogId:", blogId);
+
   const handleDelete = async () => {
-    await onConfirm(); // 계정 삭제 실행
+    try {
+      await deleteBlogBlogId(blogId); // 블로그 삭제 API 호출
+      alert("블로그가 성공적으로 삭제되었습니다.");
+      navigate("/workspace");
+    } catch (error) {
+      console.error("블로그 삭제 오류:", error);
+      alert("블로그 삭제에 실패했습니다. 다시 시도해 주세요.");
+    }
+
+    onClose(); // 모달 닫기
   };
 
   return (
@@ -13,15 +28,15 @@ const AccountDeleteModal = ({ onClose, onConfirm }) => {
         <StyledIoIosWarning />
         <Message>
           <Line>Are you sure you want</Line>
-          <Line>to delete your account?</Line>
+          <Line>to delete your Blog?</Line>
         </Message>
         <Message>
-          <Script>When you delete your account,</Script>
-          <Script>all account information will be deleted.</Script>
+          <Script>When you delete your Blog,</Script>
+          <Script>all information in this blog will be deleted.</Script>
         </Message>
         <ButtonContainer>
-          <CancelButton onClick={onClose}>No, I want to use this account.</CancelButton>
-          <ConfirmButton onClick={handleDelete}>Yes, I want to delete this account.</ConfirmButton>
+          <CancelButton onClick={onClose}>No, I want to use this Blog.</CancelButton>
+          <ConfirmButton onClick={handleDelete}>Yes, I want to delete this Blog.</ConfirmButton>
         </ButtonContainer>
       </ModalContainer>
     </ModalOverlay>
@@ -29,9 +44,10 @@ const AccountDeleteModal = ({ onClose, onConfirm }) => {
 };
 
 // PropTypes를 사용하여 prop의 유효성 검사 추가
-AccountDeleteModal.propTypes = {
+BlogDeleteModal.propTypes = {
   onClose: PropTypes.func.isRequired, // onClose는 필수 prop
-  onConfirm: PropTypes.func.isRequired, // onClose는 필수 prop
+  onConfirm: PropTypes.func.isRequired,
+  blogId: PropTypes.number.isRequired,
 };
 
 const ModalOverlay = styled.div`
@@ -82,7 +98,7 @@ const Line = styled.p`
 
 const Script = styled.p`
   color: #ffffff99; /* 텍스트 색상 */
-  font-size: 1.2rem; /* 텍스트 크기 */
+  font-size: 1.1rem; /* 텍스트 크기 */
   font-weight: 400;
 `;
 
@@ -132,4 +148,4 @@ const CancelButton = styled.button`
   border-radius: 3vh;
 `;
 
-export default AccountDeleteModal;
+export default BlogDeleteModal;

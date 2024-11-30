@@ -1,10 +1,22 @@
 import styled from "@emotion/styled";
 import { IoIosWarning } from "react-icons/io";
-import PropTypes from "prop-types"; // PropTypes를 사용하여 prop 유효성 검사
+import PropTypes from "prop-types";
+import deleteArticleArticleId from "../../APIs/delete/deleteArticleArticleId";
+import { useNavigate } from "react-router-dom";
 
-const AccountDeleteModal = ({ onClose, onConfirm }) => {
+const ContentsDeleteModal = ({ blogId, articleId, onClose, onConfirm }) => {
+  const navigate = useNavigate();
+
   const handleDelete = async () => {
-    await onConfirm(); // 계정 삭제 실행
+    try {
+      await deleteArticleArticleId(articleId); // API 호출로 삭제
+      alert("The Breakthrough is deleted."); // 알림 표시
+      navigate(`/blog/${blogId}`); // 블로그 페이지로 이동
+      onConfirm(); // 삭제 완료 후 추가 동작
+    } catch (error) {
+      console.error("Error deleting article:", error);
+      alert("Failed to delete the article.");
+    }
   };
 
   return (
@@ -13,38 +25,37 @@ const AccountDeleteModal = ({ onClose, onConfirm }) => {
         <StyledIoIosWarning />
         <Message>
           <Line>Are you sure you want</Line>
-          <Line>to delete your account?</Line>
-        </Message>
-        <Message>
-          <Script>When you delete your account,</Script>
-          <Script>all account information will be deleted.</Script>
+          <Line>to delete this breakthrough?</Line>
         </Message>
         <ButtonContainer>
-          <CancelButton onClick={onClose}>No, I want to use this account.</CancelButton>
-          <ConfirmButton onClick={handleDelete}>Yes, I want to delete this account.</ConfirmButton>
+          <CancelButton onClick={onClose}>No</CancelButton>
+          <ConfirmButton onClick={handleDelete}>Yes</ConfirmButton>
         </ButtonContainer>
       </ModalContainer>
     </ModalOverlay>
   );
 };
 
-// PropTypes를 사용하여 prop의 유효성 검사 추가
-AccountDeleteModal.propTypes = {
-  onClose: PropTypes.func.isRequired, // onClose는 필수 prop
-  onConfirm: PropTypes.func.isRequired, // onClose는 필수 prop
+ContentsDeleteModal.propTypes = {
+  blogId: PropTypes.number.isRequired,
+  articleId: PropTypes.number.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
 };
 
+export default ContentsDeleteModal;
+
 const ModalOverlay = styled.div`
-  position: fixed; /* 고정 위치 */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-  z-index: 1001; /* 다른 요소 위에 표시 */
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 `;
 
 const ModalContainer = styled.div`
@@ -52,13 +63,13 @@ const ModalContainer = styled.div`
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center; /* 아이콘과 텍스트 중앙 정렬 */
+  align-items: center;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid #ff6060;
   backdrop-filter: blur(40px);
   border-radius: 18px;
   gap: 2vh;
-  text-align: center; /* 텍스트 중앙 정렬 */
+  text-align: center;
 `;
 
 const StyledIoIosWarning = styled(IoIosWarning)`
@@ -75,52 +86,26 @@ const Message = styled.div`
 `;
 
 const Line = styled.p`
-  color: #ff6060; /* 텍스트 색상 */
-  font-size: 1.5rem; /* 텍스트 크기 */
+  color: #ff6060;
+  font-size: 1.5rem;
   font-weight: 700;
-`;
-
-const Script = styled.p`
-  color: #ffffff99; /* 텍스트 색상 */
-  font-size: 1.2rem; /* 텍스트 크기 */
-  font-weight: 400;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 2vh;
-  justify-content: space-around; /* 버튼 간격 조정 */
-  width: 100%; /* 버튼 컨테이너 너비 */
+  justify-content: space-around;
+  width: 100%;
 `;
 
 const ConfirmButton = styled.button`
   color: #ff4f4f;
   font-size: 1.3rem;
-  padding: 0.5rem 2rem;
+  width: 8vw;
   font-weight: 500;
   font-family: "pretendard";
   border: 1px solid #ff4f4f;
-  cursor: pointer; /* button */
-  background: linear-gradient(
-    122.72deg,
-    rgba(79, 79, 79, 0.1) 1.74%,
-    rgba(79, 79, 79, 0.1) 1.75%,
-    rgba(255, 255, 255, 0.1) 33.05%,
-    rgba(79, 79, 79, 0.1) 97.16%
-  );
-  border: 1px solid #ff4f4f;
-  border-radius: 3vh;
-`;
-
-const CancelButton = styled.button`
-  color: white; /* button */
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 1.3rem;
-  font-weight: 500;
-  font-family: "pretendard";
-  padding: 0.5rem 1rem;
-  border: 1px solid;
   cursor: pointer;
   background: linear-gradient(
     122.72deg,
@@ -132,4 +117,21 @@ const CancelButton = styled.button`
   border-radius: 3vh;
 `;
 
-export default AccountDeleteModal;
+const CancelButton = styled.button`
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 1.3rem;
+  font-weight: 500;
+  font-family: "pretendard";
+  padding: 1vh 0;
+  width: 8vw;
+  cursor: pointer;
+  background: linear-gradient(
+    122.72deg,
+    rgba(79, 79, 79, 0.1) 1.74%,
+    rgba(79, 79, 79, 0.1) 1.75%,
+    rgba(255, 255, 255, 0.1) 33.05%,
+    rgba(79, 79, 79, 0.1) 97.16%
+  );
+  border-radius: 3vh;
+`;

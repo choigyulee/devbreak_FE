@@ -1,12 +1,7 @@
-import React from 'react';
-import styled from '@emotion/styled';
+import PropTypes from "prop-types";
+import styled from "@emotion/styled";
 
-
-const Pagination = ({
-  currentPage = 1,
-  totalPages = 1,
-  onPageChange = () => {},
-}) => {
+const Pagination = ({ currentPage = 1, totalPages = 1, onPageChange = () => {} }) => {
   const handlePrevPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -23,23 +18,21 @@ const Pagination = ({
 
   return (
     <PaginationContainer>
-      <PaginationButton
-        onClick={handlePrevPage}
-        disabled={currentPage === 1}
-        aria-label="Previous page"
-      >
+      <PaginationButton onClick={handlePrevPage} disabled={currentPage === 1} aria-label="Previous page">
         prev
       </PaginationButton>
       <PageNumber>{currentPage}</PageNumber>
-      <PaginationButton
-        onClick={handleNextPage}
-        disabled={currentPage === totalPages}
-        aria-label="Next page"
-      >
+      <PaginationButton onClick={handleNextPage} disabled={currentPage === totalPages} aria-label="Next page">
         next
       </PaginationButton>
     </PaginationContainer>
   );
+};
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number, // 현재 페이지 번호 (기본값: 1)
+  totalPages: PropTypes.number, // 전체 페이지 수 (기본값: 1)
+  onPageChange: PropTypes.func, // 페이지 변경 핸들러 함수
 };
 
 const PaginationContainer = styled.div`
@@ -72,7 +65,7 @@ const PaginationButton = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
     }

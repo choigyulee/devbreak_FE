@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
-import GoToButton from "../../components/GoToButton";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useAuth } from "../../context/AuthContext";
-import getBlog from "../../APIs/get/getBlog";
+import getHomeBlogLike from "../../APIs/get/getHomeBlogLike";
 
-function WorkspacePage() {
+function FollowedBlogs() {
   const { isLoggedIn } = useAuth(); 
-  // const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
@@ -19,7 +17,8 @@ function WorkspacePage() {
 useEffect(() => {
   const fetchMyBlogList = async () => {
     try {
-      const blogs = await getBlog();
+      const blogs = await getHomeBlogLike();
+      console.log("Fetched Blogs:", blogs); 
       setMyBlogList(blogs);
     } catch (error) {
       setError(error);
@@ -33,14 +32,9 @@ useEffect(() => {
   }
 }, [isLoggedIn]);
 
-  const handleNavigateToMakeBlog = () => {
-    if (isLoggedIn) {
-      navigate('/workspace/makeblog');
-    } 
-  };
 
   const handleNavigateToBlog = (blogId) => {
-    // blogId를 이용해 해당 블로그의 상세 페이지로 이동
+    console.log("Navigating to blog with ID:", blogId);
     navigate(`/blog/${blogId}`);
   };
 
@@ -52,34 +46,21 @@ useEffect(() => {
     <>
       <NavBar isLoggedIn = {isLoggedIn}/>
       <Container>
-        {myBlogList.length > 0 ? (
           <MyBlogContainer>
-            <MyBlogContainerText> You are currently running these blogs.</MyBlogContainerText>
+            <MyBlogContainerText> Blogs what you followed</MyBlogContainerText>
             {myBlogList.map((blog, index) => (
-              <MyBlogItem key={index} onClick={() => handleNavigateToBlog(blog.blogId)}>
-                <BlogName>{blog.blogName}</BlogName>
+              <MyBlogItem key={index} onClick={() => handleNavigateToBlog(blog.blog_id)}>
+                <BlogName>{blog.blog_name}</BlogName>
                 <BlogDescription>{blog.description}</BlogDescription>
               </MyBlogItem>
             ))}
-            <MyBlogItem2>
-              <AiFillPlusCircle size={45} onClick={handleNavigateToMakeBlog} />
-            </MyBlogItem2>
           </MyBlogContainer>
-        ) : (
-          <CreateContainer>
-            <CreateContainerText>
-              Add your project members <br />
-              and transform GitHub repository into tech blog
-            </CreateContainerText>
-            <GoToButton text="create a new tech blog" onClick={handleNavigateToMakeBlog} />
-          </CreateContainer>
-        )}
       </Container>
     </>
   );
 }
 
-export default WorkspacePage;
+export default FollowedBlogs;
 
 
 const Container = styled.div`

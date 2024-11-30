@@ -1,32 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "@emotion/styled";
 import { BsCaretDownFill } from 'react-icons/bs';
 
-const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
+const LanguageDropdown = ({ selectedValue, items, setSelectedValue }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = (e) => {
+    e.stopPropagation(); 
     setIsDropdownVisible(prev => !prev);
+  };
+
+  const handleItemClick = (e, item) => {
+    e.preventDefault();
+    e.stopPropagation(); 
+    setSelectedValue(item);
+    setIsDropdownVisible(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setIsDropdownVisible(false);
+    };
+
+    if (isDropdownVisible) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownVisible]);
+
+  const getDisplayValue = (item) => {
+    if (typeof item === 'object' && item !== null) {
+      return item || 'Select your project language';
+    }
+    return item || 'Select your project language';
   };
 
   return (
     <DropdownContainer>
-      <Button onClick={toggleDropdown}>
-        <ButtonText>{selectedValue}</ButtonText>
+      <Button type="button" onClick={toggleDropdown}>
+        <ButtonText>{getDisplayValue(selectedValue)}</ButtonText>
         <BsCaretDownFill size={20} />
       </Button>
 
       {isDropdownVisible && (
         <DropdownMenu>
-          {items.map((item, index) => (
+          {items.map(( item, index) => (
             <DropdownItem
               key={index}
-              onClick={() => {
-                setSelectedValue(item.title);
-                setIsDropdownVisible(false);
-              }}
+              onClick={(e) => handleItemClick(e, item)}
             >
-              {item.title}
+              {getDisplayValue(item)}
             </DropdownItem>
           ))}
         </DropdownMenu>
@@ -34,6 +60,8 @@ const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
     </DropdownContainer>
   );
 };
+
+
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -103,4 +131,4 @@ const DropdownItem = styled.div`
   }
 `;
 
-export default Dropdown;
+export default LanguageDropdown;

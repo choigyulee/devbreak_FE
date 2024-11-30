@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { BsStar } from "react-icons/bs"; // BsStar 아이콘 import
 import { useState } from "react"; // 상태 관리를 위해 useState import
 
-const MyBlogList = () => {
+const MyBlogList = (onClick) => {
   const [isHovered, setIsHovered] = useState(false); // hover 상태 관리
 
   return (
@@ -19,7 +19,7 @@ const MyBlogList = () => {
         </Line>
       </Title>
       <IconContainer>
-        <BsStar size="15vh" color={isHovered ? "#FFEC4C" : "#ffffff"} /> {/* hover 시 아이콘 색상 변경 */}
+        <BsStar size="5vw" color={isHovered ? "#FFEC4C" : "#ffffff"} /> {/* hover 시 아이콘 색상 변경 */}
       </IconContainer>
     </DashBoard>
   );
@@ -38,24 +38,25 @@ const Line = styled.div`
   flex-direction: row;
   gap: 1vh;
   font-weight: 400; /* 일반 글씨 */
-  font-size: 4vh; /* 제목 크기 */
+  font-size: 3.5vh; /* 제목 크기 */
   text-align: left;
   margin: 0;
 `;
 
 const BoldText = styled.span`
   font-weight: 700;
-  font-size: 4vh;
+  font-size: 3.5vh;
   font-family: "Pretendard"; /* 폰트 설정 */
 `;
 
 const DashBoard = styled.div`
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: row;
   padding: 6vh 5vh;
-  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  width: 33vw;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(40px);
@@ -66,10 +67,15 @@ const DashBoard = styled.div`
     border: 1px solid #02f798;
     box-shadow: 0px 0px 15px rgba(2, 247, 152, 0.25);
   }
+
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    width: 80vw; /* 화면 크기가 768px 이하일 때 80%로 크기 변경 */
+    padding: 4vh 3vh; /* 패딩 크기 조정 */
+  }
 `;
 
 const IconContainer = styled.div`
   display: flex;
   justify-content: end;
-  margin-top: 2vh; /* 제목과 아이콘 사이의 간격 */
 `;

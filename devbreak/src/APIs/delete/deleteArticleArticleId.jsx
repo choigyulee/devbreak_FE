@@ -1,7 +1,7 @@
 // 글 삭제
 import axiosInstance from "../axiosInstance";
 
-export default async function deleteArticleArticleId() {
+export default async function deleteArticleArticleId(articleId) {
   try {
     const response = await axiosInstance.delete(
       `/api/article/${articleId}`
