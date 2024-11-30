@@ -3,7 +3,7 @@ import BreakthroughPage from "./pages/breakthrough/BreakthroughPage";
 import ContentsPage from "./pages/home/ContentsPage";
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/LoginPage";
-import SitemapPage from "./pages/SitemapPage";
+// import SitemapPage from "./pages/SitemapPage";
 import StartPage from "./pages/StartPage";
 import MakeBlogPage from "./pages/workspace/MakeBlogPage";
 import WorkspacePage from "./pages/workspace/WorkspacePage";
@@ -16,11 +16,11 @@ import EditWritePage from "./pages/workspace/EditWritePage";
 import EditBlogPage from "./pages/workspace/EditBlogPage";
 
 const routes = [
-  {
-    path: "/sitemap",
-    element: <SitemapPage />,
-    name: "00.이동 페이지",
-  },
+  // {
+  //   path: "/sitemap",
+  //   element: <SitemapPage />,
+  //   name: "00.이동 페이지",
+  // },
   {
     path: "/start",
     element: <StartPage />,
