@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import routes from "../routes";
 import styled from "@emotion/styled";
-import SiteButton from "../components/SiteButton";
+import SiteButton from "../components/Sitebutton";
 
 const SitemapPage = () => {
   const navigate = useNavigate();
