@@ -136,7 +136,8 @@ const ContentContainer = styled.div`
 const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: 25vw;
+  width: 23vw;
+  margin-right: 60px;
 `;
 
 const RightColumn = styled.div`
