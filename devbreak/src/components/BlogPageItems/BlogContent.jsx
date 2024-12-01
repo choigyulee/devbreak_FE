@@ -52,7 +52,7 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
               style={{
                 position: "absolute",
                 right: "0",
-                top: "-7px",
+                top: "-10px",
               }}
             />
           )}
@@ -184,7 +184,7 @@ const TitleContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 `;
 
 const ListContainer = styled.div`

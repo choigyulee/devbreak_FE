@@ -12,11 +12,11 @@ const BlogDeleteModal = ({ onClose, blogId }) => {
   const handleDelete = async () => {
     try {
       await deleteBlogBlogId(blogId); // 블로그 삭제 API 호출
-      alert("블로그가 성공적으로 삭제되었습니다.");
+      alert("The blog has been successfully deleted.");
       navigate("/workspace");
     } catch (error) {
       console.error("블로그 삭제 오류:", error);
-      alert("블로그 삭제에 실패했습니다. 다시 시도해 주세요.");
+      alert("Failed to delete the blog. Please try again.");
     }
 
     onClose(); // 모달 닫기

@@ -40,7 +40,7 @@ function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
   // 즐겨찾기 상태 변경
   const handleFollowClick = async () => {
     if (!isLoggedIn) {
-      alert("로그인 후 즐겨찾기를 추가할 수 있습니다.");
+      alert("Please log in to use this feature.");
       navigate("/login");
       return;
     }
