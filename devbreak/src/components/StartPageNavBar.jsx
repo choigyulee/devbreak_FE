@@ -118,7 +118,7 @@ export default NavBar;
 const NavContainer = styled.nav`
   display: flex;
   align-items: center;
-  padding: 10vh 13vw;
+  padding: 10vh 13vw 5vh 13vw;
   justify-content: space-between;
   width: 100%;
   position: relative; // NavContainer를 기준으로 ProfileModal 위치 설정
@@ -144,7 +144,7 @@ const ProfileModalContainer = styled.div`
 `;
 
 const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
-  height: 2vw;
+  height: 1vw;
   width: 2vw;
   margin-left: 13vw;
   cursor: pointer;
