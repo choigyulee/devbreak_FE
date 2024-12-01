@@ -50,6 +50,7 @@ function WritePage() {
 
         // 확인용 콘솔 로그 추가
         console.log("Fetching issues and commits for URL:", git_repo_url);
+        console.log("Fetching issues and commits for URL:", gitRepoUrl);
 
         // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
         const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
