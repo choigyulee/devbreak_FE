@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css, keyframes } from '@emotion/react';
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
-import StartPageNavBar from "../components/StartPageNavBar";
+import StartPageNavBar from "../components/StartPageItems/StartPageNavBar";
 import { useAuth } from "../context/AuthContext";
 import { BsArrowRight } from "react-icons/bs";
 import { Link } from "react-router-dom"; 

@@ -2,8 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigat
 import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
-import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
-import { useAuth } from "../context/AuthContext";
+import ProfileModal from "../ProfileModal"; // ProfileModal 컴포넌트
+import { useAuth } from "../../context/AuthContext";
 
 const NavBar = () => {
   const location = useLocation();
@@ -144,7 +144,7 @@ const ProfileModalContainer = styled.div`
 `;
 
 const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
-  height: 1vw;
+  height: 2vw;
   width: 2vw;
   margin-left: 13vw;
   cursor: pointer;
