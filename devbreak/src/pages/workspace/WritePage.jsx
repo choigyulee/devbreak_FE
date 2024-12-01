@@ -48,6 +48,9 @@ function WritePage() {
         const { git_repo_url } = blogData; // git_repo_url 추출
         setGitRepoUrl(git_repo_url); // 상태에 저장
 
+        // 확인용 콘솔 로그 추가
+        console.log("Fetching issues and commits for URL:", git_repo_url);
+
         // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
         const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
         setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
