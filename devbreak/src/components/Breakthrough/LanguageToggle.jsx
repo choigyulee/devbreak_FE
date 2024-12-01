@@ -17,6 +17,13 @@ const LanguageToggle = ({ selectedValue, items, setSelectedValue }) => {
     setIsDropdownVisible(false); // 선택 시 드롭다운 닫기
   };
 
+  // 항목 전체 선택
+
+  const handleSelectAll = () => {
+    setSelectedValue(""); // 전체 선택 시 필터링 없이 모든 항목을 표시
+    setIsDropdownVisible(false); // 드롭다운 닫기
+  };
+
   // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = () => {
@@ -45,6 +52,7 @@ const LanguageToggle = ({ selectedValue, items, setSelectedValue }) => {
 
       {isDropdownVisible && (
         <DropdownMenu>
+          <DropdownItem onClick={handleSelectAll}>Select Language</DropdownItem>
           {items.map((item, index) => (
             <DropdownItem key={index} onClick={() => handleItemClick(item)}>
               {item}
