@@ -10,8 +10,16 @@ const GitTitleDropdown = ({ selectedValue, items, setSelectedValue, isOpen, togg
     toggleDropdown(); // 선택 후 드롭다운 닫기
   };
 
+  // const getDisplayValue = (value) => {
+  //   return value || "Select related issue or commit title"; // 단순히 title만 표시
+  // };
+
   const getDisplayValue = (value) => {
-    return value || "Select related issue or commit title"; // 단순히 title만 표시
+    // selectedValue가 객체인 경우 title만 반환, 아니면 value 그대로 반환
+    if (typeof value === "object" && value?.title) {
+      return value.title;
+    }
+    return value || "Select related issue or commit title"; // 기본값 반환
   };
 
   return (
