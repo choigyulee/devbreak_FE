@@ -45,10 +45,10 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
           {isLoggedIn && isMember && breakThroughs.length > 0 && (
             <GoToButton
               onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
-              fontSize="20px"
+              fontSize="18px"
               text="Write"
-              width="100px"
-              height="40px"
+              width="98px"
+              height="35px"
               style={{
                 position: "absolute",
                 right: "0",
@@ -129,7 +129,7 @@ export default BlogContent;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 3vh;
+  width: 52vw;
   justify-content: center;
 `;
 
