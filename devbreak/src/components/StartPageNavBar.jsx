@@ -130,6 +130,12 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
+const ProfileContainer = styled.div`
+  position: relative; // 상대 위치 설정
+  display: flex;
+  align-items: center; // 아이콘과 모달을 수직 정렬
+`;
+
 const ProfileModalContainer = styled.div`
   position: absolute; // 절대 위치 설정
   top: 5vh; // NavBar 위쪽에 위치

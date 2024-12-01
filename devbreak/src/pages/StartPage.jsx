@@ -3,7 +3,6 @@ import { css, keyframes } from '@emotion/react';
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
 import StartPageNavBar from "../components/StartPageNavBar";
 import { useAuth } from "../context/AuthContext";
-import GoToButton from "../components/GoToButton";
 import { BsArrowRight } from "react-icons/bs";
 import { Link } from "react-router-dom"; 
 
