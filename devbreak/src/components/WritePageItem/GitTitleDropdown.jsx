@@ -6,18 +6,21 @@ const GitTitleDropdown = ({ selectedValue, items, setSelectedValue, isOpen, togg
   const handleItemClick = (e, item) => {
     e.preventDefault();
     e.stopPropagation();
-    setSelectedValue(item.title);
+    setSelectedValue(item); // 선택된 아이템 전체를 저장
     toggleDropdown(); // 선택 후 드롭다운 닫기
   };
 
-  const getDisplayValue = (item) => {
-    return item?.title || "Select related issue or commit title";
+  const getDisplayValue = (value) => {
+    if (typeof value === "object" && value?.title) {
+      return value.title; // 객체일 경우 title을 반환
+    }
+    return value || "Select related issue or commit title"; // 문자열일 경우 그대로 반환
   };
 
   return (
     <DropdownContainer>
       <Button type="button" onClick={toggleDropdown}>
-        <ButtonText>{getDisplayValue(selectedValue)}</ButtonText>
+        <ButtonText>{getDisplayValue(selectedValue)}</ButtonText> {/* selectedValue를 표시 */}
         <BsCaretDownFill size={20} />
       </Button>
 
@@ -25,7 +28,7 @@ const GitTitleDropdown = ({ selectedValue, items, setSelectedValue, isOpen, togg
         <DropdownMenu>
           {items.map((item, index) => (
             <DropdownItem key={index} onClick={(e) => handleItemClick(e, item)}>
-              {getDisplayValue(item)}
+              {getDisplayValue(item)} {/* item의 title을 표시 */}
             </DropdownItem>
           ))}
         </DropdownMenu>
