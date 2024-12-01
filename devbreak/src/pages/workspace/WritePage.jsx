@@ -7,7 +7,7 @@ import FormField from "../../components/Workspace/FormField";
 import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
 import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
 import { useAuth } from "../../context/AuthContext";
-import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
+import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import postArticle from "../../APIs/post/postArticle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
@@ -29,6 +29,7 @@ function WritePage() {
   const [issuesAndCommits, setIssuesAndCommits] = useState([]);
   const [isLoading, setIsLoading] = useState(false); // 로딩 상태만 유지
   const [gitRepoUrl, setGitRepoUrl] = useState("");
+  const [activeDropdown, setActiveDropdown] = useState(""); // 현재 활성화된 드롭다운
 
   const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
 
@@ -101,14 +102,16 @@ function WritePage() {
     }
   };
 
+  const toggleDropdown = (dropdownName) => {
+    setActiveDropdown((prev) => (prev === dropdownName ? "" : dropdownName)); // 같은 이름이면 닫음
+  };
+
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         <FormContainer>
           <Form onSubmit={handleSubmit}>
-            {" "}
-            {/* onSubmit 이벤트로 변경 */}
             <FormField label="Breakthrough Title" required>
               <Input type="text" name="title" value={formData.title} onChange={handleChange} required />
             </FormField>
@@ -116,19 +119,20 @@ function WritePage() {
               <FormItem>
                 <Label>Language</Label>
                 <LanguageDropdown
-                  label="language"
                   selectedValue={selectedAbout}
                   setSelectedValue={setSelectedAbout}
                   items={languageOptions}
+                  isOpen={activeDropdown === "language"} // 활성 상태 확인
+                  toggleDropdown={() => setActiveDropdown(activeDropdown === "language" ? "" : "language")} // 토글
                 />
               </FormItem>
               <FormItem>
-                <Label>Problem</Label>
                 <GitTitleDropdown
-                  label="Problem"
                   selectedValue={selectedProblem}
                   setSelectedValue={setSelectedProblem}
                   items={issuesAndCommits}
+                  isOpen={activeDropdown === "problem"} // 활성 상태 확인
+                  toggleDropdown={() => setActiveDropdown(activeDropdown === "problem" ? "" : "problem")} // 토글
                 />
               </FormItem>
               <FormItem>
@@ -138,6 +142,8 @@ function WritePage() {
                   selectedValue={selectedSolution}
                   setSelectedValue={setSelectedSolution}
                   items={issuesAndCommits}
+                  isOpen={activeDropdown === "solution"} // 활성화 상태 전달
+                  toggleDropdown={() => setActiveDropdown(activeDropdown === "solution" ? "" : "solution")} // 토글
                 />
               </FormItem>
             </FormField>
@@ -148,7 +154,7 @@ function WritePage() {
               />
             </FormField>
             <ButtonContainer>
-              <GoToButton type="submit" text="Post" disabled={isLoading} /> {/* onClick 제거 */}
+              <GoToButton type="submit" text="Post" disabled={isLoading} />
             </ButtonContainer>
           </Form>
         </FormContainer>

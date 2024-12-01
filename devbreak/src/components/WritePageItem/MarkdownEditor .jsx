@@ -70,9 +70,20 @@ const Editor = styled.div`
     color: #ffffff;
     padding: 15px;
     resize: none;
+    overflow-y: auto; /* 스크롤바 강제 활성화 */
 
     &:focus {
-      outline: none;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    ::-webkit-scrollbar {
+      width: 8px; /* 스크롤바 너비를 조금 더 두껍게 */
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #666666; /* 스크롤바 색상을 회색으로 */
+      border-radius: 10px; /* 둥근 모서리 */
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #1e1e1e; /* 트랙 배경을 어두운 색으로 */
     }
   }
 `;
@@ -102,6 +113,16 @@ const Preview = styled.div`
   color: #ffffff;
   overflow-y: auto;
   height: 500px;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const LoadingMessage = styled.p`

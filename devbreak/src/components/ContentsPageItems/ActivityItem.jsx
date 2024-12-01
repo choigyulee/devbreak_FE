@@ -29,7 +29,7 @@ const ActivityContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1vh;
-  width: 30vw;
+  align-items: baseline;
 `;
 
 const Language = styled.div`
