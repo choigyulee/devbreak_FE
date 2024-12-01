@@ -1,41 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import PropTypes from "prop-types";
 import styled from "@emotion/styled";
-import { BsCaretDownFill } from 'react-icons/bs';
+import { BsCaretDownFill } from "react-icons/bs";
 
-const LanguageDropdown = ({ selectedValue, items, setSelectedValue }) => {
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
-  const toggleDropdown = (e) => {
-    e.stopPropagation(); 
-    setIsDropdownVisible(prev => !prev);
-  };
-
+const LanguageDropdown = ({ selectedValue, items, setSelectedValue, isOpen, toggleDropdown }) => {
   const handleItemClick = (e, item) => {
     e.preventDefault();
-    e.stopPropagation(); 
+    e.stopPropagation();
     setSelectedValue(item);
-    setIsDropdownVisible(false);
+    toggleDropdown(); // 선택 후 드롭다운 닫기
   };
 
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setIsDropdownVisible(false);
-    };
-
-    if (isDropdownVisible) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [isDropdownVisible]);
-
   const getDisplayValue = (item) => {
-    if (typeof item === 'object' && item !== null) {
-      return item || 'Select your project language';
-    }
-    return item || 'Select your project language';
+    return item || "Select your project language";
   };
 
   return (
@@ -45,13 +21,10 @@ const LanguageDropdown = ({ selectedValue, items, setSelectedValue }) => {
         <BsCaretDownFill size={20} />
       </Button>
 
-      {isDropdownVisible && (
+      {isOpen && (
         <DropdownMenu>
-          {items.map(( item, index) => (
-            <DropdownItem
-              key={index}
-              onClick={(e) => handleItemClick(e, item)}
-            >
+          {items.map((item, index) => (
+            <DropdownItem key={index} onClick={(e) => handleItemClick(e, item)}>
               {getDisplayValue(item)}
             </DropdownItem>
           ))}
@@ -61,7 +34,14 @@ const LanguageDropdown = ({ selectedValue, items, setSelectedValue }) => {
   );
 };
 
-
+// Prop validation
+LanguageDropdown.propTypes = {
+  selectedValue: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setSelectedValue: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  toggleDropdown: PropTypes.func.isRequired,
+};
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -97,14 +77,13 @@ const ButtonText = styled.span`
 const DropdownMenu = styled.div`
   position: absolute;
   top: 70px;
-  width: 100%; 
-  background-color: rgba(0, 0, 0, 0.8); 
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   z-index: 100;
-  max-height: 335px; 
+  max-height: 335px;
   overflow-y: auto;
   padding: 0;
-
   ::-webkit-scrollbar {
     width: 8px;
   }

@@ -1,41 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import PropTypes from "prop-types";
 import styled from "@emotion/styled";
-import { BsCaretDownFill } from 'react-icons/bs';
+import { BsCaretDownFill } from "react-icons/bs";
 
-const GitTitleDropdown = ({ selectedValue, items, setSelectedValue }) => {
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
-  const toggleDropdown = (e) => {
-    e.stopPropagation(); 
-    setIsDropdownVisible(prev => !prev);
-  };
-
+const GitTitleDropdown = ({ selectedValue, items, setSelectedValue, isOpen, toggleDropdown }) => {
   const handleItemClick = (e, item) => {
     e.preventDefault();
-    e.stopPropagation(); 
+    e.stopPropagation();
     setSelectedValue(item.title);
-    setIsDropdownVisible(false);
+    toggleDropdown(); // 선택 후 드롭다운 닫기
   };
 
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setIsDropdownVisible(false);
-    };
-
-    if (isDropdownVisible) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [isDropdownVisible]);
-
   const getDisplayValue = (item) => {
-    if (typeof item === 'object' && item !== null) {
-      return item.title || 'Select related issue or commit title';
-    }
-    return item || 'Select related issue or commit title';
+    return item?.title || "Select related issue or commit title";
   };
 
   return (
@@ -45,14 +21,11 @@ const GitTitleDropdown = ({ selectedValue, items, setSelectedValue }) => {
         <BsCaretDownFill size={20} />
       </Button>
 
-      {isDropdownVisible && (
+      {isOpen && (
         <DropdownMenu>
-          {items.map(( item, index) => (
-            <DropdownItem
-              key={index}
-              onClick={(e) => handleItemClick(e, item)}
-            >
-              {getDisplayValue(item.title)}
+          {items.map((item, index) => (
+            <DropdownItem key={index} onClick={(e) => handleItemClick(e, item)}>
+              {getDisplayValue(item)}
             </DropdownItem>
           ))}
         </DropdownMenu>
@@ -61,7 +34,18 @@ const GitTitleDropdown = ({ selectedValue, items, setSelectedValue }) => {
   );
 };
 
-
+// Prop validation
+GitTitleDropdown.propTypes = {
+  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  setSelectedValue: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired, // 활성화 여부
+  toggleDropdown: PropTypes.func.isRequired, // 토글 함수
+};
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -97,34 +81,21 @@ const ButtonText = styled.span`
 const DropdownMenu = styled.div`
   position: absolute;
   top: 70px;
-  width: 100%; 
-  background-color: rgba(0, 0, 0, 0.8); 
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   z-index: 100;
-  max-height: 335px; 
+  max-height: 335px;
   overflow-y: auto;
-  padding: 0;
-
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.2);
-  }
 `;
 
 const DropdownItem = styled.div`
-  padding: 30px;
+  padding: 15px;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  height: 50px;
   display: flex;
   align-items: center;
-  font-size: 20px;
+  font-size: 18px;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.2);
