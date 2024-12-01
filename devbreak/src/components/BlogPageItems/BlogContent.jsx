@@ -184,6 +184,8 @@ const TitleContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 15px;
 `;
 
 const ListContainer = styled.div`
