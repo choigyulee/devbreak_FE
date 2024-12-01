@@ -124,7 +124,7 @@ function MakeBlogPage() {
       );
 
       console.log("Blog created successfully:", response);
-      navigate(`/workspace/myblog/${response.blogId}`);
+      navigate(`/workspace/myblog/${response.blog_id}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
