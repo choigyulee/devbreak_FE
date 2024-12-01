@@ -46,14 +46,27 @@ function WritePage() {
         // 블로그 ID로 블로그 정보 가져오기
         const blogData = await getBlogBlogId(blogId);
         const { git_repo_url } = blogData; // git_repo_url 추출
-        setGitRepoUrl(git_repo_url); // 상태에 저장
+        // setGitRepoUrl(git_repo_url); // 상태에 저장
 
+        // // 확인용 콘솔 로그 추가
+        // console.log("Fetching issues and commits for URL:", git_repo_url);
+        // console.log("Fetching issues and commits for URL:", gitRepoUrl);
+
+        // // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
+        // const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
+
+        if (!git_repo_url) {
+          console.error("Git repository URL is missing.");
+          return;
+        }
+        
+        setGitRepoUrl(git_repo_url); // 상태에 저장
+  
         // 확인용 콘솔 로그 추가
         console.log("Fetching issues and commits for URL:", git_repo_url);
-        console.log("Fetching issues and commits for URL:", gitRepoUrl);
-
+        
         // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
-        const issuesData = await getIssuesAndCommitsTitle(gitRepoUrl);
+        const issuesData = await getIssuesAndCommitsTitle(git_repo_url);
         setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
       } catch (error) {
         console.error("Failed to fetch issues and commits", error); // 로그만 남김
