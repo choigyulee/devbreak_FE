@@ -7,7 +7,7 @@ import FormField from "../../components/Workspace/FormField";
 import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
 import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
 import { useAuth } from "../../context/AuthContext";
-import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor";
+import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import postArticle from "../../APIs/post/postArticle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
