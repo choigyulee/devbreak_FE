@@ -127,6 +127,7 @@ function WritePage() {
                 />
               </FormItem>
               <FormItem>
+                <Label>Problem</Label>
                 <GitTitleDropdown
                   selectedValue={selectedProblem}
                   setSelectedValue={setSelectedProblem}

@@ -87,6 +87,16 @@ const DropdownMenu = styled.div`
   z-index: 100;
   max-height: 335px;
   overflow-y: auto;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const DropdownItem = styled.div`
