@@ -124,7 +124,16 @@ function MakeBlogPage() {
       );
 
       console.log("Blog created successfully:", response);
-      navigate(`/workspace/myblog/${response.blog_id}`);
+
+      // 응답에서 blog_id 확인 후 navigate 호출
+      const blogId = response.blog_id;
+      if (!blogId) {
+        throw new Error("Blog creation failed, blog_id is undefined");
+      }
+
+      // navigate로 이동할 때 blog_id가 포함된 URL로 이동
+      console.log("Navigating to:", `/workspace/myblog/${blogId}`);
+      navigate(`/workspace/myblog/${blogId}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
