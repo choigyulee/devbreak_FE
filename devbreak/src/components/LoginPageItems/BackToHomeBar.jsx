@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 const BackToHomeBar = () => {
   return (
     <NavContainer>
-      <Link to="/start">
+      <Link to="/">
         <Logo src="/image/logo.svg" alt="logo" />
       </Link>
       <BackToHomeBtn>

@@ -23,7 +23,7 @@ const GithubLogin = () => {
         // // 상태 저장이 완료된 것을 확인하고 새로고침
         // window.location.reload();  // 페이지 새로 고침 (리렌더링)
         // 상태 저장이 완료된 것을 확인하고 리다이렉트
-        window.location.replace('/');  // navigate 대신 window.location.replace 사용
+        window.location.replace('/home');  // navigate 대신 window.location.replace 사용
       } catch (err) {
         console.error('GitHub 인증 실패:', err);
         window.location.replace('/login');  // 에러 시에도 window.location.replace 사용

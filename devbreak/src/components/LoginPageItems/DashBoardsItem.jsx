@@ -22,7 +22,7 @@ const DashBoardsItem = () => {
   // 로그인 성공 시 로컬 스토리지에 로그인 상태 저장
   const handleLoginSuccess = (accessToken, refreshToken) => {
     login(accessToken, refreshToken); // 로그인 처리
-    navigate(sessionStorage.getItem('loginRedirectPath') || '/'); // 로그인 후 원래 페이지로 리디렉션
+    navigate(sessionStorage.getItem('loginRedirectPath') || '/home'); // 로그인 후 원래 페이지로 리디렉션
   };
 
   return (

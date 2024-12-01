@@ -88,17 +88,6 @@ const handleLogout = () => {
       <Link to="/">
         <Logo src="/image/logo.svg" alt="logo" />
       </Link>
-      <NavItems>
-        <NavItem active={location.pathname.startsWith("/home")}>
-          <Link to="/home">Home</Link>
-        </NavItem>
-        <NavItem active={location.pathname.startsWith("/breakthrough")}>
-          <Link to="/breakthrough">Breakthrough</Link>
-        </NavItem>
-        <NavItem active={location.pathname.startsWith("/workspace")} onClick={handleWorkspaceClick}>
-          <Link to="/workspace">Workspace</Link>
-        </NavItem>
-      </NavItems>
       {isLoggedIn ? (
         <ProfileContainer>
           <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
@@ -139,42 +128,6 @@ const Logo = styled.img`
   height: 1.3vw;
   margin-right: 12vw;
   cursor: pointer;
-`;
-
-const NavItems = styled.ul`
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  flex-grow: 1;
-  justify-content: center;
-`;
-
-const NavItem = styled.li`
-  flex: 1;
-  text-align: center;
-  font-weight: ${(props) => (props.active ? 700 : 300)};
-  color: white;
-  font-family: "Pretendard";
-  cursor: pointer;
-
-  a {
-    text-decoration: none;
-    font-size: 1.3vw;
-    color: inherit;
-    display: block;
-    padding: 1rem;
-  }
-
-  &:hover {
-    font-weight: 700;
-  }
-`;
-
-const ProfileContainer = styled.div`
-  position: relative; // 상대 위치 설정
-  display: flex;
-  align-items: center; // 아이콘과 모달을 수직 정렬
 `;
 
 const ProfileModalContainer = styled.div`
