@@ -33,6 +33,7 @@ const ListContainer = styled.div`
   color: #ffffff;
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth};
+  margin-top: 15px;
 `;
 
 const ListItemsContainer = styled.div`
