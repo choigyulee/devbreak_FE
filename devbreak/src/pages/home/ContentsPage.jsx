@@ -126,8 +126,8 @@ function ContentsPage() {
           <ContentItem>{article.content}</ContentItem>
         </TextContainer>
         <LikesItem liked={liked} likeCount={likeCount} handleLikeClick={handleLikeClick} />
-        <LinkItem blogName={article.blogName} blogId={article.blogId} />
         <CommentItem comments={comments} onAddComment={handleAddComment} />
+        <LinkItem blogName={article.blogName} blogId={article.blogId} />
       </Container>
     </>
   );
