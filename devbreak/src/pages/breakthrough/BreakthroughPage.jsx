@@ -11,6 +11,7 @@ import { FaSearch } from "react-icons/fa";
 function BreakthroughPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState([]); // 전체 데이터
+  const [filteredData, setFilteredData] = useState([]); // 필터링된 데이터
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLanguage, setSelectedLanguage] = useState(""); // 선택된 언어
   const [searchQuery, setSearchQuery] = useState(""); // 검색어
@@ -26,6 +27,7 @@ function BreakthroughPage() {
       try {
         const data = await getBreakthrough(); // 데이터 API 호출
         setFormData(data);
+        setFilteredData(data); // 초기 데이터 설정
       } catch (error) {
         console.error("데이터 로딩 실패:", error);
       }
@@ -35,7 +37,6 @@ function BreakthroughPage() {
   }, []);
 
   const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
-
   const itemsPerPage = 10;
 
   const handlePageChange = (pageNumber) => {
@@ -47,35 +48,33 @@ function BreakthroughPage() {
   };
 
   const handleSearch = () => {
-    setCurrentPage(1); // 검색 시 페이지 초기화
-  };
+    const filtered = formData.filter((item) => {
+      const about = item.about || ""; // undefined일 경우 빈 문자열로 처리
+      const title = item.title || "";
+      const description = item.description || "";
+      const blogName = item.blogName || ""; // blogName 필드 추가
 
-  const filteredData = formData.filter((item) => {
-    const about = item.about || ""; // undefined일 경우 빈 문자열로 처리
-    const title = item.title || "";
-    const description = item.description || "";
+      const matchesLanguage = !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
+      const matchesSearch =
+        !searchQuery ||
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blogName.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesLanguage = !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
-    const matchesSearch =
-      !searchQuery ||
-      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      description.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesLanguage && matchesSearch;
+    });
 
-    return matchesLanguage && matchesSearch;
-  });
-
-  // 필터링된 데이터가 없으면 alert 띄우고, selectedLanguage와 searchQuery 초기화 및 초기 페이지로 리다이렉트
-  useEffect(() => {
-    if (selectedLanguage || searchQuery) {
-      if (filteredData.length === 0) {
-        alert("해당하는 결과가 없습니다!");
-        setSelectedLanguage(""); // 초기 상태로 되돌림
-        setSearchQuery(""); // 검색어 초기화
-        navigate("/breakthrough"); // `/breakthrough` 페이지로 리다이렉트 (필터 없이)
-        setCurrentPage(1); // 첫 페이지로 되돌림
-      }
+    if (filtered.length === 0) {
+      alert("해당하는 결과가 없습니다!");
+      setSelectedLanguage("");
+      setSearchQuery("");
+      navigate("/breakthrough");
+      setCurrentPage(1);
+    } else {
+      setFilteredData(filtered); // 검색 결과 업데이트
+      setCurrentPage(1); // 검색 시 페이지 초기화
     }
-  }, [selectedLanguage, searchQuery, filteredData, navigate]);
+  };
 
   return (
     <>
@@ -93,6 +92,11 @@ function BreakthroughPage() {
                 placeholder="Please enter your search term."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch(); // Enter 키를 누르면 검색 실행
+                  }
+                }}
               />
             </SearchContainer>
             <LanguageToggle
@@ -132,7 +136,6 @@ const Container = styled.div`
 
 const FirstLineContainer = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 4vh;
@@ -152,7 +155,7 @@ const SearchContainer = styled.div`
   border: 1px solid #ffffff85;
   backdrop-filter: blur(40px);
   border-radius: 20vh;
-  padding: 0.5vh 1vw;
+  width: 30vw;
 `;
 
 const SearchInput = styled.input`
@@ -199,4 +202,5 @@ const Title = styled.div`
   font-size: 3vh;
   white-space: nowrap; // 줄바꿈 방지
   align-items: baseline;
+  justify-content: baseline;
 `;
