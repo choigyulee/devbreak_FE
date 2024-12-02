@@ -8,35 +8,37 @@ import { useAuth } from "../../context/AuthContext";
 import getBlog from "../../APIs/get/getBlog";
 
 function WorkspacePage() {
-  const { isLoggedIn } = useAuth(); 
+  const { isLoggedIn } = useAuth();
   // const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
 
-useEffect(() => {
-  const fetchMyBlogList = async () => {
-    try {
-      const blogs = await getBlog();
-      setMyBlogList(blogs);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchMyBlogList = async () => {
+      try {
+        const blogs = await getBlog();
+        setMyBlogList(blogs);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (isLoggedIn) {
-    fetchMyBlogList();
-  }
-}, [isLoggedIn]);
+    if (isLoggedIn) {
+      fetchMyBlogList();
+    }
+  }, [isLoggedIn]);
 
   const handleNavigateToMakeBlog = () => {
     if (isLoggedIn) {
-      navigate('/workspace/makeblog');
-    } 
+      navigate("/workspace/makeblog");
+    }
   };
 
   const handleNavigateToBlog = (blogId) => {
@@ -45,12 +47,12 @@ useEffect(() => {
   };
 
   if (!isLoggedIn) {
-    return null;  // 로그인 상태가 아니면 내용 표시하지 않음
+    return null; // 로그인 상태가 아니면 내용 표시하지 않음
   }
 
   return (
     <>
-      <NavBar isLoggedIn = {isLoggedIn}/>
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
         {myBlogList.length > 0 ? (
           <MyBlogContainer>
@@ -81,7 +83,6 @@ useEffect(() => {
 
 export default WorkspacePage;
 
-
 const Container = styled.div`
   font-family: "Pretendard";
   color: #ffffff;
@@ -92,7 +93,7 @@ const Container = styled.div`
 `;
 
 const MyBlogContainer = styled.div`
-  margin: 60px auto;
+  margin: 0vh 13vw 10vh 13vw;
   width: 75vw;
   display: flex;
   flex-direction: column;
@@ -112,7 +113,7 @@ const MyBlogItem = styled.div`
   margin: 0 auto;
   width: 930px;
   min-height: 155px;
-  border-radius: 10px;
+  border-radius: 5vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
   margin-bottom: 16px;
@@ -145,7 +146,7 @@ const MyBlogItem2 = styled.div`
   margin: 0 auto;
   min-width: 930px;
   min-height: 155px;
-  border-radius: 10px;
+  border-radius: 5vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
   margin-bottom: 16px;
