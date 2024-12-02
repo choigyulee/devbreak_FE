@@ -20,7 +20,7 @@ function CommentModal({ onClose, commentId, onEdit, onDelete }) {
         <Button variant="edit" onClick={handleEditClick}>
           Edit
         </Button>
-        <ButtonDivider />
+        |
         <Button variant="delete" onClick={handleDeleteClick}>
           Delete
         </Button>
@@ -50,12 +50,13 @@ const ModalContainer = styled.div`
   box-sizing: border-box;
   align-items: center;
   padding: 2vh;
+  font-size: 2vh;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(40px);
   border-radius: 18px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1vh;
 `;
 
@@ -71,10 +72,4 @@ const Button = styled.button`
   &:hover {
     color: ${(props) => (props.variant === "edit" ? "#02f798" : props.variant === "delete" ? "#ff4f4f" : "#ffffff")};
   }
-`;
-
-const ButtonDivider = styled.div`
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.3);
-  width: 100%;
 `;

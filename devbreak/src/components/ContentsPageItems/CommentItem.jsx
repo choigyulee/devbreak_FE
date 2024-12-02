@@ -62,6 +62,13 @@ function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
       return;
     }
 
+    // API 호출 전에 전송할 데이터 출력
+    console.log("Sending data to API:", {
+      commentId: editingCommentId,
+      articleId: articleId,
+      content: editingContent,
+    });
+
     try {
       await putCommentCommentId({
         commentId: editingCommentId,
@@ -307,7 +314,7 @@ const EditInput = styled.input`
   border: 1px solid #ffffff68;
   color: white;
   padding: 1vw 2vh;
-  width: 80%;
+  width: 100%;
 `;
 
 const ButtonLine = styled.div`
