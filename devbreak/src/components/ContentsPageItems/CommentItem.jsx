@@ -74,8 +74,8 @@ export default CommentItem;
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: -2vh;
   width: 100%;
+  margin-bottom: 3vh;
 `;
 
 const InputArea = styled.div`
@@ -124,7 +124,7 @@ const AddButton = styled.button`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 1vh; /* 입력 영역 바로 아래로 위치 조정 */
+  margin-top: -2vh; /* 입력 영역 바로 아래로 위치 조정 */
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(40px);
   padding: 3vh 1vw 1vh 1vw;
@@ -179,7 +179,7 @@ const EmptyState = styled.div`
   text-align: center;
   align-items: center;
   justify-content: center;
-  font-size: 1.6vh;
+  font-size: 3vh;
   font-weight: 400;
   color: #a7a7a7;
   padding: 8vw 8vh;
