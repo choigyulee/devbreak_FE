@@ -330,9 +330,9 @@ const ButtonLine = styled.div`
 const EditButton = styled.button`
   color: white;
   padding: 0.5vh 0;
-  width: 2vw;
+  width: 5vw;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.15);
+  background: transparent;
   border: 1px solid #ffffff68;
   backdrop-filter: blur(40px);
   border-radius: 5vh;
@@ -346,14 +346,14 @@ const EditButton = styled.button`
 `;
 
 const CancelButton = styled.button`
-  background-color: rgba(255, 255, 255, 0.15);
+  background: transparent;
   border: 1px solid #ffffff68;
   color: white;
   font-weight: 700;
   font-size: 1.5vh;
   border-radius: 5vh;
   padding: 0.5vh 0;
-  width: 2vw;
+  width: 5vw;
   cursor: pointer;
 
   &:hover {

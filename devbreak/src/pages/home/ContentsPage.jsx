@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import getArticleArticleId from "../../APIs/get/getArticleArticleId";
@@ -106,6 +107,16 @@ function ContentsPage() {
     setComments(updatedComments); // 수정된 댓글로 상태 갱신
   };
 
+  const onDeleteComment = async (deletedCommentId) => {
+    try {
+      // 삭제된 댓글 제외한 최신 댓글 리스트 불러오기
+      const updatedComments = await getCommentArticleId(articleId);
+      setComments(updatedComments); // 상태 갱신
+    } catch (error) {
+      console.error("Failed to fetch updated comments after deletion:", error);
+    }
+  };
+
   if (!article) {
     return <div>Loading...</div>;
   }
@@ -140,7 +151,8 @@ function ContentsPage() {
           comments={comments}
           articleId={articleId}
           onAddComment={handleAddComment}
-          onEditComment={onEditComment} // 수정 함수 전달
+          onEditComment={onEditComment}
+          onDeleteComment={onDeleteComment} // 삭제 함수 전달
           isLoggedIn={isLoggedIn}
         />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />

@@ -41,7 +41,7 @@ export default CommentModal;
 // Styled Components
 
 const Overlay = styled.div`
-  margin-left: 1vh;
+  margin-left: 10vh;
   position: absolute;
   z-index: 1002;
 `;
