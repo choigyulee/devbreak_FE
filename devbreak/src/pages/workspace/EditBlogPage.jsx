@@ -164,6 +164,7 @@ function EditBlogPage() {
             </FormField>
 
             <FormField label="Github repository link" required>
+            <SmallText>This field cannot be edited</SmallText>
               <Dropdown
                 selectedValue={formData.gitRepoUrl}
                 setSelectedValue={handleGitRepoSelection}
@@ -308,3 +309,11 @@ const DeleteMember = styled.span`
   color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
 `;
+
+const SmallText = styled.div`
+  font-size: 15px;
+  line-height: 25px;
+  font-weight: 500;
+  margin-bottom: 64px;
+  padding: 10px 0;
+`
