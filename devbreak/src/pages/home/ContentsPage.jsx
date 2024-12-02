@@ -7,11 +7,14 @@ import ActivityItem from "../../components/ContentsPageItems/ActivityItem";
 import ContentItem from "../../components/ContentsPageItems/ContentItem";
 import LikesItem from "../../components/ContentsPageItems/LikesItem";
 import LinkItem from "../../components/ContentsPageItems/LinkItem";
+import CommentItem from "../../components/ContentsPageItems/CommentItem"; // 댓글 컴포넌트 추가
 import { useAuth } from "../../context/AuthContext";
 import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteModal";
 import getAuthInfo from "../../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API
+import getCommentArticleId from "../../APIs/get/getCommentArticleId"; // 댓글 리스트 API
+import postComment from "../../APIs/post/postComment"; // 댓글 작성 API
 
 function ContentsPage() {
   const { articleId } = useParams();
@@ -20,14 +23,16 @@ function ContentsPage() {
   const [likeCount, setLikeCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [isWriter, setIsWriter] = useState(false); // 작성자 여부 상태
+  // eslint-disable-next-line no-unused-vars
   const [currentUserId, setCurrentUserId] = useState(null); // 현재 로그인한 사용자 ID 상태
+  const [comments, setComments] = useState([]); // 댓글 리스트 상태
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    const fetchArticle = async () => {
+    const fetchData = async () => {
       try {
-        // 기사 정보를 가져옵니다.
+        // 기사 정보 가져오기
         const fetchedArticle = await getArticleArticleId(articleId);
         setArticle(fetchedArticle);
         setLikeCount(fetchedArticle.likeCount);
@@ -35,25 +40,28 @@ function ContentsPage() {
         // localStorage에서 'liked' 상태를 불러와서 설정
         const storedLikeStatus = localStorage.getItem(`liked_${articleId}`);
         if (storedLikeStatus !== null) {
-          setLiked(JSON.parse(storedLikeStatus)); // 저장된 상태로 설정
+          setLiked(JSON.parse(storedLikeStatus));
         } else {
-          // 처음 로드 시 서버에서 받은 likeButton 상태로 설정하고, 그 값을 localStorage에 저장
           setLiked(fetchedArticle.likeButton);
           localStorage.setItem(`liked_${articleId}`, JSON.stringify(fetchedArticle.likeButton));
         }
 
+        // 로그인한 경우 사용자 정보와 작성자 여부 체크
         if (isLoggedIn) {
-          // 로그인한 경우에만 사용자 정보를 가져오기
           const authInfo = await getAuthInfo();
-          setCurrentUserId(authInfo.userId); // 현재 사용자 ID를 state에 저장
-          setIsWriter(fetchedArticle.userId === authInfo.userId); // 작성자 여부 체크
+          setCurrentUserId(authInfo.userId);
+          setIsWriter(fetchedArticle.userId === authInfo.userId);
         }
+
+        // 댓글 리스트 가져오기
+        const fetchedComments = await getCommentArticleId(articleId);
+        setComments(fetchedComments);
       } catch (error) {
-        console.error("Error fetching article or user info:", error);
+        console.error("Error fetching article or comments:", error);
       }
     };
 
-    fetchArticle();
+    fetchData();
   }, [articleId, isLoggedIn]);
 
   const handleLikeClick = async () => {
@@ -66,8 +74,6 @@ function ContentsPage() {
       const updatedData = await putArticleArticleIdLike(articleId);
       setLiked(updatedData.likeButton);
       setLikeCount(updatedData.likeCount);
-
-      // 상태가 업데이트되면 localStorage에도 반영
       localStorage.setItem(`liked_${articleId}`, JSON.stringify(updatedData.likeButton));
     } catch (error) {
       console.error("Error updating like:", error);
@@ -75,11 +81,20 @@ function ContentsPage() {
   };
 
   const handleMenuClick = () => {
-    setIsModalOpen((prev) => !prev); // 모달 상태를 반전시켜서 열거나 닫음
+    setIsModalOpen((prev) => !prev);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false); // 모달 닫기
+    setIsModalOpen(false);
+  };
+
+  const handleAddComment = async (newContent) => {
+    try {
+      const newComment = await postComment(articleId, newContent);
+      setComments((prevComments) => [...prevComments, newComment]);
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
 
   if (!article) {
@@ -95,15 +110,14 @@ function ContentsPage() {
         <TextContainer>
           <FirstLineContainer>
             <Title>{article.title}</Title>
-            {isLoggedIn &&
-              isWriter && ( // 로그인 상태이면서 작성자일 때만 보여주기
-                <ButtonContaier>
-                  {isModalOpen && (
-                    <EditOrDeleteModal blogId={article.blogId} articleId={articleId} onClose={handleModalClose} />
-                  )}
-                  <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
-                </ButtonContaier>
-              )}
+            {isLoggedIn && isWriter && (
+              <ButtonContaier>
+                {isModalOpen && (
+                  <EditOrDeleteModal blogId={article.blogId} articleId={articleId} onClose={handleModalClose} />
+                )}
+                <StyledBiDotsVerticalRounded onClick={handleMenuClick} />
+              </ButtonContaier>
+            )}
           </FirstLineContainer>
           <NameAndData>
             {article.blogName} | {article.createdAt}
@@ -113,6 +127,7 @@ function ContentsPage() {
         </TextContainer>
         <LikesItem liked={liked} likeCount={likeCount} handleLikeClick={handleLikeClick} />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />
+        <CommentItem comments={comments} onAddComment={handleAddComment} />
       </Container>
     </>
   );
@@ -159,12 +174,12 @@ const NameAndData = styled.div`
 `;
 
 const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
-  cursor: pointer; /* 포인터 커서 */
-  font-size: 2rem; /* 아이콘 크기 */
-  color: white; /* 기본 색상 */
+  cursor: pointer;
+  font-size: 2rem;
+  color: white;
   transition: color 0.3s;
 
   &:hover {
-    color: #888; /* 호버 시 색상 변경 */
+    color: #888;
   }
 `;
