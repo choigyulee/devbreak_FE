@@ -150,7 +150,7 @@ const FirstLineContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 3vh;
+  margin-bottom: 5vh;
   gap: 2vw;
 `;
 
