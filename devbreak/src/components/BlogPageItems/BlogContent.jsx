@@ -58,7 +58,7 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
           )}
         </TitleContainer>
         <ListContainer>
-          {isLoggedIn ? (
+          {/* {isLoggedIn ? (
             isMember ? (
               breakThroughs.length === 0 ? (
                 <EmptyState>
@@ -108,7 +108,64 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
               itemsPerPage={15}
               onItemClick={handleItemClick}
             />
+          )} */}
+
+          {isLoggedIn ? (
+            isMember ? (
+              breakThroughs.length === 0 ? (
+                <EmptyState>
+                  <p>Share your <br /> breakthroughs with us!</p>
+                  <GoToButton
+                    onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
+                    fontSize="2vh"
+                    text="Post my own breakthroughs"
+                    width="20vw"
+                    height="5vh"
+                    style={{
+                      position: "absolute",
+                      right: "0",
+                      bottom: "20px",
+                    }}
+                  />
+                </EmptyState>
+              ) : (
+                <List
+                  maxWidth={500}
+                  items={breakThroughs}
+                  currentPage={1}
+                  itemsPerPage={15}
+                  onItemClick={handleItemClick}
+                />
+              )
+            ) : (
+              breakThroughs.length === 0 ? (
+                <EmptyState>
+                  <NoArticleMessage>There is no Breakthrough</NoArticleMessage>
+                </EmptyState>
+              ) : (
+                <List
+                  maxWidth={500}
+                  items={breakThroughs}
+                  currentPage={1}
+                  itemsPerPage={15}
+                  onItemClick={handleItemClick}
+                />
+              )
+            )
+          ) : breakThroughs.length === 0 ? (
+            <EmptyState>
+              <NoArticleMessage>There is no Breakthrough</NoArticleMessage>
+            </EmptyState>
+          ) : (
+            <List
+              maxWidth={500}
+              items={breakThroughs}
+              currentPage={1}
+              itemsPerPage={15}
+              onItemClick={handleItemClick}
+            />
           )}
+
         </ListContainer>
       </RightColumn>
     </ContentContainer>
