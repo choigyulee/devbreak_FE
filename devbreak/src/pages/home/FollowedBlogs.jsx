@@ -73,7 +73,7 @@ const Container = styled.div`
 `;
 
 const MyBlogContainer = styled.div`
-  margin: 60px auto;
+  margin: 3vh auto;
   width: 75vw;
   display: flex;
   flex-direction: column;
@@ -92,8 +92,8 @@ const MyBlogItem = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 930px;
-  min-height: 155px;
-  border-radius: 10px;
+  height: 135px;
+  border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
   margin-bottom: 16px;
@@ -120,46 +120,4 @@ const BlogDescription = styled.div`
   word-wrap: break-word;
   white-space: normal;
   word-break: break-word;
-`;
-
-const MyBlogItem2 = styled.div`
-  margin: 0 auto;
-  min-width: 930px;
-  min-height: 155px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background-color: rgba(255, 255, 255, 0.05);
-  margin-bottom: 16px;
-  padding: 2.3rem 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  &:hover {
-    color: #02f798;
-    border: 3px solid #02f798;
-    box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
-  }
-`;
-
-const CreateContainer = styled.div`
-  margin: 98px auto;
-  min-width: 930px;
-  height: 445px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CreateContainerText = styled.div`
-  font-size: 25px;
-  font-weight: 500;
-  margin-bottom: 50px;
-  line-height: 40px;
-  text-align: center;
 `;

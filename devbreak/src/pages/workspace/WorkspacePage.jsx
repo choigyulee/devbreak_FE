@@ -112,7 +112,7 @@ const MyBlogItem = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 930px;
-  min-height: 135px;
+  height: 135px;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
@@ -145,7 +145,7 @@ const BlogDescription = styled.div`
 const MyBlogItem2 = styled.div`
   margin: 0 auto;
   min-width: 930px;
-  min-height: 155px;
+  height: 135px;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
