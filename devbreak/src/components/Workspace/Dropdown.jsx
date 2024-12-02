@@ -135,7 +135,7 @@ const DropdownMenu = styled.div`
 const DropdownItem = styled.div`
   padding: 30px;
   color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   height: 50px;
   display: flex;
   align-items: center;
