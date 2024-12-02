@@ -31,8 +31,14 @@ function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
   };
 
   const handleMenuClick = (commentId) => {
-    setSelectedCommentId(commentId);
-    setIsModalOpen(true);
+    if (isModalOpen && selectedCommentId === commentId) {
+      // 이미 열려있는 모달을 닫음
+      closeModal();
+    } else {
+      // 모달을 염
+      setSelectedCommentId(commentId);
+      setIsModalOpen(true);
+    }
   };
 
   const closeModal = () => {
@@ -51,8 +57,17 @@ function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
   };
 
   const saveEdit = async () => {
+    if (!editingContent.trim()) {
+      alert("Content cannot be empty.");
+      return;
+    }
+
     try {
-      await putCommentCommentId(editingCommentId, articleId, editingContent);
+      await putCommentCommentId({
+        commentId: editingCommentId,
+        articleId: articleId,
+        content: editingContent,
+      });
       alert("Comment updated successfully.");
       cancelEditing();
     } catch (error) {
@@ -226,7 +241,6 @@ const ListItemHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 80%;
   justify-content: space-between;
 `;
 
@@ -283,6 +297,7 @@ const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
 const EditArea = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 1vh;
 `;
 
@@ -291,7 +306,8 @@ const EditInput = styled.input`
   background: transparent;
   border: 1px solid #ffffff68;
   color: white;
-  padding: 0.5rem;
+  padding: 1vw 2vh;
+  width: 80%;
 `;
 
 const ButtonLine = styled.div`
@@ -304,7 +320,7 @@ const ButtonLine = styled.div`
 
 const EditButton = styled.button`
   color: white;
-  padding: 1.5vw 1vh;
+  padding: 1vh 2vw;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid #ffffff68;

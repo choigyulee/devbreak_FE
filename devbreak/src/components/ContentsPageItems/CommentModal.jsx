@@ -15,15 +15,17 @@ function CommentModal({ onClose, commentId, onEdit, onDelete }) {
   };
 
   return (
-    <ModalContainer onClick={(e) => e.stopPropagation()}>
-      <Button variant="edit" onClick={handleEditClick}>
-        Edit
-      </Button>
-      <ButtonDivider />
-      <Button variant="delete" onClick={handleDeleteClick}>
-        Delete
-      </Button>
-    </ModalContainer>
+    <Overlay>
+      <ModalContainer onClick={(e) => e.stopPropagation()}>
+        <Button variant="edit" onClick={handleEditClick}>
+          Edit
+        </Button>
+        <ButtonDivider />
+        <Button variant="delete" onClick={handleDeleteClick}>
+          Delete
+        </Button>
+      </ModalContainer>
+    </Overlay>
   );
 }
 
@@ -38,6 +40,12 @@ export default CommentModal;
 
 // Styled Components
 
+const Overlay = styled.div`
+  margin-right: 3vh;
+  position: absolute;
+  z-index: 1002;
+`;
+
 const ModalContainer = styled.div`
   box-sizing: border-box;
   align-items: center;
@@ -49,7 +57,6 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1vh;
-  z-index: 1001;
 `;
 
 const Button = styled.button`
