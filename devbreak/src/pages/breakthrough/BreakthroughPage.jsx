@@ -141,6 +141,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0vh 20vw 10vh 20vw;
 `;
 
 const FirstLineContainer = styled.div`
@@ -192,7 +193,7 @@ const SearchIconButton = styled.button`
   color: ${(props) => props.iconColor};
   cursor: pointer;
   font-size: 2vh;
-
+  margin-left: 1vw;
   &:hover {
     color: #02f798;
   }
@@ -200,7 +201,6 @@ const SearchIconButton = styled.button`
 
 const BreakthroughContainer = styled.div`
   width: 60vw;
-  margin: 0vh 20vw 10vh 20vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -213,7 +213,7 @@ const Title = styled.div`
   font-size: 3vh;
   white-space: nowrap; // 줄바꿈 방지
   align-items: baseline;
-  text-align: start;
+  text-align: left;
   justify-content: baseline;
   display: flex;
   flex-direction: row;
