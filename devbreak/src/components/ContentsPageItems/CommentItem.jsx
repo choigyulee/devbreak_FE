@@ -123,9 +123,8 @@ const AddButton = styled.button`
 
 const ListContainer = styled.div`
   display: flex;
-  position: absolute;
   flex-direction: column;
-  top: -2vh;
+  margin-top: 1vh; /* 입력 영역 바로 아래로 위치 조정 */
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(40px);
   padding: 3vh 1vw 1vh 1vw;
@@ -173,6 +172,7 @@ const Content = styled.div`
   font-weight: 400;
   color: white;
   text-align: left;
+  word-wrap: break-word; /* Ensures long words are wrapped */
 `;
 
 const EmptyState = styled.div`
