@@ -8,7 +8,7 @@ const BackToHomeBar = () => {
         <Logo src="/image/logo.svg" alt="logo" />
       </Link>
       <BackToHomeBtn>
-        <Link to="/">back to home</Link>
+        <Link to="/home">back to home</Link>
       </BackToHomeBtn>
     </NavContainer>
   );
