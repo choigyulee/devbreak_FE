@@ -68,7 +68,7 @@ const Button = styled.button`
   border-radius: 4px;
   font-size: 1.5vh;
   cursor: pointer;
-  width: 100%;
+  width: 5vw;
 
   &:hover {
     color: ${(props) => (props.variant === "edit" ? "#02f798" : props.variant === "delete" ? "#ff4f4f" : "#ffffff")};

@@ -260,7 +260,6 @@ const ListItemHeader = styled.div`
 
 const ButtonContainer = styled.div`
   justify-content: end;
-  align-items: center;
   display: flex;
   flex-direction: row;
 `;
