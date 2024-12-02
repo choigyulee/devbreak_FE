@@ -27,7 +27,7 @@ function ContentsPage() {
   const [currentUserId, setCurrentUserId] = useState(null); // 현재 로그인한 사용자 ID 상태
   const [comments, setComments] = useState([]); // 댓글 리스트 상태
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth(); // 로그인 상태 가져오기
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,7 +126,8 @@ function ContentsPage() {
           <ContentItem>{article.content}</ContentItem>
         </TextContainer>
         <LikesItem liked={liked} likeCount={likeCount} handleLikeClick={handleLikeClick} />
-        <CommentItem comments={comments} onAddComment={handleAddComment} />
+        {/* 로그인 상태를 CommentItem에 전달 */}
+        <CommentItem comments={comments} onAddComment={handleAddComment} isLoggedIn={isLoggedIn} />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />
       </Container>
     </>

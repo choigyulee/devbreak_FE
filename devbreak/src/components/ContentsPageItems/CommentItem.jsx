@@ -80,6 +80,7 @@ const CommentContainer = styled.div`
 
 const InputArea = styled.div`
   display: flex;
+  position: relative;
   align-items: center; /* 입력 필드와 버튼을 세로로 정렬 */
   gap: 1vw;
   background: linear-gradient(
@@ -90,8 +91,9 @@ const InputArea = styled.div`
     rgba(79, 79, 79, 0.1) 97.16%
   );
   backdrop-filter: blur(40px);
-  padding: 1.5vh 2vh;
+  padding: 1vw 2vh;
   border-radius: 2vh;
+  border: 1px solid #ffffff68;
   z-index: 1001;
 `;
 
@@ -112,7 +114,7 @@ const AddButton = styled.button`
   cursor: pointer;
   font-size: 2vh;
   font-weight: 700;
-  width: 20%;
+  width: 10%;
 
   &:hover {
     color: #01e086;
@@ -121,12 +123,12 @@ const AddButton = styled.button`
 
 const ListContainer = styled.div`
   display: flex;
+  position: absolute;
   flex-direction: column;
-  padding-top: 3vh;
   top: -2vh;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(40px);
-  padding: 1vh;
+  padding: 3vh 1vw 1vh 1vw;
   z-index: 1000;
 `;
 
