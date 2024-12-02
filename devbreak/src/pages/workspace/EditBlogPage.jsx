@@ -163,11 +163,12 @@ function EditBlogPage() {
               />
             </FormField>
 
-              <FormField label="Github repository link | This field cannot be edited." required>
+              <FormField label="Github repository link cannot be edited." required>
                 <Dropdown
                   selectedValue={formData.gitRepoUrl}
                   setSelectedValue={handleGitRepoSelection}
                   items={githubRepos}
+                  disabled
                 />
               </FormField>
 
