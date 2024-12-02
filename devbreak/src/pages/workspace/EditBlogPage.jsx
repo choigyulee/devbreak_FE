@@ -163,14 +163,16 @@ function EditBlogPage() {
               />
             </FormField>
 
-            <FormField label="Github repository link" required>
-            <SmallText>*This field cannot be edited.</SmallText>
-              <Dropdown
-                selectedValue={formData.gitRepoUrl}
-                setSelectedValue={handleGitRepoSelection}
-                items={githubRepos}
-              />
-            </FormField>
+            <SemiContainer>
+              <FormField label="Github repository link" required>
+                <SmallText> | This field cannot be edited.</SmallText>
+                <Dropdown
+                  selectedValue={formData.gitRepoUrl}
+                  setSelectedValue={handleGitRepoSelection}
+                  items={githubRepos}
+                />
+              </FormField>
+            </SemiContainer>
 
             <FormSemiContainer>
               <FormField label="Additional contributors' Github Id" required>
@@ -310,9 +312,18 @@ const DeleteMember = styled.span`
   cursor: pointer;
 `;
 
+const SemiContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+`
+
 const SmallText = styled.div`
   font-size: 18px;
   line-height: 25px;
   font-weight: 500;
   padding-top: 10px;
+  color: #ff0000;
 `
+
