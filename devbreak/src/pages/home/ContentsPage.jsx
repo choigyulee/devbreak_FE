@@ -97,6 +97,15 @@ function ContentsPage() {
     }
   };
 
+  const onEditComment = (updatedCommentId, updatedContent) => {
+    const updatedComments = comments.map((comment) =>
+      comment.commentId === updatedCommentId
+        ? { ...comment, content: updatedContent } // 해당 댓글만 수정
+        : comment
+    );
+    setComments(updatedComments); // 수정된 댓글로 상태 갱신
+  };
+
   if (!article) {
     return <div>Loading...</div>;
   }
@@ -131,6 +140,7 @@ function ContentsPage() {
           comments={comments}
           articleId={articleId}
           onAddComment={handleAddComment}
+          onEditComment={onEditComment} // 수정 함수 전달
           isLoggedIn={isLoggedIn}
         />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />

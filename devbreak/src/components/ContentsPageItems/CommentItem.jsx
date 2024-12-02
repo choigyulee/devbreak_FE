@@ -5,8 +5,9 @@ import PropTypes from "prop-types";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import CommentModal from "./CommentModal";
 import putCommentCommentId from "../../APIs/put/putCommentCommentId";
+import deleteCommentArticleIdCommentId from "../../APIs/delete/deleteCommentArticleIdCommentId";
 
-function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
+function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, isLoggedIn, articleId }) {
   const [newComment, setNewComment] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null); // 현재 선택된 댓글 ID
@@ -62,19 +63,25 @@ function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
       return;
     }
 
-    // API 호출 전에 전송할 데이터 출력
-    console.log("Sending data to API:", {
-      commentId: editingCommentId,
-      articleId: articleId,
-      content: editingContent,
-    });
-
+    // 댓글 수정 API 호출
     try {
       await putCommentCommentId(editingCommentId, articleId, editingContent);
       alert("Comment updated successfully.");
+      onEditComment(editingCommentId, editingContent); // 부모에게 수정된 댓글 정보 전달
       cancelEditing();
     } catch (error) {
       alert("Failed to update comment.");
+    }
+  };
+
+  const deleteCommentHandler = async (commentId) => {
+    try {
+      // 댓글 삭제 API 호출
+      await deleteCommentArticleIdCommentId(articleId, commentId);
+      alert("Comment deleted successfully.");
+      onDeleteComment(commentId); // 부모에게 삭제된 댓글 정보 전달
+    } catch (error) {
+      alert("Failed to delete comment.");
     }
   };
 
@@ -102,20 +109,15 @@ function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
                 </ListItemHeaderOne>
                 {(comment.updateButton || comment.deleteButton) && (
                   <ButtonContaier>
+                    <StyledBiDotsVerticalRounded onClick={() => handleMenuClick(comment.commentId)} />
                     {isModalOpen && (
                       <CommentModal
                         onClose={closeModal}
                         commentId={selectedCommentId}
-                        onEdit={(commentId) =>
-                          startEditing(commentId, comments.find((c) => c.commentId === commentId).content)
-                        }
-                        onDelete={(commentId) => {
-                          // 여기에 삭제 API 호출 로직 추가
-                          console.log(`Delete comment with ID: ${commentId}`);
-                        }}
+                        onEdit={() => startEditing(comment.commentId, comment.content)}
+                        onDelete={() => deleteCommentHandler(comment.commentId)} // 삭제 함수에 articleId, commentId 전달
                       />
                     )}
-                    <StyledBiDotsVerticalRounded onClick={() => handleMenuClick(comment.commentId)} />
                   </ButtonContaier>
                 )}
               </ListItemHeader>
@@ -150,8 +152,10 @@ CommentItem.propTypes = {
     })
   ).isRequired,
   onAddComment: PropTypes.func.isRequired,
+  onEditComment: PropTypes.func.isRequired,
+  onDeleteComment: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  articleId: PropTypes.number.isRequired, // Article ID 추가
+  articleId: PropTypes.number.isRequired,
 };
 
 export default CommentItem;
@@ -325,12 +329,15 @@ const ButtonLine = styled.div`
 
 const EditButton = styled.button`
   color: white;
-  padding: 1vh 1vw;
+  padding: 0.5vh 0;
+  width: 2vw;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid #ffffff68;
   backdrop-filter: blur(40px);
   border-radius: 5vh;
+  font-size: 1.5vh;
+  font-weight: 700;
 
   &:hover {
     border: 1px solid #02f798;
@@ -342,8 +349,11 @@ const CancelButton = styled.button`
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid #ffffff68;
   color: white;
+  font-weight: 700;
+  font-size: 1.5vh;
   border-radius: 5vh;
-  padding: 1vh 1vw;
+  padding: 0.5vh 0;
+  width: 2vw;
   cursor: pointer;
 
   &:hover {
