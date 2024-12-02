@@ -29,7 +29,7 @@ function CommentItem({ comments, onAddComment }) {
           value={newComment}
           onChange={handleInputChange}
         />
-        <SendButton onClick={handleSendClick}>Send</SendButton>
+        <AddButton onClick={handleSendClick}>Add</AddButton>
       </InputArea>
       <ListContainer>
         {comments.map((comment) => (
@@ -66,6 +66,12 @@ const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5vh;
+  width: 100%;
+`;
+
+const InputArea = styled.div`
+  display: flex;
+  gap: 1vw;
   background: linear-gradient(
     122.72deg,
     rgba(79, 79, 79, 0.1) 1.74%,
@@ -77,27 +83,21 @@ const CommentContainer = styled.div`
   backdrop-filter: blur(40px);
   padding: 2vh;
   border-radius: 2vh;
-  width: 100%;
-`;
-
-const InputArea = styled.div`
-  display: flex;
-  gap: 1vw;
 `;
 
 const CommentInput = styled.input`
   flex: 1;
   padding: 1vh;
+  background: transparent;
   font-size: 1.5vh;
 `;
 
-const SendButton = styled.button`
+const AddButton = styled.button`
   padding: 1vh 2vw;
   color: white;
-  border: none;
-  border-radius: 0.5vh;
+  border-left: 1px solid #ffffff68;
   cursor: pointer;
-  font-size: 1.5vh;
+  font-size: 2vh;
 
   &:hover {
     color: #01e086;
@@ -120,6 +120,10 @@ const ListItem = styled.div`
   background-color: #222;
   padding: 1.5vh;
   border-radius: 1vh;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #ffffff68; /* 구분선 추가 */
+  }
 `;
 
 const ListItemHeader = styled.div`
