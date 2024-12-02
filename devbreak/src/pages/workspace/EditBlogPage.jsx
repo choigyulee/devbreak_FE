@@ -311,8 +311,8 @@ const DeleteMember = styled.span`
 `;
 
 const SmallText = styled.div`
-  font-size: 15px;
+  font-size: 18px;
   line-height: 25px;
   font-weight: 500;
-  padding: 10px 0;
+  padding-top: 10px;
 `
