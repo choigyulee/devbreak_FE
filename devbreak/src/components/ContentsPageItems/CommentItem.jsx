@@ -70,11 +70,7 @@ function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
     });
 
     try {
-      await putCommentCommentId({
-        commentId: editingCommentId,
-        articleId: articleId,
-        content: editingContent,
-      });
+      await putCommentCommentId(editingCommentId, articleId, editingContent);
       alert("Comment updated successfully.");
       cancelEditing();
     } catch (error) {
@@ -312,8 +308,10 @@ const EditInput = styled.input`
   flex: 1;
   background: transparent;
   border: 1px solid #ffffff68;
+  border-radius: 1vh;
   color: white;
   padding: 1vw 2vh;
+  font-size: 2vh;
   width: 100%;
 `;
 
@@ -327,7 +325,7 @@ const ButtonLine = styled.div`
 
 const EditButton = styled.button`
   color: white;
-  padding: 1vh 2vw;
+  padding: 1vh 1vw;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.15);
   border: 1px solid #ffffff68;
@@ -345,7 +343,7 @@ const CancelButton = styled.button`
   border: 1px solid #ffffff68;
   color: white;
   border-radius: 5vh;
-  padding: 1.5vw 1vh;
+  padding: 1vh 1vw;
   cursor: pointer;
 
   &:hover {

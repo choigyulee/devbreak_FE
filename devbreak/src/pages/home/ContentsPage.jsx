@@ -127,7 +127,12 @@ function ContentsPage() {
         </TextContainer>
         <LikesItem liked={liked} likeCount={likeCount} handleLikeClick={handleLikeClick} />
         {/* 로그인 상태를 CommentItem에 전달 */}
-        <CommentItem comments={comments} onAddComment={handleAddComment} isLoggedIn={isLoggedIn} />
+        <CommentItem
+          comments={comments}
+          articleId={articleId}
+          onAddComment={handleAddComment}
+          isLoggedIn={isLoggedIn}
+        />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />
       </Container>
     </>

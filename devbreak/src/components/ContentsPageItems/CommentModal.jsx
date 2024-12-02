@@ -49,7 +49,7 @@ const Overlay = styled.div`
 const ModalContainer = styled.div`
   box-sizing: border-box;
   align-items: center;
-  padding: 2vh;
+  padding: 1vh;
   font-size: 2vh;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -65,7 +65,7 @@ const Button = styled.button`
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  font-size: 2vh;
+  font-size: 1.5vh;
   cursor: pointer;
   width: 100%;
 
