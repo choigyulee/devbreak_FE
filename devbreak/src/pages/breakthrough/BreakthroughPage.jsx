@@ -82,6 +82,7 @@ function BreakthroughPage() {
   // 검색어와 입력 중에 따라 border 색상 변경
   const borderColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
   const iconColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
+  const placeholderColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
 
   return (
     <>
@@ -106,6 +107,7 @@ function BreakthroughPage() {
                 }}
                 onCompositionStart={() => setIsComposing(true)} // IME 입력 시작
                 onCompositionEnd={() => setIsComposing(false)} // IME 입력 종료
+                placeholderColor={placeholderColor} // 전달된 색상 props
               />
             </SearchContainer>
             <LanguageToggle
@@ -141,7 +143,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0vh 20vw 10vh 20vw;
 `;
 
 const FirstLineContainer = styled.div`
@@ -159,8 +160,7 @@ const SearchContainer = styled.div`
   background: linear-gradient(
     122.72deg,
     rgba(79, 79, 79, 0.1) 1.74%,
-    rgba(79, 79, 79, 0.1) 1.75%,
-    rgba(255, 255, 255, 0.1) 33.05%,
+    rgba(79, 79, 0.1) 33.05%,
     rgba(79, 79, 79, 0.1) 97.16%
   );
   border: 1px solid ${(props) => props.borderColor};
@@ -180,7 +180,7 @@ const SearchInput = styled.input`
   padding-left: 1vw;
 
   &::placeholder {
-    color: #ffffff85;
+    color: ${(props) => props.placeholderColor}; // Dynamically change the placeholder color based on the prop
   }
 `;
 
@@ -203,9 +203,10 @@ const BreakthroughContainer = styled.div`
   width: 60vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: baseline;
   align-items: center;
   flex-grow: 1;
+  margin: 0vh 20vw 10vh 20vw;
 `;
 
 const Title = styled.div`
