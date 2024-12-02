@@ -36,9 +36,10 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
       // 이미 열려있는 모달을 닫음
       closeModal();
     } else {
-      // 모달을 염
-      setSelectedCommentId(commentId);
-      setIsModalOpen(true);
+      // 다른 모달을 염
+      setIsModalOpen(false); // 현재 모달을 닫음
+      setSelectedCommentId(commentId); // 새로운 모달의 ID로 설정
+      setIsModalOpen(true); // 새로운 모달 열기
     }
   };
 
@@ -110,7 +111,7 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
                 {(comment.updateButton || comment.deleteButton) && (
                   <ButtonContaier>
                     <StyledBiDotsVerticalRounded onClick={() => handleMenuClick(comment.commentId)} />
-                    {isModalOpen && (
+                    {isModalOpen && selectedCommentId === comment.commentId && (
                       <CommentModal
                         onClose={closeModal}
                         commentId={selectedCommentId}
@@ -277,28 +278,7 @@ const Content = styled.div`
   font-weight: 400;
   color: white;
   text-align: left;
-  word-wrap: break-word; /* Ensures long words are wrapped */
-`;
-
-const EmptyState = styled.div`
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  font-size: 3vh;
-  font-weight: 400;
-  color: #a7a7a7;
-  padding: 8vw 8vh;
-`;
-
-const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
-  cursor: pointer;
-  font-size: 2vh;
-  color: white;
-  transition: color 0.3s;
-
-  &:hover {
-    color: #888;
-  }
+  word-wrap: break-word; /* Ensures long words break into the next line */
 `;
 
 const EditArea = styled.div`
@@ -309,55 +289,53 @@ const EditArea = styled.div`
 `;
 
 const EditInput = styled.input`
-  flex: 1;
   background: transparent;
-  border: 1px solid #ffffff68;
-  border-radius: 1vh;
-  color: white;
-  padding: 1vw 2vh;
+  border: none;
+  outline: none;
   font-size: 2vh;
-  width: 100%;
+  font-weight: 400;
+  color: white;
+  border: 1px solid #ffffff68;
+  padding: 1vh;
+  border-radius: 1vh;
 `;
 
 const ButtonLine = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 1vh;
-  justify-content: end;
-  align-items: end;
+  gap: 1vw;
 `;
 
 const EditButton = styled.button`
-  color: white;
-  padding: 0.5vh 0;
-  width: 5vw;
-  cursor: pointer;
-  background: transparent;
-  border: 1px solid #ffffff68;
-  backdrop-filter: blur(40px);
-  border-radius: 5vh;
-  font-size: 1.5vh;
+  font-size: 2vh;
   font-weight: 700;
+  color: white;
+  cursor: pointer;
 
   &:hover {
-    border: 1px solid #02f798;
-    color: #02f798;
+    color: #01e086;
   }
 `;
 
 const CancelButton = styled.button`
-  background: transparent;
-  border: 1px solid #ffffff68;
-  color: white;
-  font-weight: 700;
-  font-size: 1.5vh;
-  border-radius: 5vh;
-  padding: 0.5vh 0;
-  width: 5vw;
+  font-size: 2vh;
+  font-weight: 400;
+  color: #a7a7a7;
   cursor: pointer;
 
   &:hover {
-    border: 1px solid #ff6f6f;
-    color: #ff6f6f;
+    color: #ff6b6b;
   }
+`;
+
+const EmptyState = styled.div`
+  color: white;
+  font-size: 2vh;
+  font-weight: 400;
+  text-align: center;
+`;
+
+const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
+  font-size: 2.5vh;
+  color: #ffffff;
+  cursor: pointer;
 `;

@@ -41,7 +41,7 @@ export default CommentModal;
 // Styled Components
 
 const Overlay = styled.div`
-  margin-left: 10vh;
+  margin-left: 5vw;
   position: absolute;
   z-index: 1002;
 `;
@@ -53,7 +53,7 @@ const ModalContainer = styled.div`
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(40px);
-  border-radius: 18px;
+  border-radius: 1vh;
   display: flex;
   flex-direction: row;
   gap: 1vh;
