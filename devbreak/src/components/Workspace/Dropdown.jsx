@@ -3,15 +3,17 @@ import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { BsCaretDownFill } from "react-icons/bs";
 
-const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
+const Dropdown = ({ selectedValue, items, setSelectedValue, disabled }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const toggleDropdown = (e) => {
+    if (disabled) return;
     e.stopPropagation();
     setIsDropdownVisible((prev) => !prev);
   };
 
   const handleItemClick = (e, item) => {
+    if (disabled) return;
     e.preventDefault();
     e.stopPropagation();
     setSelectedValue(item.html_url);
@@ -41,15 +43,15 @@ const Dropdown = ({ selectedValue, items, setSelectedValue }) => {
 
   return (
     <DropdownContainer>
-      <Button type="button" onClick={toggleDropdown}>
+      <Button type="button" onClick={toggleDropdown} disabled={disabled} >
         <ButtonText>{getDisplayValue(selectedValue)}</ButtonText>
         <BsCaretDownFill size={20} />
       </Button>
 
-      {isDropdownVisible && (
+      {isDropdownVisible && !disabled && (
         <DropdownMenu>
           {items.map((item, index) => (
-            <DropdownItem key={index} onClick={(e) => handleItemClick(e, item)}>
+            <DropdownItem key={index} onClick={(e) => handleItemClick(e, item)} disabled={disabled}>
               {getDisplayValue(item.html_url)}
             </DropdownItem>
           ))}
