@@ -227,6 +227,7 @@ const ListContainer = styled.div`
   backdrop-filter: blur(40px);
   padding: 3vh 1vw 1vh 1vw;
   z-index: 1000;
+  padding-bottom: 1vh;
 `;
 
 const ListItem = styled.div`
