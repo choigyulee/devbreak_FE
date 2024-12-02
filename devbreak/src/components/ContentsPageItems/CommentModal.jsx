@@ -56,7 +56,6 @@ const ModalContainer = styled.div`
   border-radius: 1vh;
   display: flex;
   flex-direction: row;
-  gap: 1vh;
   position: absolute;
   left: 100%;
   top: 0;
