@@ -50,13 +50,17 @@ function BreakthroughPage() {
     setCurrentPage(1); // 검색 시 페이지 초기화
   };
 
-  // 선택된 언어와 검색어를 기준으로 데이터 필터링
   const filteredData = formData.filter((item) => {
-    const matchesLanguage = !selectedLanguage || item.about.toLowerCase() === selectedLanguage.toLowerCase();
+    const about = item.about || ""; // undefined일 경우 빈 문자열로 처리
+    const title = item.title || "";
+    const description = item.description || "";
+
+    const matchesLanguage = !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
     const matchesSearch =
       !searchQuery ||
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      description.toLowerCase().includes(searchQuery.toLowerCase());
+
     return matchesLanguage && matchesSearch;
   });
 
@@ -80,11 +84,6 @@ function BreakthroughPage() {
         <BreakthroughContainer>
           <Title>Let’s Explore all breakthroughs!</Title>
           <FirstLineContainer>
-            <LanguageToggle
-              selectedValue={selectedLanguage}
-              items={languageOptions} // `languageOptions`를 items로 전달
-              setSelectedValue={setSelectedLanguage}
-            />
             <SearchContainer>
               <SearchIconButton onClick={handleSearch}>
                 <FaSearch />
@@ -96,6 +95,11 @@ function BreakthroughPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </SearchContainer>
+            <LanguageToggle
+              selectedValue={selectedLanguage}
+              items={languageOptions} // `languageOptions`를 items로 전달
+              setSelectedValue={setSelectedLanguage}
+            />
           </FirstLineContainer>
           <List
             items={filteredData} // 필터링된 데이터 전달
@@ -132,7 +136,7 @@ const FirstLineContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 4vh;
-  gap: 13vw;
+  gap: 2vw;
 `;
 
 const SearchContainer = styled.div`
@@ -176,7 +180,7 @@ const SearchIconButton = styled.button`
   font-size: 2vh;
 
   &:hover {
-    color: #ffffff;
+    color: #02f798;
   }
 `;
 
@@ -194,4 +198,5 @@ const Title = styled.div`
   color: #ffffff;
   font-size: 3vh;
   white-space: nowrap; // 줄바꿈 방지
+  align-items: baseline;
 `;
