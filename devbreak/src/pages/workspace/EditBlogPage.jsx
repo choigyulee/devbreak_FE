@@ -164,7 +164,7 @@ function EditBlogPage() {
             </FormField>
 
             <FormField label="Github repository link" required>
-            <SmallText>This field cannot be edited</SmallText>
+            <SmallText>*This field cannot be edited.</SmallText>
               <Dropdown
                 selectedValue={formData.gitRepoUrl}
                 setSelectedValue={handleGitRepoSelection}
@@ -314,6 +314,5 @@ const SmallText = styled.div`
   font-size: 15px;
   line-height: 25px;
   font-weight: 500;
-  margin-bottom: 64px;
   padding: 10px 0;
 `
