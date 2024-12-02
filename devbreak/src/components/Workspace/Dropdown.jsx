@@ -97,6 +97,7 @@ const Button = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 
   svg {
     font-size: 20px;
