@@ -79,6 +79,10 @@ function BreakthroughPage() {
     navigate(`/breakthrough/${articleId}`);
   };
 
+  // 검색어와 입력 중에 따라 border 색상 변경
+  const borderColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
+  const iconColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
+
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -86,8 +90,8 @@ function BreakthroughPage() {
         <BreakthroughContainer>
           <Title>Let’s Explore all breakthroughs!</Title>
           <FirstLineContainer>
-            <SearchContainer>
-              <SearchIconButton onClick={handleSearch}>
+            <SearchContainer borderColor={borderColor}>
+              <SearchIconButton iconColor={iconColor} onClick={handleSearch}>
                 <FaSearch />
               </SearchIconButton>
               <SearchInput
@@ -158,11 +162,11 @@ const SearchContainer = styled.div`
     rgba(255, 255, 255, 0.1) 33.05%,
     rgba(79, 79, 79, 0.1) 97.16%
   );
-  border: 1px solid #ffffff85;
+  border: 1px solid ${(props) => props.borderColor};
   backdrop-filter: blur(40px);
   padding: 1vw 1vh;
   border-radius: 20vh;
-  width: 30vw;
+  width: 40vw;
 `;
 
 const SearchInput = styled.input`
@@ -185,7 +189,7 @@ const SearchIconButton = styled.button`
   justify-content: center;
   background: none;
   border: none;
-  color: #ffffff85;
+  color: ${(props) => props.iconColor};
   cursor: pointer;
   font-size: 2vh;
 
