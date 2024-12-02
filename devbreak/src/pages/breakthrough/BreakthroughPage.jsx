@@ -150,7 +150,7 @@ const FirstLineContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4vh;
+  margin-bottom: 3vh;
   gap: 2vw;
 `;
 
@@ -166,9 +166,9 @@ const SearchContainer = styled.div`
   );
   border: 1px solid ${(props) => props.borderColor};
   backdrop-filter: blur(40px);
-  padding: 1vw 1vh;
+  padding: 1vw 0.5vh;
   border-radius: 20vh;
-  width: 40vw;
+  width: 60vw;
 `;
 
 const SearchInput = styled.input`
@@ -215,5 +215,5 @@ const Title = styled.div`
   justify-content: baseline;
   display: flex;
   flex-direction: row;
-  margin-bottom: 2vh;
+  margin-bottom: 3vh;
 `;

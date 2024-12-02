@@ -91,7 +91,7 @@ const Button = styled.button`
   white-space: nowrap; // 줄바꿈 방지
   font-size: 2vh;
   font-weight: 500;
-  padding: 1.5vh 4vh;
+  padding: 1.5vh 2vh;
   color: ${({ selected }) => (selected ? "#02f798" : "rgba(255, 255, 255, 0.5)")};
   display: flex;
   justify-content: space-between;
@@ -104,7 +104,7 @@ const Button = styled.button`
 `;
 
 const ButtonText = styled.span`
-  font-size: 2.3vh;
+  font-size: 2vh;
   color: ${({ selected }) => (selected ? "#02f798" : "rgba(255, 255, 255, 0.5)")};
 `;
 
