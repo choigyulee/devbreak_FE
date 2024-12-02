@@ -110,16 +110,16 @@ const ButtonText = styled.span`
 
 const DropdownMenu = styled.div`
   position: absolute;
-  top: 7vh;
+  top: 100%;
   width: 20vw;
   background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
+  border-radius: -20vw 5px 5px;
   z-index: 100;
   max-height: 335px;
   overflow-y: auto;
 
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
   }
   ::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.6);
