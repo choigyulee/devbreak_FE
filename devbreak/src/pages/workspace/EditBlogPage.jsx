@@ -312,5 +312,4 @@ const DeleteMember = styled.span`
 
 const StyledText = styled.span`
   color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
 `;
