@@ -13,8 +13,8 @@ import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteModal";
 import getAuthInfo from "../../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API
-import getCommentArticleId from "../../APIs/get/getCommentArticleId"; // 댓글 리스트 API
-import postComment from "../../APIs/post/postComment"; // 댓글 작성 API
+import getCommentArticleId from "../../APIs/get/getCommentArticleId";
+import postComment from "../../APIs/post/postComment";
 
 function ContentsPage() {
   const { articleId } = useParams();
