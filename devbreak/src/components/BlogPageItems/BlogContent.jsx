@@ -275,6 +275,7 @@ const NoActivityMessage = styled.div`
 `;
 
 const NoArticleMessage = styled.div`
-  font-size: 3.5vh;
+  font-family: "Pretendard";
+  font-size: 3vh;
   color: #888;
 `;
