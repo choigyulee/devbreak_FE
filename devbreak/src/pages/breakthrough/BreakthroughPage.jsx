@@ -15,6 +15,7 @@ function BreakthroughPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLanguage, setSelectedLanguage] = useState(""); // 선택된 언어
   const [searchQuery, setSearchQuery] = useState(""); // 검색어
+  const [isComposing, setIsComposing] = useState(false); // IME 입력 상태
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,33 +37,36 @@ function BreakthroughPage() {
     fetchData();
   }, []);
 
-  // 필터링 로직
+  // 언어 선택 변경 시 필터링
   useEffect(() => {
     const filtered = formData.filter((item) => {
-      const about = item.about || ""; // undefined일 경우 빈 문자열로 처리
-      const title = item.title || "";
-      const blogName = item.blogName || ""; // blogName 필드 추가
-
-      const matchesLanguage = !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
-      const matchesSearch =
-        !searchQuery ||
-        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blogName.toLowerCase().includes(searchQuery.toLowerCase());
-
-      return matchesLanguage && matchesSearch;
+      const about = item.about || "";
+      return !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
     });
 
     setFilteredData(filtered);
+    setCurrentPage(1); // 페이지 초기화
+  }, [selectedLanguage, formData]);
 
-    // 검색 결과가 없으면 알림 표시 및 초기화
-    if (filtered.length === 0 && (selectedLanguage || searchQuery)) {
+  const handleSearch = () => {
+    const filtered = formData.filter((item) => {
+      const title = item.title || "";
+      const blogName = item.blogName || "";
+      return (
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blogName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+
+    if (filtered.length === 0) {
       alert("There is no Breakthrough!");
-      setSelectedLanguage("");
       setSearchQuery("");
-      setFilteredData(formData); // 원래 데이터 복원
-      setCurrentPage(1); // 페이지 초기화
+      setFilteredData(formData); // 초기 데이터로 복원
+    } else {
+      setFilteredData(filtered);
     }
-  }, [selectedLanguage, searchQuery, formData]);
+    setCurrentPage(1); // 페이지 초기화
+  };
 
   const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
   const itemsPerPage = 10;
@@ -73,10 +77,6 @@ function BreakthroughPage() {
 
   const handleItemClick = (articleId) => {
     navigate(`/breakthrough/${articleId}`);
-  };
-
-  const handleSearch = () => {
-    setCurrentPage(1); // 검색 시 페이지 초기화
   };
 
   return (
@@ -96,10 +96,12 @@ function BreakthroughPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
+                  if (e.key === "Enter" && !isComposing) {
                     handleSearch(); // Enter 키를 누르면 검색 실행
                   }
                 }}
+                onCompositionStart={() => setIsComposing(true)} // IME 입력 시작
+                onCompositionEnd={() => setIsComposing(false)} // IME 입력 종료
               />
             </SearchContainer>
             <LanguageToggle
