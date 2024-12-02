@@ -6,15 +6,14 @@ function CommentItem({ comments, onAddComment, isLoggedIn }) {
   const [newComment, setNewComment] = useState("");
 
   const handleInputChange = (e) => {
+    if (!isLoggedIn) {
+      alert("Login is required to access this service!\nPlease log in to continue.");
+      return;
+    }
     setNewComment(e.target.value);
   };
 
   const handleSendClick = () => {
-    if (!isLoggedIn) {
-      alert("Login is required to access this service!\nplease log in to continue.");
-      return;
-    }
-
     if (newComment.trim() === "") {
       alert("Please enter a comment.");
       return;
@@ -81,6 +80,7 @@ const CommentContainer = styled.div`
 
 const InputArea = styled.div`
   display: flex;
+  align-items: center; /* 입력 필드와 버튼을 세로로 정렬 */
   gap: 1vw;
   background: linear-gradient(
     122.72deg,
@@ -90,13 +90,19 @@ const InputArea = styled.div`
     rgba(79, 79, 79, 0.1) 97.16%
   );
   backdrop-filter: blur(40px);
-  padding: 2vh;
+  padding: 1.5vh 2vh;
   border-radius: 2vh;
+  z-index: 1001;
 `;
 
 const CommentInput = styled.input`
   background: transparent;
+  border: none;
+  outline: none;
   font-size: 2vh;
+  font-weight: 400;
+  color: #ffffff;
+  flex: 1; /* 입력 필드가 남은 공간을 모두 차지하도록 설정 */
 `;
 
 const AddButton = styled.button`
@@ -106,6 +112,7 @@ const AddButton = styled.button`
   cursor: pointer;
   font-size: 2vh;
   font-weight: 700;
+  width: 20%;
 
   &:hover {
     color: #01e086;
@@ -115,18 +122,19 @@ const AddButton = styled.button`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5vh;
+  padding-top: 3vh;
+  top: -2vh;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(40px);
   padding: 1vh;
-  border-radius: 1vh;
+  z-index: 1000;
 `;
 
 const ListItem = styled.div`
   display: flex;
   flex-direction: column;
   background: transparent;
-  padding: 1.5vh;
+  padding: 1vw 2vh;
   gap: 1.5vh;
   justify-content: baseline;
   align-items: baseline;
