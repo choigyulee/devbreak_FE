@@ -260,6 +260,7 @@ const ListItemHeader = styled.div`
 
 const ButtonContainer = styled.div`
   justify-content: end;
+  align-items: baseline;
   display: flex;
   flex-direction: row;
 `;
@@ -338,9 +339,10 @@ const CancelButton = styled.button`
 `;
 
 const EmptyState = styled.div`
-  color: white;
-  font-size: 2vh;
-  font-weight: 400;
+  color: #ffffff85;
+  font-size: 5vh;
+  padding: 3vw 5vh;
+  font-weight: 700;
   text-align: center;
 `;
 
