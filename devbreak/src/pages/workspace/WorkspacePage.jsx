@@ -158,7 +158,7 @@ const MyBlogItem2 = styled.div`
 
   &:hover {
     color: #02f798;
-    border: 3px solid #02f798;
+    border: 1px solid #02f798;
     box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
   }
 `;
