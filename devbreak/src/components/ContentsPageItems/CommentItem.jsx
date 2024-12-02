@@ -1,9 +1,17 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import CommentModal from "./CommentModal";
+import putCommentCommentId from "../../APIs/put/putCommentCommentId";
 
-function CommentItem({ comments, onAddComment, isLoggedIn }) {
+function CommentItem({ comments, onAddComment, isLoggedIn, articleId }) {
   const [newComment, setNewComment] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState(null); // 현재 선택된 댓글 ID
+  const [editingCommentId, setEditingCommentId] = useState(null); // 수정 중인 댓글 ID
+  const [editingContent, setEditingContent] = useState(""); // 수정 중인 댓글 내용
 
   const handleInputChange = (e) => {
     if (!isLoggedIn) {
@@ -18,10 +26,38 @@ function CommentItem({ comments, onAddComment, isLoggedIn }) {
       alert("Please enter a comment.");
       return;
     }
-
-    // 부모 컴포넌트로 댓글 데이터 전달
     onAddComment(newComment);
-    setNewComment(""); // 입력란 초기화
+    setNewComment("");
+  };
+
+  const handleMenuClick = (commentId) => {
+    setSelectedCommentId(commentId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCommentId(null);
+  };
+
+  const startEditing = (commentId, currentContent) => {
+    setEditingCommentId(commentId);
+    setEditingContent(currentContent);
+  };
+
+  const cancelEditing = () => {
+    setEditingCommentId(null);
+    setEditingContent("");
+  };
+
+  const saveEdit = async () => {
+    try {
+      await putCommentCommentId(editingCommentId, articleId, editingContent);
+      alert("Comment updated successfully.");
+      cancelEditing();
+    } catch (error) {
+      alert("Failed to update comment.");
+    }
   };
 
   return (
@@ -42,10 +78,40 @@ function CommentItem({ comments, onAddComment, isLoggedIn }) {
           comments.map((comment) => (
             <ListItem key={comment.commentId}>
               <ListItemHeader>
-                <UserName>{comment.userName}</UserName>
-                <Date>{comment.date}</Date>
+                <ListItemHeaderOne>
+                  <UserName>{comment.userName}</UserName>
+                  <Date>{comment.date}</Date>
+                </ListItemHeaderOne>
+                {(comment.updateButton || comment.deleteButton) && (
+                  <ButtonContaier>
+                    {isModalOpen && (
+                      <CommentModal
+                        onClose={closeModal}
+                        commentId={selectedCommentId}
+                        onEdit={(commentId) =>
+                          startEditing(commentId, comments.find((c) => c.commentId === commentId).content)
+                        }
+                        onDelete={(commentId) => {
+                          // 여기에 삭제 API 호출 로직 추가
+                          console.log(`Delete comment with ID: ${commentId}`);
+                        }}
+                      />
+                    )}
+                    <StyledBiDotsVerticalRounded onClick={() => handleMenuClick(comment.commentId)} />
+                  </ButtonContaier>
+                )}
               </ListItemHeader>
-              <Content>{comment.content}</Content>
+              {editingCommentId === comment.commentId ? (
+                <EditArea>
+                  <EditInput value={editingContent} onChange={(e) => setEditingContent(e.target.value)} />
+                  <ButtonLine>
+                    <EditButton onClick={saveEdit}>Edit</EditButton>
+                    <CancelButton onClick={cancelEditing}>Cancel</CancelButton>
+                  </ButtonLine>
+                </EditArea>
+              ) : (
+                <Content>{comment.content}</Content>
+              )}
             </ListItem>
           ))
         )}
@@ -61,10 +127,13 @@ CommentItem.propTypes = {
       userName: PropTypes.string.isRequired,
       date: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
+      updateButton: PropTypes.bool,
+      deleteButton: PropTypes.bool,
     })
   ).isRequired,
   onAddComment: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired, // 로그인 상태 추가
+  isLoggedIn: PropTypes.bool.isRequired,
+  articleId: PropTypes.number.isRequired, // Article ID 추가
 };
 
 export default CommentItem;
@@ -145,12 +214,27 @@ const ListItem = styled.div`
   }
 `;
 
-const ListItemHeader = styled.div`
+const ListItemHeaderOne = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 1vh;
   justify-content: space-between;
+`;
+
+const ListItemHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 80%;
+  justify-content: space-between;
+`;
+
+const ButtonContaier = styled.div`
+  justify-content: end;
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
 `;
 
 const UserName = styled.span`
@@ -183,4 +267,66 @@ const EmptyState = styled.div`
   font-weight: 400;
   color: #a7a7a7;
   padding: 8vw 8vh;
+`;
+
+const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
+  cursor: pointer;
+  font-size: 2vh;
+  color: white;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #888;
+  }
+`;
+
+const EditArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+`;
+
+const EditInput = styled.input`
+  flex: 1;
+  background: transparent;
+  border: 1px solid #ffffff68;
+  color: white;
+  padding: 0.5rem;
+`;
+
+const ButtonLine = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1vh;
+  justify-content: end;
+  align-items: end;
+`;
+
+const EditButton = styled.button`
+  color: white;
+  padding: 1.5vw 1vh;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid #ffffff68;
+  backdrop-filter: blur(40px);
+  border-radius: 5vh;
+
+  &:hover {
+    border: 1px solid #02f798;
+    color: #02f798;
+  }
+`;
+
+const CancelButton = styled.button`
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid #ffffff68;
+  color: white;
+  border-radius: 5vh;
+  padding: 1.5vw 1vh;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid #ff6f6f;
+    color: #ff6f6f;
+  }
 `;
