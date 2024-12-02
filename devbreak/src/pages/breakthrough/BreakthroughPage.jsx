@@ -36,6 +36,34 @@ function BreakthroughPage() {
     fetchData();
   }, []);
 
+  // 필터링 로직
+  useEffect(() => {
+    const filtered = formData.filter((item) => {
+      const about = item.about || ""; // undefined일 경우 빈 문자열로 처리
+      const title = item.title || "";
+      const blogName = item.blogName || ""; // blogName 필드 추가
+
+      const matchesLanguage = !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
+      const matchesSearch =
+        !searchQuery ||
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blogName.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesLanguage && matchesSearch;
+    });
+
+    setFilteredData(filtered);
+
+    // 검색 결과가 없으면 알림 표시 및 초기화
+    if (filtered.length === 0 && (selectedLanguage || searchQuery)) {
+      alert("There is no Breakthrough!");
+      setSelectedLanguage("");
+      setSearchQuery("");
+      setFilteredData(formData); // 원래 데이터 복원
+      setCurrentPage(1); // 페이지 초기화
+    }
+  }, [selectedLanguage, searchQuery, formData]);
+
   const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
   const itemsPerPage = 10;
 
@@ -48,32 +76,7 @@ function BreakthroughPage() {
   };
 
   const handleSearch = () => {
-    const filtered = formData.filter((item) => {
-      const about = item.about || ""; // undefined일 경우 빈 문자열로 처리
-      const title = item.title || "";
-      const description = item.description || "";
-      const blogName = item.blogName || ""; // blogName 필드 추가
-
-      const matchesLanguage = !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
-      const matchesSearch =
-        !searchQuery ||
-        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blogName.toLowerCase().includes(searchQuery.toLowerCase());
-
-      return matchesLanguage && matchesSearch;
-    });
-
-    if (filtered.length === 0) {
-      alert("해당하는 결과가 없습니다!");
-      setSelectedLanguage("");
-      setSearchQuery("");
-      navigate("/breakthrough");
-      setCurrentPage(1);
-    } else {
-      setFilteredData(filtered); // 검색 결과 업데이트
-      setCurrentPage(1); // 검색 시 페이지 초기화
-    }
+    setCurrentPage(1); // 검색 시 페이지 초기화
   };
 
   return (
@@ -138,6 +141,7 @@ const FirstLineContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 4vh;
   gap: 2vw;
 `;
@@ -154,6 +158,7 @@ const SearchContainer = styled.div`
   );
   border: 1px solid #ffffff85;
   backdrop-filter: blur(40px);
+  padding: 1vw 1vh;
   border-radius: 20vh;
   width: 30vw;
 `;
@@ -202,5 +207,9 @@ const Title = styled.div`
   font-size: 3vh;
   white-space: nowrap; // 줄바꿈 방지
   align-items: baseline;
+  text-align: start;
   justify-content: baseline;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2vh;
 `;
