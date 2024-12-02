@@ -41,7 +41,7 @@ export default CommentModal;
 // Styled Components
 
 const Overlay = styled.div`
-  margin-left: 5vw;
+  margin-left: 10vw;
   position: absolute;
   z-index: 1002;
 `;
@@ -57,12 +57,15 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1vh;
+  position: absolute;
+  left: 100%;
+  top: 0;
 `;
 
 const Button = styled.button`
   color: #ffffff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   border-radius: 4px;
   font-size: 1.5vh;
   cursor: pointer;

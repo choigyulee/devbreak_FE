@@ -32,6 +32,11 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
   };
 
   const handleMenuClick = (commentId) => {
+    if (editingCommentId !== null) {
+      // 수정 중이라면 모달을 열지 못하게 함
+      return;
+    }
+
     if (isModalOpen && selectedCommentId === commentId) {
       // 이미 열려있는 모달을 닫음
       closeModal();
@@ -51,6 +56,7 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
   const startEditing = (commentId, currentContent) => {
     setEditingCommentId(commentId);
     setEditingContent(currentContent);
+    closeModal(); // 수정 시작 시 모달을 닫음
   };
 
   const cancelEditing = () => {
@@ -109,7 +115,7 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
                   <Date>{comment.date}</Date>
                 </ListItemHeaderOne>
                 {(comment.updateButton || comment.deleteButton) && (
-                  <ButtonContaier>
+                  <ButtonContainer>
                     <StyledBiDotsVerticalRounded onClick={() => handleMenuClick(comment.commentId)} />
                     {isModalOpen && selectedCommentId === comment.commentId && (
                       <CommentModal
@@ -119,15 +125,15 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
                         onDelete={() => deleteCommentHandler(comment.commentId)} // 삭제 함수에 articleId, commentId 전달
                       />
                     )}
-                  </ButtonContaier>
+                  </ButtonContainer>
                 )}
               </ListItemHeader>
               {editingCommentId === comment.commentId ? (
                 <EditArea>
                   <EditInput value={editingContent} onChange={(e) => setEditingContent(e.target.value)} />
                   <ButtonLine>
-                    <EditButton onClick={saveEdit}>Edit</EditButton>
                     <CancelButton onClick={cancelEditing}>Cancel</CancelButton>
+                    <EditButton onClick={saveEdit}>Edit</EditButton>
                   </ButtonLine>
                 </EditArea>
               ) : (
@@ -252,7 +258,7 @@ const ListItemHeader = styled.div`
   justify-content: space-between;
 `;
 
-const ButtonContaier = styled.div`
+const ButtonContainer = styled.div`
   justify-content: end;
   align-items: baseline;
   display: flex;
@@ -302,7 +308,10 @@ const EditInput = styled.input`
 
 const ButtonLine = styled.div`
   display: flex;
+  flex-direction: row;
   gap: 1vw;
+  justify-content: end;
+  align-items: end;
 `;
 
 const EditButton = styled.button`
@@ -310,6 +319,7 @@ const EditButton = styled.button`
   font-weight: 700;
   color: white;
   cursor: pointer;
+  padding: 0.5vh 0;
 
   &:hover {
     color: #01e086;
@@ -318,12 +328,13 @@ const EditButton = styled.button`
 
 const CancelButton = styled.button`
   font-size: 2vh;
-  font-weight: 400;
+  font-weight: 700;
   color: #a7a7a7;
   cursor: pointer;
+  padding: 0.5vh 0;
 
   &:hover {
-    color: #ff6b6b;
+    color: white;
   }
 `;
 
