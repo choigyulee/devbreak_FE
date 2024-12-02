@@ -163,8 +163,8 @@ function EditBlogPage() {
               />
             </FormField>
 
-              <FormField label="Github repository link | This field cannot be edited." required>
-                {/* <SmallText> | This field cannot be edited.</SmallText> */}
+              {/* <FormField label="Github repository link | This field cannot be edited." required> */}
+              <FormField label={<><span>Github repository link</span> <StyledText>| This field cannot be edited.</StyledText></>} required>
                 <Dropdown
                   selectedValue={formData.gitRepoUrl}
                   setSelectedValue={handleGitRepoSelection}
@@ -310,12 +310,7 @@ const DeleteMember = styled.span`
   cursor: pointer;
 `;
 
-
-const SmallText = styled.div`
-  font-size: 18px;
-  line-height: 25px;
-  font-weight: 500;
-  padding-top: 10px;
-  color: #ff0000;
-`
-
+const StyledText = styled.span`
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+`;
