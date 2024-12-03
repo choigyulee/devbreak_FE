@@ -110,7 +110,7 @@ const MyBlogContainerText = styled.div`
 
 const MyBlogItem = styled.div`
   margin: 0 auto;
-  width: 100%;
+  width: 60vw;
   height: 15vh;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -145,7 +145,7 @@ const BlogDescription = styled.div`
 
 const MyBlogItem2 = styled.div`
   margin: 0 auto;
-  width: 100%;
+  width: 60vw;
   min-width: 930px;
   height: 15vh;
   border-radius: 3vh;
