@@ -111,8 +111,8 @@ const MyBlogContainerText = styled.div`
 `;
 
 const MyBlogItem = styled.div`
-  align-items: center;
-  justify-content: baseline;
+  align-items: baseline;
+  justify-content: center;
   margin: 0 auto;
   width: 60vw;
   height: 15vh;
