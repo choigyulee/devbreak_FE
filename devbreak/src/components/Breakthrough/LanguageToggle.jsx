@@ -81,6 +81,7 @@ LanguageToggle.defaultProps = {
 const DropdownContainer = styled.div`
   position: relative;
   width: 100%;
+  margin-left: 1vh;
 `;
 
 const Button = styled.button`

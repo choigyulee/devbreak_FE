@@ -151,7 +151,6 @@ const FirstLineContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5vh;
-  gap: 1vw;
   width: 100%;
 `;
 
@@ -197,7 +196,7 @@ const SearchIconButton = styled.button`
 `;
 
 const BreakthroughContainer = styled.div`
-  width: 60vw;
+  width: 50vw;
   display: flex;
   flex-direction: column;
   justify-content: baseline;
