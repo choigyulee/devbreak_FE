@@ -3,7 +3,7 @@ import postAuthRefresh from './post/postAuthRefresh';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
-  timeout: 5000,
+  timeout: 100000,
 });
 
 axiosInstance.interceptors.request.use(
