@@ -113,7 +113,7 @@ const MyBlogItem = styled.div`
   justify-content: baseline;
   margin: 0 auto;
   width: 100%;
-  height: 25vh;
+  height: 15vh;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
@@ -149,7 +149,7 @@ const MyBlogItem2 = styled.div`
   margin: 0 auto;
   width: 100%;
   min-width: 930px;
-  height: 135px;
+  height: 15vh;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
