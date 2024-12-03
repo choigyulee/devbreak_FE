@@ -66,6 +66,7 @@ const Title = styled.h3`
   word-wrap: break-word;
   white-space: normal;
   word-break: break-word;
+  overflow-wrap: break-word; /* 줄바꿈을 강제 */
   line-height: 1.2;
 `;
 
