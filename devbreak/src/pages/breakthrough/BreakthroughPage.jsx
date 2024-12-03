@@ -169,8 +169,7 @@ const SearchContainer = styled.div`
   backdrop-filter: blur(40px);
   padding: 1vw 0.5vh;
   border-radius: 20vh;
-  flex: 1;
-  width: 90vw;
+  flex-grow: 1; /* 나머지 공간 차지 */
 `;
 
 const SearchInput = styled.input`
@@ -204,7 +203,7 @@ const BreakthroughContainer = styled.div`
   justify-content: baseline;
   align-items: baseline;
   flex-grow: 1;
-  margin: 0vh 20vw 10vh 20vw;
+  margin: 0vh 24vw 10vh 24vw;
 `;
 
 const Title = styled.div`
