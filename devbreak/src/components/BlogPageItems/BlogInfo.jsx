@@ -123,7 +123,7 @@ const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 70vw;
+  width: 100%;
   margin-bottom: 3vh;
 `;
 

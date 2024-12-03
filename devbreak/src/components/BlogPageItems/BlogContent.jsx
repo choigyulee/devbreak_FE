@@ -133,7 +133,7 @@ export default BlogContent;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 70vw;
+  width: 100%;
   justify-content: center;
 `;
 
@@ -194,7 +194,7 @@ const TitleContainer = styled.div`
 `;
 
 const ListContainer = styled.div`
-  width: 60vw;
+  width: 40vw;
   position: relative;
 `;
 
@@ -203,7 +203,7 @@ const EmptyState = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 25vw;
+  width: 40vw;
   text-align: center;
   min-height: 56vh;
   background-color: rgba(255, 255, 255, 0.1);
