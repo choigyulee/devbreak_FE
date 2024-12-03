@@ -32,13 +32,16 @@ export const AuthProvider = ({ children }) => {
   // 리프레시 토큰을 이용해 액세스 토큰 갱신 후 로그인 상태 유지
   const refreshTokenAndLogin = async () => {
     try {
-      const accessToken = await postAuthRefresh();  // 리프레시 토큰을 이용해 액세스 토큰 갱신
-      sessionStorage.setItem('accessToken', accessToken);  // 갱신된 액세스 토큰 저장
-      setIsLoggedIn(true); // 로그인 상태 true로 설정
-      return accessToken;  // 갱신된 액세스 토큰 반환
+      console.log('Refreshing access token using refresh token');
+      const accessToken = await postAuthRefresh();
+      sessionStorage.setItem('accessToken', accessToken);
+      setIsLoggedIn(true);
+      console.log('Successfully refreshed access token');
+      return accessToken;
     } catch (error) {
-      logout(); // 리프레시 토큰 갱신 실패 시 로그아웃 처리
-      throw error; // 에러를 호출한 곳으로 전달
+      console.error('Failed to refresh access token:', error);
+      logout();
+      throw error;
     }
   };
 
