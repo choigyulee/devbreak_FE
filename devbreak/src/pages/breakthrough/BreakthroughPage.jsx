@@ -151,7 +151,7 @@ const FirstLineContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5vh;
-  gap: 2vw;
+  gap: 1vw;
   width: 100%;
 `;
 
@@ -170,6 +170,7 @@ const SearchContainer = styled.div`
   padding: 1vw 0.5vh;
   border-radius: 20vh;
   flex: 1;
+  width: 100%;
 `;
 
 const SearchInput = styled.input`
@@ -178,7 +179,6 @@ const SearchInput = styled.input`
   outline: none;
   background: transparent;
   color: ${(props) => props.textColor}; // Dynamically change the text color
-  width: 100%;
   padding-left: 1vw;
 `;
 

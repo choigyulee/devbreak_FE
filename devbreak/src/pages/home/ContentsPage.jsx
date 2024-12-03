@@ -186,7 +186,7 @@ const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5vh;
-  width: 60vw;
+  width: 100%;
 `;
 
 const Title = styled.p`

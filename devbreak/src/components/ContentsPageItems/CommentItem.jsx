@@ -350,6 +350,8 @@ const EmptyState = styled.div`
   padding: 3vw 5vh;
   font-weight: 700;
   text-align: center;
+  justify-content: center;
+  align-items: center;
   display: flex;
   flex-direction: column;
   gap: 1vh;
@@ -362,6 +364,6 @@ const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
 `;
 
 const StyledFaRegCommentDots = styled(FaRegCommentDots)`
-  font-size: 4vh;
+  font-size: 5vh;
   color: #ffffff85;
 `;
