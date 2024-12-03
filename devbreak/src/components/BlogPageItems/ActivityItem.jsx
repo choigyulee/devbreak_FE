@@ -34,8 +34,8 @@ const ItemContainer = styled.div`
 `;
 
 const Dot = styled.div`
-  width: 0.8vh;
-  height: 0.8vh;
+  width: 1vh;
+  height: 1vh;
   border-radius: 50%;
   margin-top: 0.6vh;
 `;
@@ -45,12 +45,12 @@ const Content = styled.div`
 `;
 
 const Message = styled.div`
-  font-size: 1.8vh;
+  font-size: 2.5vh;
   margin-bottom: 0.4vh;
 `;
 
 const TypeLabel = styled.div`
-  font-size: 1.8vh;
+  font-size: 2vh;
   color: #888;
   font-style: italic;
 `;

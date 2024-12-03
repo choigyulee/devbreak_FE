@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import GoToButton from "../GoToButton";
 import List from "./List";
 import ActivityItem from "./ActivityItem";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, activities }) {
   const isMember = blogData.members.includes(currentUserId);
@@ -46,7 +47,7 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
             <GoToButton
               onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
               fontSize="18px"
-              text="Write"
+              text="Go To Write"
               width="98px"
               height="35px"
               style={{
@@ -89,6 +90,7 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
               )
             ) : breakThroughs.length === 0 ? (
               <EmptyState>
+                <StyledIoDocumentTextOutline />
                 <NoArticleMessage>There is no Breakthrough</NoArticleMessage>
               </EmptyState>
             ) : (
@@ -133,15 +135,15 @@ export default BlogContent;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 65vw;
   justify-content: center;
 `;
 
 const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30vw;
-  margin-right: 3vh;
+  width: 25vw;
+  margin-right: 2vw;
 `;
 
 const RightColumn = styled.div`
@@ -165,7 +167,7 @@ const ActivityContainer = styled.div`
   border: 0.1vw solid rgba(255, 255, 255, 0.7);
   border-radius: 0.8vh;
   padding: 2vh;
-  width: 30vw;
+  width: 25vw;
   max-height: 100vh; /* 스크롤이 필요한 최대 높이 설정 */
   overflow-y: hidden; /* 콘텐츠가 넘칠 때 스크롤 활성화 */
   overflow-x: hidden; /* 가로 스크롤 제거 */
@@ -175,22 +177,21 @@ const MembersContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.1);
   border: 0.1vw solid rgba(255, 255, 255, 0.7);
   border-radius: 0.8vh;
-  width: 30vw;
+  width: 25vw;
   padding: 2vh;
 `;
 
 const Member = styled.div`
   margin-bottom: 1vh;
-  font-size: 2vh;
+  font-size: 3vh;
 `;
 
 const TitleContainer = styled.div`
-  width: 50vh;
+  width: 40vw;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 1vw;
   align-items: flex-start;
-  /* margin-bottom: 15px; */
 `;
 
 const ListContainer = styled.div`
@@ -226,5 +227,10 @@ const NoActivityMessage = styled.div`
 const NoArticleMessage = styled.div`
   font-family: "Pretendard";
   font-size: 3vh;
+  color: #888;
+`;
+
+const StyledIoDocumentTextOutline = styled(IoDocumentTextOutline)`
+  font-size: 5vh;
   color: #888;
 `;
