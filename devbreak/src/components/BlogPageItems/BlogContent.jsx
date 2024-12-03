@@ -48,7 +48,7 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
               onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
               fontSize="18px"
               text="Go To Write"
-              width="98px"
+              width="190px"
               height="35px"
               style={{
                 position: "absolute",
@@ -135,7 +135,7 @@ export default BlogContent;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 65vw;
+  width: 60vw;
   justify-content: center;
 `;
 
@@ -149,7 +149,7 @@ const LeftColumn = styled.div`
 const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: 40vw;
+  width: 30vw;
 `;
 
 const Section = styled.div`
@@ -183,19 +183,18 @@ const MembersContainer = styled.div`
 
 const Member = styled.div`
   margin-bottom: 1vh;
-  font-size: 3vh;
+  font-size: 2vh;
 `;
 
 const TitleContainer = styled.div`
-  width: 40vw;
+  width: 30vw;
   display: flex;
   flex-direction: row;
-  gap: 1vw;
   align-items: flex-start;
 `;
 
 const ListContainer = styled.div`
-  width: 40vw;
+  width: 30vw;
   position: relative;
 `;
 
@@ -204,7 +203,8 @@ const EmptyState = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 40vw;
+  width: 30vw;
+  height: 50vh;
   text-align: center;
   min-height: 56vh;
   background-color: rgba(255, 255, 255, 0.1);

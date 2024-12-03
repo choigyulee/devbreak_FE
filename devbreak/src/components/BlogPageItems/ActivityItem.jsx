@@ -45,7 +45,7 @@ const Content = styled.div`
 `;
 
 const Message = styled.div`
-  font-size: 2.5vh;
+  font-size: 2vh;
   margin-bottom: 0.4vh;
 `;
 

@@ -102,7 +102,7 @@ BlogPage.propTypes = {
 export default BlogPage;
 
 const Container = styled.div`
-  margin: 0vh 15vw 10vh 15vw; /* 좌우 마진을 20vw에서 10vw로 조정하여 반응형 개선 */
+  margin: 0vh 20vw 10vh 20vw; /* 좌우 마진을 20vw에서 10vw로 조정하여 반응형 개선 */
   display: flex;
   flex-direction: column;
   gap: 3vh;
