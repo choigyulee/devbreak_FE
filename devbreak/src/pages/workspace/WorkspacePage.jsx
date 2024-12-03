@@ -109,8 +109,6 @@ const MyBlogContainerText = styled.div`
 `;
 
 const MyBlogItem = styled.div`
-  align-items: center;
-  justify-content: baseline;
   margin: 0 auto;
   width: 100%;
   height: 15vh;
@@ -121,7 +119,7 @@ const MyBlogItem = styled.div`
   padding: 2.2rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 3vh;
+  gap: 2vh;
   cursor: pointer;
 
   &:hover {
