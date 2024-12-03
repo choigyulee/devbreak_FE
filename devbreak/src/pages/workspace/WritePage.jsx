@@ -93,7 +93,7 @@ function WritePage() {
 
     const { title, content } = formData;
 
-    if (!title || !content || !selectedAbout || !selectedProblem || !selectedSolution) {
+    if (!title || !content) {
       console.error("Please fill in all required fields"); // 에러 메시지를 로그로만 처리
       return;
     }
