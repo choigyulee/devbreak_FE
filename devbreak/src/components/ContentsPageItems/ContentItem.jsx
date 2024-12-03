@@ -153,7 +153,7 @@ ContentItem.propTypes = {
 
 // 추가된 스타일
 const ContentWrapper = styled.div`
-  width: 90vw;
+  width: 100%; 
   max-width: 990px; /* 최대 너비 제한 */
   margin: 0 auto; /* 중앙 정렬 */
   font-family: "Pretendard", sans-serif; /* Pretendard 폰트 적용 */

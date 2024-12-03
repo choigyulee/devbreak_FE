@@ -103,8 +103,8 @@ const MyBlogContainer = styled.div`
 const MyBlogContainerText = styled.div`
   margin: 0 auto;
   min-width: 930px;
-  font-size: 25px;
-  line-height: 40px;
+  font-size: 3vh;
+  line-height: 3vh;
   margin-bottom: 20px;
 `;
 
@@ -112,12 +112,12 @@ const MyBlogItem = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 930px;
-  min-height: 155px;
+  height: 135px;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
   margin-bottom: 16px;
-  padding: 2.3rem 3rem;
+  padding: 2.2rem 3rem;
   cursor: pointer;
 
   &:hover {
@@ -145,7 +145,7 @@ const BlogDescription = styled.div`
 const MyBlogItem2 = styled.div`
   margin: 0 auto;
   min-width: 930px;
-  min-height: 155px;
+  height: 135px;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
