@@ -93,7 +93,7 @@ function EditWritePage() {
 
     const { blogId, title, content } = formData;
 
-    if (!title || !content || !selectedAbout || !selectedProblem || !selectedSolution) {
+    if (!title || !content) {
       setError("Please fill in all required fields");
       return;
     }
