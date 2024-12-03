@@ -39,6 +39,7 @@ const ListContainer = styled.div`
 const ListItemsContainer = styled.div`
   margin: 0 auto;
   min-width: 930px;
+  width: 40vw;
   display: flex;
   flex-direction: column;
   justify-content: baseline;
@@ -46,7 +47,7 @@ const ListItemsContainer = styled.div`
 `;
 
 const ListItem = styled.div`
-  width: 25vw;
+  width: 40vw;
   padding-left: 3vh;
   border-left: 2px solid #ffffff;
   color: #ffffff;

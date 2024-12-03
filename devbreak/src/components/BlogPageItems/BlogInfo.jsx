@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import PropTypes from "prop-types";
 import { BsGithub, BsPencil } from "react-icons/bs";
 import { FaRegTrashCan } from "react-icons/fa6";
@@ -122,9 +123,8 @@ const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 53vw;
+  width: 80vw;
   margin-bottom: 3vh;
-
 `;
 
 const NameContainer = styled.div`
