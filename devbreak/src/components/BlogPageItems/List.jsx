@@ -39,15 +39,14 @@ const ListContainer = styled.div`
 const ListItemsContainer = styled.div`
   margin: 0 auto;
   min-width: 930px;
-  /* width: 75vw; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: baseline;
   gap: 3vh;
 `;
 
 const ListItem = styled.div`
-  width: 57vw;
+  width: 30vw;
   padding-left: 3vh;
   border-left: 2px solid #ffffff;
   color: #ffffff;

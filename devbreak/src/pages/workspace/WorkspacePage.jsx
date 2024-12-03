@@ -112,6 +112,7 @@ const MyBlogContainerText = styled.div`
 
 const MyBlogItem = styled.div`
   align-items: center;
+  justify-content: baseline;
   margin: 0 auto;
   width: 50vw;
   height: 15vh;
