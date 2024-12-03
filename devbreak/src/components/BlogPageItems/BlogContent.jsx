@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import GoToButton from "../GoToButton";
 import List from "./List";
 import ActivityItem from "./ActivityItem";
+import { IoDocumentTextOutline } from "react-icons/io5";
 
 function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, activities }) {
   const isMember = blogData.members.includes(currentUserId);
@@ -21,6 +22,14 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
     <ContentContainer>
       <LeftColumn>
         <Section>
+          <SectionTitle>Project Members</SectionTitle>
+          <MembersContainer>
+            {blogData.members.map((member, index) => (
+              <Member key={index}>{member}</Member>
+            ))}
+          </MembersContainer>
+        </Section>
+        <Section>
           <SectionTitle>Project Repository Activity</SectionTitle>
           <ActivityContainer>
             {activitiesToDisplay && activitiesToDisplay.length > 0 ? (
@@ -30,14 +39,6 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
             )}
           </ActivityContainer>
         </Section>
-        <Section>
-          <SectionTitle>Project Members</SectionTitle>
-          <MembersContainer>
-            {blogData.members.map((member, index) => (
-              <Member key={index}>{member}</Member>
-            ))}
-          </MembersContainer>
-        </Section>
       </LeftColumn>
       <RightColumn>
         <TitleContainer>
@@ -46,13 +47,13 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
             <GoToButton
               onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
               fontSize="18px"
-              text="Write"
-              width="98px"
+              text="Go To Write"
+              width="150px"
               height="35px"
               style={{
                 position: "absolute",
                 right: "0",
-                top: "-10px",
+                top: "-11px",
               }}
             />
           )}
@@ -89,6 +90,7 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
               )
             ) : breakThroughs.length === 0 ? (
               <EmptyState>
+                <StyledIoDocumentTextOutline />
                 <NoArticleMessage>There is no Breakthrough</NoArticleMessage>
               </EmptyState>
             ) : (
@@ -133,7 +135,7 @@ export default BlogContent;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 52vw;
+  width: 60vw;
   justify-content: center;
 `;
 
@@ -141,13 +143,13 @@ const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   width: 25vw;
-  margin-right: 60px;
+  margin-right: 2vw;
 `;
 
 const RightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: 25vw;
+  flex: 1;
 `;
 
 const Section = styled.div`
@@ -165,6 +167,7 @@ const ActivityContainer = styled.div`
   border: 0.1vw solid rgba(255, 255, 255, 0.7);
   border-radius: 0.8vh;
   padding: 2vh;
+  width: 25vw;
   max-height: 100vh; /* 스크롤이 필요한 최대 높이 설정 */
   overflow-y: hidden; /* 콘텐츠가 넘칠 때 스크롤 활성화 */
   overflow-x: hidden; /* 가로 스크롤 제거 */
@@ -174,6 +177,7 @@ const MembersContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.1);
   border: 0.1vw solid rgba(255, 255, 255, 0.7);
   border-radius: 0.8vh;
+  width: 25vw;
   padding: 2vh;
 `;
 
@@ -183,16 +187,15 @@ const Member = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  width: 50vh;
+  width: 30vw;
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  /* margin-bottom: 15px; */
 `;
 
 const ListContainer = styled.div`
-  width: 60vw;
+  width: 30vw;
   position: relative;
 `;
 
@@ -201,7 +204,8 @@ const EmptyState = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 25vw;
+  width: 30vw;
+  height: 50vh;
   text-align: center;
   min-height: 56vh;
   background-color: rgba(255, 255, 255, 0.1);
@@ -224,5 +228,10 @@ const NoActivityMessage = styled.div`
 const NoArticleMessage = styled.div`
   font-family: "Pretendard";
   font-size: 3vh;
+  color: #888;
+`;
+
+const StyledIoDocumentTextOutline = styled(IoDocumentTextOutline)`
+  font-size: 5vh;
   color: #888;
 `;

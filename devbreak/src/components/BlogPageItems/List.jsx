@@ -39,15 +39,15 @@ const ListContainer = styled.div`
 const ListItemsContainer = styled.div`
   margin: 0 auto;
   min-width: 930px;
-  /* width: 75vw; */
+  width: 40vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: baseline;
   gap: 3vh;
 `;
 
 const ListItem = styled.div`
-  width: 57vw;
+  width: 30vw;
   padding-left: 3vh;
   border-left: 2px solid #ffffff;
   color: #ffffff;
@@ -66,6 +66,7 @@ const Title = styled.h3`
   word-wrap: break-word;
   white-space: normal;
   word-break: break-word;
+  overflow-wrap: break-word; /* 줄바꿈을 강제 */
   line-height: 1.2;
 `;
 

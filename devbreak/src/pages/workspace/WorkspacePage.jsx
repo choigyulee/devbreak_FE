@@ -102,6 +102,8 @@ const MyBlogContainer = styled.div`
 
 const MyBlogContainerText = styled.div`
   margin: 0 auto;
+  text-align: left;
+  width: 100%;
   min-width: 930px;
   font-size: 3vh;
   line-height: 3vh;
@@ -109,11 +111,11 @@ const MyBlogContainerText = styled.div`
 `;
 
 const MyBlogItem = styled.div`
-  align-items: center;
-  justify-content: baseline;
+  align-items: baseline;
+  justify-content: center;
   margin: 0 auto;
-  width: 100%;
-  height: 10vh;
+  width: 60vw;
+  height: 15vh;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
@@ -121,7 +123,7 @@ const MyBlogItem = styled.div`
   padding: 2.2rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 3vh;
+  gap: 2vh;
   cursor: pointer;
 
   &:hover {
@@ -132,24 +134,27 @@ const MyBlogItem = styled.div`
 `;
 
 const BlogName = styled.div`
-  font-size: 2.5vh;
+  font-size: 2.8vh;
   font-family: "Urbanist";
   font-weight: bold;
+  text-align: left;
+  justify-content: baseline;
 `;
 
 const BlogDescription = styled.div`
-  font-size: 2.2vh;
+  font-size: 2.3vh;
   font-family: "Urbanist";
   word-wrap: break-word;
+  text-align: left;
   white-space: normal;
   word-break: break-word;
+  justify-content: baseline;
 `;
 
 const MyBlogItem2 = styled.div`
   margin: 0 auto;
-  width: 100%;
-  min-width: 930px;
-  height: 135px;
+  width: 60vw;
+  height: 15vh;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
@@ -168,7 +173,7 @@ const MyBlogItem2 = styled.div`
 `;
 
 const CreateContainer = styled.div`
-  margin: 98px auto;
+  margin: 0vh 20vw 10vh 20vw;
   min-width: 930px;
   height: 445px;
   border: 1px solid rgba(255, 255, 255, 0.5);

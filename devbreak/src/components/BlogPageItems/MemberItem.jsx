@@ -27,5 +27,6 @@ const Container = styled.div`
 
 const Member = styled.div`
   margin-bottom: 1vh;
-  font-size: 2vh;
+  font-size: 3vh;
+  font-weight: 700;
 `;
