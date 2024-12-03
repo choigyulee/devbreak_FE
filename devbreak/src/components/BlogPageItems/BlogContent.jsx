@@ -133,14 +133,14 @@ export default BlogContent;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
-  width: 80vw;
+  width: 70vw;
   justify-content: center;
 `;
 
 const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: 40vw;
+  width: 30vw;
   margin-right: 3vh;
 `;
 
@@ -165,7 +165,7 @@ const ActivityContainer = styled.div`
   border: 0.1vw solid rgba(255, 255, 255, 0.7);
   border-radius: 0.8vh;
   padding: 2vh;
-  width: 40vw;
+  width: 30vw;
   max-height: 100vh; /* 스크롤이 필요한 최대 높이 설정 */
   overflow-y: hidden; /* 콘텐츠가 넘칠 때 스크롤 활성화 */
   overflow-x: hidden; /* 가로 스크롤 제거 */
@@ -175,7 +175,7 @@ const MembersContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.1);
   border: 0.1vw solid rgba(255, 255, 255, 0.7);
   border-radius: 0.8vh;
-  width: 40vw;
+  width: 30vw;
   padding: 2vh;
 `;
 
