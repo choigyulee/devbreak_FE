@@ -116,7 +116,7 @@ const MyBlogItem = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.5);
   background-color: rgba(255, 255, 255, 0.05);
   margin-bottom: 16px;
-  padding: 2.2rem 3rem;
+  padding: 3vh 2vw;
   display: flex;
   flex-direction: column;
   gap: 2vh;
