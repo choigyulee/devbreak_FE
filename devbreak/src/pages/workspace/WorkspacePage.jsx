@@ -93,8 +93,8 @@ const Container = styled.div`
 `;
 
 const MyBlogContainer = styled.div`
-  margin: 0vh 13vw 10vh 13vw;
-  width: 75vw;
+  margin: 0vh 20vw 10vh 20vw;
+  width: 60vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -109,7 +109,8 @@ const MyBlogContainerText = styled.div`
 `;
 
 const MyBlogItem = styled.div`
-  align-items: baseline;
+  align-items: center;
+  justify-content: baseline;
   margin: 0 auto;
   width: 100%;
   height: 10vh;
@@ -146,6 +147,7 @@ const BlogDescription = styled.div`
 
 const MyBlogItem2 = styled.div`
   margin: 0 auto;
+  width: 100%;
   min-width: 930px;
   height: 135px;
   border-radius: 3vh;

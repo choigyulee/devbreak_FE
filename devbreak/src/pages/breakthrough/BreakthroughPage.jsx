@@ -170,7 +170,7 @@ const SearchContainer = styled.div`
   padding: 1vw 0.5vh;
   border-radius: 20vh;
   flex: 1;
-  width: 100%;
+  width: 70vw;
 `;
 
 const SearchInput = styled.input`
