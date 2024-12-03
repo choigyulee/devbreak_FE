@@ -55,6 +55,11 @@ GitTitleDropdown.propTypes = {
   toggleDropdown: PropTypes.func.isRequired, // 토글 함수
 };
 
+// Default Props
+GitTitleDropdown.defaultProps = {
+  items: [],
+};
+
 const DropdownContainer = styled.div`
   position: relative;
   width: 100%;
