@@ -46,7 +46,7 @@ const ListItemsContainer = styled.div`
 `;
 
 const ListItem = styled.div`
-  width: 30vw;
+  width: 25vw;
   padding-left: 3vh;
   border-left: 2px solid #ffffff;
   color: #ffffff;
