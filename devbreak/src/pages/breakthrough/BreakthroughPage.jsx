@@ -166,7 +166,7 @@ const SearchContainer = styled.div`
   );
   border: 1px solid ${(props) => props.borderColor};
   backdrop-filter: blur(40px);
-  padding: 1vw 0.5vh;
+  padding: 1.5vh 0.5vh;
   border-radius: 20vh;
   flex-grow: 1; /* 나머지 공간 차지 */
 `;
@@ -178,6 +178,7 @@ const SearchInput = styled.input`
   background: transparent;
   color: ${(props) => props.textColor}; // Dynamically change the text color
   padding-left: 1vw;
+  flex: 1;
 `;
 
 const SearchIconButton = styled.button`
