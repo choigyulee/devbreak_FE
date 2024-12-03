@@ -22,6 +22,14 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
     <ContentContainer>
       <LeftColumn>
         <Section>
+          <SectionTitle>Project Members</SectionTitle>
+          <MembersContainer>
+            {blogData.members.map((member, index) => (
+              <Member key={index}>{member}</Member>
+            ))}
+          </MembersContainer>
+        </Section>
+        <Section>
           <SectionTitle>Project Repository Activity</SectionTitle>
           <ActivityContainer>
             {activitiesToDisplay && activitiesToDisplay.length > 0 ? (
@@ -30,14 +38,6 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
               <NoActivityMessage>There is no Repository Activity!</NoActivityMessage>
             )}
           </ActivityContainer>
-        </Section>
-        <Section>
-          <SectionTitle>Project Members</SectionTitle>
-          <MembersContainer>
-            {blogData.members.map((member, index) => (
-              <Member key={index}>{member}</Member>
-            ))}
-          </MembersContainer>
         </Section>
       </LeftColumn>
       <RightColumn>
@@ -190,8 +190,8 @@ const TitleContainer = styled.div`
   width: 30vw;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 1vh;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ListContainer = styled.div`

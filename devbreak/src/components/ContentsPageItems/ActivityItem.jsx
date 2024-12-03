@@ -4,15 +4,21 @@ import PropTypes from "prop-types";
 const ActivityItem = ({ language, problem, solution }) => {
   return (
     <ActivityContainer>
-      <Language>
-        Language <p>{language}</p>
-      </Language>
-      <Problem>
-        Problem <p>{problem}</p>
-      </Problem>
-      <Solution>
-        Solution <p>{solution}</p>
-      </Solution>
+      {language && (
+        <Language>
+          Language <p>{language}</p>
+        </Language>
+      )}
+      {problem && (
+        <Problem>
+          Problem <p>{problem}</p>
+        </Problem>
+      )}
+      {solution && (
+        <Solution>
+          Solution <p>{solution}</p>
+        </Solution>
+      )}
     </ActivityContainer>
   );
 };
