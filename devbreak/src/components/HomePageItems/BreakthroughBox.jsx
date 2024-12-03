@@ -29,7 +29,7 @@ const Box = styled.div`
   box-sizing: border-box;
   display: flex; /* Flexbox를 사용하여 자식 요소 정렬 */
   flex-direction: column; /* 세로 방향으로 정렬 */
-  padding: 2.2vh 3vh;
+  padding: 2.8vh 3vh;
   width: 20vw;
   height: 15vh;
   justify-content: space-between;

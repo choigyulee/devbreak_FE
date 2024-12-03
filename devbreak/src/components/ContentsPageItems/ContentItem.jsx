@@ -134,7 +134,7 @@ function ContentItem({ children }) {
     ),
     // 텍스트 기본 설정
     p: ({ children }) => (
-      <p style={{ color: "#c9c9c9", margin: "0.5vh 0", lineHeight: "3vh", fontSize: "2.5vh" }}>{children}</p>
+      <p style={{ color: "#c9c9c9", margin: "1vh 0", lineHeight: "3.5vh", fontSize: "2.5vh" }}>{children}</p>
     ),
   };
 
@@ -153,7 +153,7 @@ ContentItem.propTypes = {
 
 // 추가된 스타일
 const ContentWrapper = styled.div`
-  width: 100%; 
+  width: 100%;
   max-width: 990px; /* 최대 너비 제한 */
   margin: 0 auto; /* 중앙 정렬 */
   font-family: "Pretendard", sans-serif; /* Pretendard 폰트 적용 */

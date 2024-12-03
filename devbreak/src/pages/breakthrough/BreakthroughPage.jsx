@@ -152,6 +152,7 @@ const FirstLineContainer = styled.div`
   align-items: center;
   margin-bottom: 5vh;
   gap: 2vw;
+  width: 100%;
 `;
 
 const SearchContainer = styled.div`
@@ -168,7 +169,7 @@ const SearchContainer = styled.div`
   backdrop-filter: blur(40px);
   padding: 1vw 0.5vh;
   border-radius: 20vh;
-  width: 60vw;
+  flex: 1;
 `;
 
 const SearchInput = styled.input`

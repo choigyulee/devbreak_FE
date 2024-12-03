@@ -110,6 +110,7 @@ const MyBlogContainerText = styled.div`
 
 const MyBlogItem = styled.div`
   align-items: center;
+  justify-content: baseline;
   margin: 0 auto;
   width: 930px;
   height: 135px;
@@ -118,6 +119,9 @@ const MyBlogItem = styled.div`
   background-color: rgba(255, 255, 255, 0.05);
   margin-bottom: 16px;
   padding: 2.2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
   cursor: pointer;
 
   &:hover {
@@ -128,14 +132,13 @@ const MyBlogItem = styled.div`
 `;
 
 const BlogName = styled.div`
-  font-size: 28px;
+  font-size: 3vh;
   font-family: "Urbanist";
   font-weight: bold;
-  margin-bottom: 16px;
 `;
 
 const BlogDescription = styled.div`
-  font-size: 22px;
+  font-size: 2.5vh;
   font-family: "Urbanist";
   word-wrap: break-word;
   white-space: normal;

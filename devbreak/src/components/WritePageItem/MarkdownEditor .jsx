@@ -62,7 +62,7 @@ const Editor = styled.div`
   width: 100%;
   textarea {
     width: 100%;
-    height: 300px;
+    height: 50vh;
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.05);
