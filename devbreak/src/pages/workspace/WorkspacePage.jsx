@@ -114,7 +114,7 @@ const MyBlogItem = styled.div`
   align-items: center;
   justify-content: baseline;
   margin: 0 auto;
-  width: 50vw;
+  width: 60vw;
   height: 15vh;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -137,19 +137,23 @@ const BlogName = styled.div`
   font-size: 2.8vh;
   font-family: "Urbanist";
   font-weight: bold;
+  text-align: left;
+  justify-content: baseline;
 `;
 
 const BlogDescription = styled.div`
   font-size: 2.3vh;
   font-family: "Urbanist";
   word-wrap: break-word;
+  text-align: left;
   white-space: normal;
   word-break: break-word;
+  justify-content: baseline;
 `;
 
 const MyBlogItem2 = styled.div`
   margin: 0 auto;
-  width: 50vw;
+  width: 60vw;
   height: 15vh;
   border-radius: 3vh;
   border: 1px solid rgba(255, 255, 255, 0.5);
