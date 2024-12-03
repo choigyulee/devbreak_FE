@@ -18,12 +18,17 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (accessToken, refreshToken) => {
+    console.log('Logging in with accessToken:', accessToken);
+    console.log('Logging in with refreshToken:', refreshToken);
     sessionStorage.setItem('accessToken', accessToken);  // 액세스 토큰 저장
     sessionStorage.setItem('refreshToken', refreshToken); // 리프레시 토큰 저장
     setIsLoggedIn(true);  // 로그인 상태 true로 설정
+    console.log('Login successful');
   };
+  
 
   const logout = () => {
+    console.log('Logging out, removing tokens');
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('refreshToken');
     setIsLoggedIn(false); // 로그인 상태 false로 설정
