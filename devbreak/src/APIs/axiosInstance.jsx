@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { refreshTokenAndLogin } from '../context/AuthContext';
+import postAuthRefresh from './post/postAuthRefresh';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
@@ -26,8 +26,10 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const accessToken = await refreshTokenAndLogin(); // 리프레시 토큰을 통해 액세스 토큰을 갱신
+        // 리프레시 토큰을 이용해 액세스 토큰 갱신
+        const accessToken = await postAuthRefresh(); 
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+
         return axiosInstance(originalRequest); // 요청 재시도
       } catch (refreshError) {
         sessionStorage.removeItem('accessToken');

@@ -56,9 +56,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
-
-export const refreshTokenAndLogin = async () => {
-  const { refreshTokenAndLogin } = useAuth();
-  return refreshTokenAndLogin();
-};
