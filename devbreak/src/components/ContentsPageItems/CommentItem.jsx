@@ -196,7 +196,6 @@ const InputArea = styled.div`
   padding: 1vw 2vh;
   border-radius: 2vh;
   border: 1px solid #ffffff68;
-  z-index: 1001;
 `;
 
 const CommentInput = styled.input`
@@ -226,12 +225,10 @@ const AddButton = styled.button`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: -2vh; /* 입력 영역 바로 아래로 위치 조정 */
+  margin-top: 1vh;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(40px);
-  padding: 3vh 1vw 1vh 1vw;
-  z-index: 1000;
-  padding-bottom: 3vh;
+  padding: 1vh 1vw 3vh 1vw;
   border-radius: 3vh;
 `;
 
