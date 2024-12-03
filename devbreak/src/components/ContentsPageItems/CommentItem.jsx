@@ -6,6 +6,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import CommentModal from "./CommentModal";
 import putCommentCommentId from "../../APIs/put/putCommentCommentId";
 import deleteCommentArticleIdCommentId from "../../APIs/delete/deleteCommentArticleIdCommentId";
+import { FaRegCommentDots } from "react-icons/fa";
 
 function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, isLoggedIn, articleId }) {
   const [newComment, setNewComment] = useState("");
@@ -105,7 +106,10 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
       </InputArea>
       <ListContainer>
         {comments.length === 0 ? (
-          <EmptyState>There is no Comment!</EmptyState>
+          <EmptyState>
+            <StyledFaRegCommentDots />
+            There is no Comment!
+          </EmptyState>
         ) : (
           comments.map((comment) => (
             <ListItem key={comment.commentId}>
@@ -341,14 +345,22 @@ const CancelButton = styled.button`
 
 const EmptyState = styled.div`
   color: #ffffff85;
-  font-size: 5vh;
+  font-size: 3vh;
   padding: 3vw 5vh;
   font-weight: 700;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
 `;
 
 const StyledBiDotsVerticalRounded = styled(BiDotsVerticalRounded)`
   font-size: 2.5vh;
   color: #ffffff;
   cursor: pointer;
+`;
+
+const StyledFaRegCommentDots = styled(FaRegCommentDots)`
+  font-size: 4vh;
+  color: #ffffff85;
 `;
