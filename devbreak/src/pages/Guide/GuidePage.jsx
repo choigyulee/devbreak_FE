@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import NavBar from "../components/NavBar";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { useAuth } from "../context/AuthContext"; // 로그인 관련 훅
@@ -9,6 +8,7 @@ import BlogInfo from "../components/GuidePageItems/BlogInfo";
 import BlogContent from "../components/GuidePageItems/BlogContent";
 import getAuthInfo from "../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API 추가
 import getIssuesAndCommits from "../APIs/get/getIssuesAndCommits"; // 수정된 API 호출
+import NavBar from "../../components/NavBar";
 
 function GuidePage() {
   const { blogId } = useParams(); // 기존에 사용했던 blogId
