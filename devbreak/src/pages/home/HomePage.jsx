@@ -131,14 +131,16 @@ const Container = styled.div`
   flex-direction: column;
   gap: 7vh;
 `;
-
 const BannerSlider = styled(Slider)`
   width: 100%;
-  height: 50vh; /* 슬라이더 높이를 명확히 지정 */
+  height: 50vh;
   margin-bottom: 4vh;
-  overflow: hidden; /* 슬라이더 영역 밖의 요소 숨김 */
-  .slick-list {
-    overflow: hidden; /* 추가적으로 슬라이더 리스트의 오버플로우 숨김 */
+  .slick-slide {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%; // 슬라이드 높이 명시
   }
 `;
 
