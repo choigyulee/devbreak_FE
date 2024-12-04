@@ -139,7 +139,6 @@ const MyBlogContainerText = styled.div`
 const FirstLineContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   gap: 1vh;
   margin-bottom: 5vh;
