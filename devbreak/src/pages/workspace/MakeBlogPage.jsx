@@ -76,25 +76,22 @@ function MakeBlogPage() {
 
   const handleMemberChange = (e) => {
     const { value } = e.target;
-    setNewMember(value); // 새로운 GitHub ID 입력값 업데이트
+    setNewMember(value);
   };
 
   const handleAddContributor = async () => {
     if (newMember.trim() === "") return; // 빈 값은 추가하지 않음
   
     try {
-      // GitHub 사용자 존재 여부 체크
       const checkUserResponse = await getCheckUser(newMember.trim());
   
       if (checkUserResponse.isexists) {
-        // 사용자 존재 시, blogMember에 추가
         setFormData((prev) => ({
           ...prev,
           blogMember: [...prev.blogMember, newMember.trim()],
         }));
         setNewMember(""); // 입력란 비우기
       } else {
-        // 사용자 존재하지 않으면 경고 메시지
         alert("No GitHub user found with this ID.");
       }
     } catch (error) {
