@@ -13,7 +13,6 @@ import LikedBreakthroughs from "./pages/home/LikedBreakthroughs";
 import FollowedBlogs from "./pages/home/FollowedBlogs";
 import EditWritePage from "./pages/workspace/EditWritePage";
 import EditBlogPage from "./pages/workspace/EditBlogPage";
-import GuidePage from "./pages/Guide/GuidePage";
 
 const routes = [
   {
@@ -90,11 +89,6 @@ const routes = [
     path: "/github",
     element: <GithubLogin />,
     name: "11. GitHub 인증 페이지",
-  },
-  {
-    path: "/guide",
-    element: <GuidePage />,
-    name: "11. 사용법 가이드 페이지",
   },
 ];
 

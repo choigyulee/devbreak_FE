@@ -15,6 +15,7 @@ const Footer = () => {
           <Link href="#" target="_blank">
           Privacy</Link>
           <Link href="#">Security</Link>
+          <Link to="#">Official</Link>  {/* devbreak 공식 블로그로 네비게이트 추가 */}
         </FooterLinks>
 
         <From>South Korea</From>
