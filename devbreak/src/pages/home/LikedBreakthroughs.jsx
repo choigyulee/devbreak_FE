@@ -4,9 +4,9 @@ import NavBar from "../../components/NavBar";
 import List from "../../components/Breakthrough/List";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
-import getHomeArticleLike from "../../APIs/get/getHomeArticleLike";
 import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
 import { FaSearch } from "react-icons/fa";
+import getHomeArticleLike from "../../APIs/get/getHomeArticleLike";
 
 function LikedBreakthroughs() {
   // 로그인 상태 관리 (로컬 스토리지 사용)
