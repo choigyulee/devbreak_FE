@@ -142,7 +142,6 @@ const FirstLineContainer = styled.div`
   align-items: center;
   gap: 1vh;
   margin-bottom: 5vh;
-  width: 100%;
 `;
 
 const SearchContainer = styled.div`
