@@ -178,7 +178,7 @@ const MyListBox = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0vh 3vh;
-  margin-left: -0.5vh;
+  padding-left: 1vh;
   gap: 3vh;
   span {
     display: flex;
