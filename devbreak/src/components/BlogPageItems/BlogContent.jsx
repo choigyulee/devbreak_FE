@@ -109,7 +109,9 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
 
       <RightColumn>
         <TitleContainer>
-          <SectionTitle>The Breakthroughs ({breakThroughs.length})</SectionTitle>
+        {blogId !== "39" ? (<SectionTitle>The Breakthroughs ({breakThroughs.length})</SectionTitle>) : (
+          <SectionTitle>devbreak User Guide ({breakThroughs.length})</SectionTitle>
+        )}
           {isLoggedIn && isMember && breakThroughs.length > 0 && (
             <GoToButton
               onClick={() => navigate(`/blog/${blogId}/breakthrough/write`)}
