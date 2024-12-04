@@ -134,6 +134,7 @@ const Container = styled.div`
 `;
 
 const BannerSlider = styled(Slider)`
+  margin-top: -3vh;
   width: 100%;
   height: 50vh; /* 슬라이더 높이를 명확히 지정 */
   overflow: hidden; /* 슬라이더 영역 밖의 요소 숨김 */
