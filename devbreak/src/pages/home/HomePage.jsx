@@ -8,6 +8,7 @@ import MyBlogList from "../../components/HomePageItems/MyBlogList";
 import styled from "@emotion/styled";
 import getHomeArticle from "../../APIs/get/getHomeArticle";
 import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
+import Footer from "../../components/Footer";
 
 function HomePage() {
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
@@ -96,6 +97,7 @@ function HomePage() {
           </MyListBox>
         )}
       </Container>
+      <Footer />
     </>
   );
 }

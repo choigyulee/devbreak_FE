@@ -143,7 +143,7 @@ const LeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   width: 25vw;
-  margin-right: 2vw;
+  margin-right: 4vw;
 `;
 
 const RightColumn = styled.div`
