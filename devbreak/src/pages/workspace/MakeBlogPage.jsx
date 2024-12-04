@@ -11,6 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import postBlog from "../../APIs/post/postBlog";
+import getCheckUser from "../../APIs/get/getCheckUser";
 
 function MakeBlogPage() {
   const navigate = useNavigate();
@@ -78,13 +79,28 @@ function MakeBlogPage() {
     setNewMember(value); // 새로운 GitHub ID 입력값 업데이트
   };
 
-  const handleAddContributor = () => {
+  const handleAddContributor = async () => {
     if (newMember.trim() === "") return; // 빈 값은 추가하지 않음
-    setFormData((prev) => ({
-      ...prev,
-      blogMember: [...prev.blogMember, newMember.trim()],
-    }));
-    setNewMember(""); // 입력란 비우기
+  
+    try {
+      // GitHub 사용자 존재 여부 체크
+      const checkUserResponse = await getCheckUser(newMember.trim());
+  
+      if (checkUserResponse.isexists) {
+        // 사용자 존재 시, blogMember에 추가
+        setFormData((prev) => ({
+          ...prev,
+          blogMember: [...prev.blogMember, newMember.trim()],
+        }));
+        setNewMember(""); // 입력란 비우기
+      } else {
+        // 사용자 존재하지 않으면 경고 메시지
+        alert("No GitHub user found with this ID.");
+      }
+    } catch (error) {
+      console.error("Error checking GitHub user:", error);
+      alert("There was an error checking the GitHub user.");
+    }
   };
 
   const handleDeleteMember = (memberToDelete) => {
