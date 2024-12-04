@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
-import { Link as RouterLink, useNavigate } from "react-router-dom"; // react-router-dom의 Link 컴포넌트를 가져옴
+import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => {
-  const navigate = useNavigate();
 
   return (
     <FooterWrapper>
@@ -18,8 +17,7 @@ const Footer = () => {
             Privacy
           </FooterLink>
           <FooterLink href="#">Security</FooterLink>
-          {/* devbreak 공식 블로그로 네비게이트 */}
-          <StyledLink to="/blog/39">Official</StyledLink> {/* devbreak 공식 블로그로 네비게이트 */}
+          <StyledLink to="/blog/39">Official</StyledLink>
         </FooterLinks>
 
         <From>South Korea</From>
