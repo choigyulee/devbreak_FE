@@ -75,16 +75,15 @@ function HomePage() {
   const bannerImages = ["/image/Banner1.png", "/image/Banner2.png"];
 
   const sliderSettings = {
-    dots: false, // 하단 점 표시 비활성화 (선택 사항)
-    infinite: true, // 무한 루프
-    speed: 1000, // 슬라이드 전환 속도 (1초)
-    slidesToShow: 1, // 한 번에 한 개의 슬라이드 표시
-    slidesToScroll: 1, // 한 번에 한 개의 슬라이드 이동
-    autoplay: true, // 자동 슬라이드 활성화
-    autoplaySpeed: 3000, // 3초 간격으로 전환
-    arrows: false, // 이전/다음 화살표 비활성화
-    fade: true, // 페이드 전환
-    draggable: false, // 드래그 비활성화 (사용자 조작 방지)
+    dots: false,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+    draggable: false,
   };
 
   return (
