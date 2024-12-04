@@ -177,7 +177,8 @@ const BoldText = styled.span`
 const MyListBox = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0vh 3vh 0 0;
+  margin: 0vh 3vh;
+  margin-left: -0.5vh;
   gap: 3vh;
   span {
     display: flex;
