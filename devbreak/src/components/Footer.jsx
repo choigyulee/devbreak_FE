@@ -1,21 +1,25 @@
 import styled from "@emotion/styled";
-
+import { Link as RouterLink, useNavigate } from "react-router-dom"; // react-router-dom의 Link 컴포넌트를 가져옴
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <FooterWrapper>
       <FooterContainer>
-
         <Favicon src="image/favicon.ico" alt="Favicon" />
         <FooterCopyright>Copyright © 2024 devBreak | Catch Errorping. All rights reserved.</FooterCopyright>
-        
+
         <FooterLinks>
-          <Link href="#" target="_blank">
-          Terms</Link>
-          <Link href="#" target="_blank">
-          Privacy</Link>
-          <Link href="#">Security</Link>
-          <Link to="#">Official</Link>  {/* devbreak 공식 블로그로 네비게이트 추가 */}
+          <FooterLink href="#" target="_blank">
+            Terms
+          </FooterLink>
+          <FooterLink href="#" target="_blank">
+            Privacy
+          </FooterLink>
+          <FooterLink href="#">Security</FooterLink>
+          {/* devbreak 공식 블로그로 네비게이트 */}
+          <StyledLink to="/blog/39">Official</StyledLink> {/* devbreak 공식 블로그로 네비게이트 */}
         </FooterLinks>
 
         <From>South Korea</From>
@@ -25,7 +29,6 @@ const Footer = () => {
 };
 
 export default Footer;
-
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -65,10 +68,22 @@ const FooterLinks = styled.div`
   margin: 0 5vw 0 0.4vw;
 `;
 
-const Link = styled.a`
+// 기존 FooterLink 스타일
+const FooterLink = styled.a`
   color: #6e7781;
   text-decoration: none;
-  
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`;
+
+// react-router-dom의 Link를 styled-components로 감싼 스타일링
+const StyledLink = styled(RouterLink)`
+  color: #6e7781;
+  text-decoration: none;
+
   &:hover {
     text-decoration: underline;
     cursor: pointer;
@@ -76,6 +91,6 @@ const Link = styled.a`
 `;
 
 const From = styled(FooterCopyright)`
-    margin-left: 5vw;
-    margin-right: 0;
-`
+  margin-left: 5vw;
+  margin-right: 0;
+`;
