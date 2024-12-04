@@ -54,6 +54,12 @@ const Title = styled.h3`
   font-size: 2.3vh; /* 제목 크기 */
   text-align: left;
   margin: 0; /* 기본 마진 제거 */
+  /* 두 줄로 제한하고 넘치는 내용은 ⋯로 표시 */
+  display: -webkit-box; /* Flexbox를 사용하여 줄 수 제한 */
+  -webkit-box-orient: vertical; /* 세로 방향으로 정렬 */
+  overflow: hidden; /* 넘치는 내용 숨기기 */
+  -webkit-line-clamp: 2; /* 두 줄로 제한 */
+  text-overflow: ellipsis; /* 넘치는 내용에 ⋯ 표시 */
 `;
 
 const Content = styled.p`
@@ -63,6 +69,12 @@ const Content = styled.p`
   color: ${({ isHovered }) => (isHovered ? "#02f798" : "#c9c9c9")}; /* 호버 시 색상 변경 */
   text-align: left; /* 내용 왼쪽 정렬 */
   margin: 0; /* 기본 마진 제거 */
+  /* 두 줄로 제한하고 넘치는 내용은 ⋯로 표시 */
+  display: -webkit-box; /* Flexbox를 사용하여 줄 수 제한 */
+  -webkit-box-orient: vertical; /* 세로 방향으로 정렬 */
+  overflow: hidden; /* 넘치는 내용 숨기기 */
+  -webkit-line-clamp: 2; /* 두 줄로 제한 */
+  text-overflow: ellipsis; /* 넘치는 내용에 ⋯ 표시 */
 `;
 
 // PropTypes를 사용하여 props의 타입을 검증
