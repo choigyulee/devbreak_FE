@@ -13,7 +13,7 @@ import LikedBreakthroughs from "./pages/home/LikedBreakthroughs";
 import FollowedBlogs from "./pages/home/FollowedBlogs";
 import EditWritePage from "./pages/workspace/EditWritePage";
 import EditBlogPage from "./pages/workspace/EditBlogPage";
-import GuidePage from "./pages/GuidePage/GuidePage";
+import GuidePage from "./pages/Guide/GuidePage";
 
 const routes = [
   {
