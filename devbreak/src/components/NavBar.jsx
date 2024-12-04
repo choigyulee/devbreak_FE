@@ -95,9 +95,6 @@ const NavBar = () => {
         <NavItem active={location.pathname.startsWith("/workspace")} onClick={handleWorkspaceClick}>
           <Link to="/workspace">Workspace</Link>
         </NavItem>
-        <NavItem active={location.pathname.startsWith("/guide")} onClick={handleWorkspaceClick}>
-          <Link to="/guide">Guide</Link>
-        </NavItem>
       </NavItems>
       {isLoggedIn ? (
         <ProfileContainer>
