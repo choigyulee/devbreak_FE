@@ -1,113 +1,200 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import { useAuth } from "../../context/AuthContext";
-import getBlogBlogId from "../../APIs/get/getBlogBlogId";
-import BlogInfo from "../../components/BlogPageItems/BlogInfo";
-import BlogContent from "../../components/BlogPageItems/BlogContent";
-import getAuthInfo from "../../APIs/get/getAuthInfo";
-import getIssuesAndCommits from "../../APIs/get/getIssuesAndCommits";
 import NavBar from "../../components/NavBar";
+import List from "../../components/Breakthrough/List";
+import { useNavigate } from "react-router-dom";
+import Pagination from "../../components/Breakthrough/Pagination";
+import getBreakthrough from "../../APIs/get/getBreakthrough";
+import { FaSearch } from "react-icons/fa";
 
 function GuidePage() {
-  const { blogId } = useParams(); // 기존에 사용했던 blogId
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [formData, setFormData] = useState([]); // 전체 데이터
+  const [filteredData, setFilteredData] = useState([]); // 필터링된 데이터
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState(""); // 검색어
+  const [isComposing, setIsComposing] = useState(false); // IME 입력 상태
   const navigate = useNavigate();
-  const { isLoggedIn, onLogout } = useAuth();
-  const [blogData, setBlogData] = useState(null);
-  const [favButton, setFavButton] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState(null);
-  const [activities, setActivities] = useState([]); // 활동 정보 상태
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchBlogData = async () => {
-      setIsLoading(true);
-      setError(null);
+    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedIn);
+  }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
       try {
-        // blogId로 블로그 정보를 가져옴
-        const fetchedBlogData = await getBlogBlogId(blogId);
-        setBlogData(fetchedBlogData);
-        setFavButton(fetchedBlogData.fav_button);
-
-        // blogData에서 git_repo_url 추출 후, 이슈 및 커밋 제목 가져오기
-        const { git_repo_url } = fetchedBlogData;
-        const issuesData = await getIssuesAndCommits(git_repo_url); // git_repo_url을 직접 전달
-        setActivities(issuesData); // 활동 정보 상태 저장
+        const data = await getBreakthrough(); // 데이터 API 호출
+        setFormData(data);
+        setFilteredData(data); // 초기 데이터 설정
       } catch (error) {
-        setError("Failed to fetch blog data or activities.");
-        console.error(error);
-      } finally {
-        setIsLoading(false);
+        console.error("데이터 로딩 실패:", error);
       }
     };
 
-    if (isLoggedIn) {
-      const fetchAuthInfo = async () => {
-        try {
-          const authInfo = await getAuthInfo();
-          setCurrentUserId(authInfo.userName);
-        } catch (error) {
-          console.error("Error fetching auth info:", error);
-        }
-      };
+    fetchData();
+  }, []);
 
-      fetchAuthInfo(); // 로그인한 경우에만 사용자 정보 호출
+  const handleSearch = () => {
+    const filtered = formData.filter((item) => {
+      const title = item.title || "";
+      const blogName = item.blogName || "";
+      return (
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blogName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+
+    if (filtered.length === 0) {
+      alert("There is no Breakthrough!");
+      setSearchQuery("");
+      setFilteredData(formData); // 초기 데이터로 복원
+    } else {
+      setFilteredData(filtered);
     }
+    setCurrentPage(1); // 페이지 초기화
+  };
 
-    fetchBlogData(); // 블로그 데이터는 항상 호출
-  }, [blogId, isLoggedIn, navigate]);
+  const itemsPerPage = 10;
 
-  const handleFavButtonClick = () => setFavButton(!favButton);
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-  if (isLoading) return <div>Loading...</div>;
+  const handleItemClick = (articleId) => {
+    navigate(`/breakthrough/${articleId}`);
+  };
 
-  if (error) return <div>{error}</div>;
-
-  if (!blogData) return <div>Blog not found.</div>;
+  // 검색어와 입력 중에 따라 border 색상 변경
+  const borderColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
+  const iconColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
+  const textColor = searchQuery ? "#02F798" : "#ffffff"; // Change text color if there is a search query
 
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} onLogout={onLogout} />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
-        <BlogInfo
-          blogData={blogData}
-          favButton={favButton}
-          handleFavButtonClick={handleFavButtonClick}
-          isLoggedIn={isLoggedIn}
-          blogId={blogId}
-          currentUserId={currentUserId}
-        />
-        <BlogContent
-          blogData={blogData}
-          isLoggedIn={isLoggedIn}
-          blogId={blogId}
-          navigate={navigate}
-          currentUserId={currentUserId}
-          activities={activities}
-        />
+        <BreakthroughContainer>
+          <FirstLineContainer>
+            <Title>Let’s Explore all breakthroughs!</Title>
+            <SearchContainer borderColor={borderColor}>
+              <SearchIconButton iconColor={iconColor} onClick={handleSearch}>
+                <FaSearch />
+              </SearchIconButton>
+              <SearchInput
+                type="text"
+                placeholder="Please enter your search term."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !isComposing) {
+                    handleSearch(); // Enter 키를 누르면 검색 실행
+                  }
+                }}
+                onCompositionStart={() => setIsComposing(true)} // IME 입력 시작
+                onCompositionEnd={() => setIsComposing(false)} // IME 입력 종료
+                textColor={textColor} // Apply text color when typing
+              />
+            </SearchContainer>
+          </FirstLineContainer>
+          <List
+            items={filteredData} // 필터링된 데이터 전달
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemClick={handleItemClick}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(filteredData.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+          />
+        </BreakthroughContainer>
       </Container>
     </>
   );
 }
 
-GuidePage.propTypes = {
-  blogId: PropTypes.string.isRequired, // 블로그 ID 필수
-  isLoggedIn: PropTypes.bool.isRequired, // 로그인 여부 필수
-  blogData: PropTypes.object.isRequired, // 블로그 데이터
-};
-
 export default GuidePage;
 
+// Styled Components
 const Container = styled.div`
-  margin: 0vh 20vw 10vh 20vw; /* 좌우 마진을 20vw에서 10vw로 조정하여 반응형 개선 */
+  font-family: "Pretendard";
+  color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 3vh;
-  justify-content: center;
   align-items: center;
-  font-family: "Urbanist";
+`;
+
+const FirstLineContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5vh;
+  width: 100%;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  background: linear-gradient(
+    122.72deg,
+    rgba(79, 79, 79, 0.1) 1.74%,
+    rgba(79, 79, 79, 0.1) 1.75%,
+    rgba(255, 255, 255, 0.1) 33.05%,
+    rgba(79, 79, 79, 0.1) 97.16%
+  );
+  border: 1px solid ${(props) => props.borderColor};
+  backdrop-filter: blur(40px);
+  padding: 1.5vh 0.5vh;
+  border-radius: 20vh;
+  flex-grow: 1; /* 나머지 공간 차지 */
+`;
+
+const SearchInput = styled.input`
+  font-size: 2vh;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: ${(props) => props.textColor}; // Dynamically change the text color
+  padding-left: 1vw;
+  flex: 1;
+`;
+
+const SearchIconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: ${(props) => props.iconColor};
+  cursor: pointer;
+  font-size: 2vh;
+  margin-left: 1vw;
+  &:hover {
+    color: #02f798;
+  }
+`;
+
+const BreakthroughContainer = styled.div`
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: baseline;
+  flex-grow: 1;
+  margin: 0vh 24vw 10vh 24vw;
+`;
+
+const Title = styled.div`
   color: #ffffff;
+  font-size: 3vh;
+  white-space: nowrap; // 줄바꿈 방지
+  align-items: baseline;
+  text-align: left;
+  justify-content: baseline;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3vh;
 `;
