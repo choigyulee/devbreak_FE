@@ -5,92 +5,218 @@ import List from "../../components/Breakthrough/List";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";
 import getHomeArticleLike from "../../APIs/get/getHomeArticleLike";
+import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
+import { FaSearch } from "react-icons/fa";
 
 function LikedBreakthroughs() {
-// 로그인 상태 관리 (로컬 스토리지 사용)
-const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [formData, setFormData] = useState([]);
-const [currentPage, setCurrentPage] = useState(1);
-const navigate = useNavigate();
+  // 로그인 상태 관리 (로컬 스토리지 사용)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [formData, setFormData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]); // 필터링된 데이터
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedLanguage, setSelectedLanguage] = useState(""); // 선택된 언어
+  const [searchQuery, setSearchQuery] = useState(""); // 검색어
+  const [isComposing, setIsComposing] = useState(false); // IME 입력 상태
+  const navigate = useNavigate();
 
-// 로그인 상태를 로컬 스토리지에서 가져오기
-useEffect(() => {
-  const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 세션 스토리지에서 로그인 상태 확인
-  setIsLoggedIn(loggedIn);
-}, []);
+  // 로그인 상태를 로컬 스토리지에서 가져오기
+  useEffect(() => {
+    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 세션 스토리지에서 로그인 상태 확인
+    setIsLoggedIn(loggedIn);
+  }, []);
 
-// API 호출해서 데이터 가져오기
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const data = await getHomeArticleLike(); // API 호출
-      setFormData(data); // 상태에 데이터 저장
-    } catch (error) {
-      console.error("데이터 로딩 실패:", error);
+  // API 호출해서 데이터 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getHomeArticleLike(); // API 호출
+        setFormData(data); // 상태에 데이터 저장
+      } catch (error) {
+        console.error("데이터 로딩 실패:", error);
+      }
+    };
+
+    fetchData(); // 컴포넌트 마운트 시 데이터 로딩
+  }, []);
+
+  // 언어 선택 변경 시 필터링
+  useEffect(() => {
+    const filtered = formData.filter((item) => {
+      const about = item.about || "";
+      return !selectedLanguage || about.toLowerCase() === selectedLanguage.toLowerCase();
+    });
+
+    setFilteredData(filtered);
+    setCurrentPage(1); // 페이지 초기화
+  }, [selectedLanguage, formData]);
+
+  const handleSearch = () => {
+    const filtered = formData.filter((item) => {
+      const title = item.title || "";
+      const blogName = item.blogName || "";
+      return (
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blogName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+
+    if (filtered.length === 0) {
+      alert("There is no Breakthrough!");
+      setSearchQuery("");
+      setFilteredData(formData); // 초기 데이터로 복원
+    } else {
+      setFilteredData(filtered);
     }
+    setCurrentPage(1); // 페이지 초기화
   };
 
-  fetchData(); // 컴포넌트 마운트 시 데이터 로딩
-}, []);
+  const languageOptions = ["Java", "HTML", "JavaScript", "Python", "TypeScript", "Kotlin", "C#", "C++", "CSS", "Swift"];
+  const itemsPerPage = 10;
 
-const itemsPerPage = 10;
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-const handlePageChange = (pageNumber) => {
-  setCurrentPage(pageNumber);
-};
+  const handleItemClick = (articleId) => {
+    navigate(`/breakthrough/${articleId}`);
+  };
 
-const handleItemClick = (articleId) => {
-  navigate(`/breakthrough/${articleId}`); // 해당 articleId로 이동
-};
+  // 검색어와 입력 중에 따라 border 색상 변경
+  const borderColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
+  const iconColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
+  const textColor = searchQuery ? "#02F798" : "#ffffff"; // Change text color if there is a search query
 
-return (
-  <>
-    <NavBar isLoggedIn={isLoggedIn} />
-    <Container>
-      <BreakthroughContainer>
-        <Title>Breakthroughs what you liked</Title>
+  return (
+    <>
+      <NavBar isLoggedIn={isLoggedIn} />
+      <Container>
+        <BreakthroughContainer>
+          <Title>Breakthroughs what you liked</Title>
 
-        <List
-          items={formData}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
-          onItemClick={handleItemClick}
-        />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(formData.length / itemsPerPage)}
-          onPageChange={handlePageChange}
-        />
-      </BreakthroughContainer>
-    </Container>
-  </>
-);
+          <FirstLineContainer>
+            <SearchContainer borderColor={borderColor}>
+              <SearchIconButton iconColor={iconColor} onClick={handleSearch}>
+                <FaSearch />
+              </SearchIconButton>
+              <SearchInput
+                type="text"
+                placeholder="Please enter your search term."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !isComposing) {
+                    handleSearch(); // Enter 키를 누르면 검색 실행
+                  }
+                }}
+                onCompositionStart={() => setIsComposing(true)} // IME 입력 시작
+                onCompositionEnd={() => setIsComposing(false)} // IME 입력 종료
+                textColor={textColor} // Apply text color when typing
+              />
+            </SearchContainer>
+            <LanguageToggle
+              selectedValue={selectedLanguage}
+              items={languageOptions} // `languageOptions`를 items로 전달
+              setSelectedValue={setSelectedLanguage}
+            />
+          </FirstLineContainer>
+          <List
+            items={filteredData} // 필터링된 데이터 전달
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+            onItemClick={handleItemClick}
+          />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(filteredData.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+          />
+        </BreakthroughContainer>
+      </Container>
+    </>
+  );
 }
 
 export default LikedBreakthroughs;
 
+// Styled Components
 const Container = styled.div`
-font-family: "Pretendard";
-color: #ffffff;
-display: flex;
-flex-direction: column;
-align-items: center;
+  font-family: "Pretendard";
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const FirstLineContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5vh;
+  width: 100%;
+`;
+
+const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  background: linear-gradient(
+    122.72deg,
+    rgba(79, 79, 79, 0.1) 1.74%,
+    rgba(79, 79, 79, 0.1) 1.75%,
+    rgba(255, 255, 255, 0.1) 33.05%,
+    rgba(79, 79, 79, 0.1) 97.16%
+  );
+  border: 1px solid ${(props) => props.borderColor};
+  backdrop-filter: blur(40px);
+  padding: 1.5vh 0.5vh;
+  border-radius: 20vh;
+  flex-grow: 1; /* 나머지 공간 차지 */
+`;
+
+const SearchInput = styled.input`
+  font-size: 2vh;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: ${(props) => props.textColor}; // Dynamically change the text color
+  padding-left: 1vw;
+  flex: 1;
+`;
+
+const SearchIconButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: ${(props) => props.iconColor};
+  cursor: pointer;
+  font-size: 2vh;
+  margin-left: 1vw;
+  &:hover {
+    color: #02f798;
+  }
 `;
 
 const BreakthroughContainer = styled.div`
-margin: 3vh 15vw 13vh 15vw;
-width: 75vw;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-flex-grow: 1;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: baseline;
+  flex-grow: 1;
+  margin: 0vh 24vw 10vh 24vw;
 `;
 
 const Title = styled.div`
-color: #ffffff;
-font-size: 25px;
-margin-bottom: 50px;
-min-width: 930px;
+  color: #ffffff;
+  font-size: 3vh;
+  white-space: nowrap; // 줄바꿈 방지
+  align-items: baseline;
+  text-align: left;
+  justify-content: baseline;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3vh;
 `;
