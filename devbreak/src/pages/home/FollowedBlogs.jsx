@@ -71,25 +71,6 @@ function FollowedBlogs() {
         <MyBlogContainer>
           <FirstLineContainer>
             <MyBlogContainerText>Blogs you followed</MyBlogContainerText>
-            <SearchContainer borderColor={borderColor}>
-              <SearchIconButton iconColor={iconColor} onClick={handleSearch}>
-                <FaSearch />
-              </SearchIconButton>
-              <SearchInput
-                type="text"
-                placeholder="Search blog title or description"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !isComposing) {
-                    handleSearch(); // Enter 키를 누르면 검색 실행
-                  }
-                }}
-                onCompositionStart={() => setIsComposing(true)}
-                onCompositionEnd={() => setIsComposing(false)}
-                textColor={textColor}
-              />
-            </SearchContainer>
           </FirstLineContainer>
 
           {loading && <p>Loading blogs...</p>}
@@ -143,48 +124,6 @@ const FirstLineContainer = styled.div`
   justify-content: baseline;
   gap: 1vh;
   margin-bottom: 2vh;
-`;
-
-const SearchContainer = styled.div`
-  display: flex;
-  align-items: center;
-  background: linear-gradient(
-    122.72deg,
-    rgba(79, 79, 79, 0.1) 1.74%,
-    rgba(79, 79, 79, 0.1) 1.75%,
-    rgba(255, 255, 255, 0.1) 33.05%,
-    rgba(79, 79, 79, 0.1) 97.16%
-  );
-  border: 1px solid ${(props) => props.borderColor};
-  backdrop-filter: blur(40px);
-  padding: 1.5vh 0.5vh;
-  border-radius: 20vh;
-  flex-grow: 1;
-`;
-
-const SearchInput = styled.input`
-  font-size: 2vh;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: ${(props) => props.textColor};
-  padding-left: 1vw;
-  flex: 1;
-`;
-
-const SearchIconButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: ${(props) => props.iconColor};
-  cursor: pointer;
-  font-size: 2vh;
-  margin-left: 1vw;
-  &:hover {
-    color: #02f798;
-  }
 `;
 
 const MyBlogItem = styled.div`
