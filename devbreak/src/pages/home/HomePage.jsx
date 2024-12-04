@@ -84,9 +84,11 @@ function HomePage() {
     slidesToScroll: 1, // 한 번에 하나의 슬라이드만 스크롤
     autoplay: true, // 자동 재생
     autoplaySpeed: 3000, // 자동 재생 간격
-    arrows: true, // 좌우 화살표 표시
-    draggable: true, // 슬라이드 드래그 가능
+    arrows: false, // 좌우 화살표 표시
+    draggable: false, // 슬라이드 드래그 가능
+    rtl: true, // 슬라이드 방향을 오른쪽으로 변경
   };
+
   return (
     <>
       <NavBar onLogout={onLogout} isLoggedIn={isLoggedIn} />
@@ -134,6 +136,7 @@ const Container = styled.div`
 `;
 
 const BannerSlider = styled(Slider)`
+  margin-top: -4vh;
   width: 100%;
   height: 50vh; /* 슬라이더 높이를 명확히 지정 */
   overflow: hidden; /* 슬라이더 영역 밖의 요소 숨김 */
