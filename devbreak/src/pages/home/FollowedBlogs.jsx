@@ -130,7 +130,6 @@ const MyBlogContainer = styled.div`
 const MyBlogContainerText = styled.div`
   margin: 0 auto;
   text-align: left;
-  width: 100%;
   min-width: 930px;
   font-size: 3vh;
   line-height: 3vh;
@@ -142,6 +141,7 @@ const FirstLineContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 1vh;
   margin-bottom: 5vh;
   width: 100%;
 `;
