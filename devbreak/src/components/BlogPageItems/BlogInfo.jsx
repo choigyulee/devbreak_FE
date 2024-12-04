@@ -90,10 +90,12 @@ function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
         </NameContainer>
         <DescriptionContainer>
           <BlogDescription>
-            {blogData.description}
-            <IconContainer onClick={handleGitHubClick}>
-              <BsGithub size={24} />
-            </IconContainer>
+            {blogData.description} 
+            {blogId !== '39' && (
+              <IconContainer onClick={handleGitHubClick}>
+                <BsGithub size={24} />
+              </IconContainer>
+            )}
             {isLoggedIn && isMember && (
               <IconContainer>
                 <BsPencil size={24} onClick={handlePencilClick} />
