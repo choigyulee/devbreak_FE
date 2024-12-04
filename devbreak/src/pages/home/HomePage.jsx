@@ -147,7 +147,7 @@ const BannerSlider = styled(Slider)`
 
 const BannerImage = styled.img`
   width: 100%;
-  margin: 1vh;
+  margin: -1vh;
   object-fit: cover; /* 이미지 비율을 유지하며 컨테이너에 맞춤 */
   border-radius: 10px;
 `;
