@@ -153,7 +153,8 @@ const BannerImage = styled.img`
 `;
 
 const ListContainer = styled.div`
-  /* margin-right: -15vw; */
+  margin-right: -15vw;
+  margin-left: -2vh;
 `;
 
 const Title = styled.div`
