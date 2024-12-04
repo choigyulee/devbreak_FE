@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
-import { useAuth } from "../context/AuthContext"; // 로그인 관련 훅
-import getBlogBlogId from "../APIs/get/getBlogBlogId";
-import BlogInfo from "../components/GuidePageItems/BlogInfo";
-import BlogContent from "../components/GuidePageItems/BlogContent";
-import getAuthInfo from "../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API 추가
-import getIssuesAndCommits from "../APIs/get/getIssuesAndCommits"; // 수정된 API 호출
+import { useAuth } from "../../context/AuthContext";
+import getBlogBlogId from "../../APIs/get/getBlogBlogId";
+import BlogInfo from "../../components/BlogPageItems/BlogInfo";
+import BlogContent from "../../components/BlogPageItems/BlogContent";
+import getAuthInfo from "../../APIs/get/getAuthInfo";
+import getIssuesAndCommits from "../../APIs/get/getIssuesAndCommits";
 import NavBar from "../../components/NavBar";
 
 function GuidePage() {
