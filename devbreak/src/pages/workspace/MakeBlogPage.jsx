@@ -272,7 +272,7 @@ const AddButton = styled.button`
   font-size: 20px;
   color: #ffffff;
   background-color: rgba(255, 255, 255, 0.05);
-  margin-bottom: 10px;
+  margin-bottom: 2vh;
 `;
 
 const ContributorsList = styled.div`
