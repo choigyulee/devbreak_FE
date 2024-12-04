@@ -158,6 +158,17 @@ const ContentWrapper = styled.div`
   margin: 0 auto; /* 중앙 정렬 */
   font-family: "Pretendard", sans-serif; /* Pretendard 폰트 적용 */
   line-height: 5vh;
+
+  /* 스크롤바 스타일 */
+  pre {
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #727379;
+      border-radius: 10px;
+    }
+  }
 `;
 
 export default ContentItem;
