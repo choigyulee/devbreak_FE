@@ -1,9 +1,13 @@
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import GoToButton from "../GoToButton";
 import List from "./List";
 import ActivityItem from "./ActivityItem";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import OfficialBlogBox from "../BlogPageItems/OfficialBlogBox";
+import getBlogBlogId from "../../APIs/get/getBlogBlogId";
+
 
 function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, activities }) {
   const isMember = blogData.members.includes(currentUserId);
@@ -18,28 +22,91 @@ function BlogContent({ blogData, isLoggedIn, blogId, navigate, currentUserId, ac
     navigate(`/breakthrough/${articleId}`); // 해당 articleId로 이동
   };
 
+  // 블로그 데이터 상태
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 특정 블로그 데이터를 가져오는 함수
+  const fetchBlogData = async (blogId) => {
+    try {
+      const data = await getBlogBlogId(blogId); // API 호출
+      return data;
+    } catch (err) {
+      console.error("Error fetching blog:", err);
+      throw err;
+    }
+  };
+
+  // 컴포넌트가 마운트될 때 블로그 데이터 가져오기
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      setLoading(true);
+      try {
+        const blog32 = await fetchBlogData("32");
+        const blog38 = await fetchBlogData("38");
+
+        // 블로그 데이터 상태 업데이트
+        setBlogs([blog32, blog38]);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []); // 컴포넌트가 마운트될 때 한 번만 호출
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading blogs: {error.message}</div>;
+  }
+
   return (
     <ContentContainer>
       <LeftColumn>
-        <Section>
-          <SectionTitle>Project Members</SectionTitle>
-          <MembersContainer>
-            {blogData.members.map((member, index) => (
-              <Member key={index}>{member}</Member>
-            ))}
-          </MembersContainer>
-        </Section>
-        <Section>
-          <SectionTitle>Project Repository Activity</SectionTitle>
-          <ActivityContainer>
-            {activitiesToDisplay && activitiesToDisplay.length > 0 ? (
-              activitiesToDisplay.map((activity, index) => <ActivityItem key={index} activity={activity} />)
-            ) : (
-              <NoActivityMessage>There is no Repository Activity!</NoActivityMessage>
-            )}
-          </ActivityContainer>
-        </Section>
+        {blogId !== "39" ? (
+          <>
+            <Section>
+              <SectionTitle>Project Members</SectionTitle>
+              <MembersContainer>
+                {blogData.members.map((member, index) => (
+                  <Member key={index}>{member}</Member>
+                ))}
+              </MembersContainer>
+            </Section>
+            <Section>
+              <SectionTitle>Project Repository Activity</SectionTitle>
+              <ActivityContainer>
+                {activitiesToDisplay && activitiesToDisplay.length > 0 ? (
+                  activitiesToDisplay.map((activity, index) => <ActivityItem key={index} activity={activity} />)
+                ) : (
+                  <NoActivityMessage>There is no Repository Activity!</NoActivityMessage>
+                )}
+              </ActivityContainer>
+            </Section>
+          </>
+        ) : (
+          <Section>
+            <SectionTitle>devbreak Developers' blog</SectionTitle>
+            <>
+              {blogs.map(blog => (
+                <OfficialBlogBox
+                  key={blog.blog_id}
+                  blogId={blog.blog_id}
+                  blogName={blog.blog_name}
+                  description={blog.description}
+                />
+              ))}
+            </>
+          </Section>
+        )}
       </LeftColumn>
+
       <RightColumn>
         <TitleContainer>
           <SectionTitle>The Breakthroughs ({breakThroughs.length})</SectionTitle>
@@ -181,6 +248,7 @@ const MembersContainer = styled.div`
   padding: 2vh;
 `;
 
+
 const Member = styled.div`
   margin-bottom: 1vh;
   font-size: 2vh;
@@ -235,3 +303,4 @@ const StyledIoDocumentTextOutline = styled(IoDocumentTextOutline)`
   font-size: 5vh;
   color: #888;
 `;
+
