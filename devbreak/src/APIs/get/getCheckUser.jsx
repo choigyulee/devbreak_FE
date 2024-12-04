@@ -3,11 +3,10 @@ import axiosInstance from '../axiosInstance';
 
 export default async function getCheckUser(username) {
   try {
-    const response = await axiosInstance.get(`/api/check-user`);
+    const response = await axiosInstance.get(`/api/check-user?username=${username}`);
     return response.data;
   } catch (error) {
     console.error("에러 발생:", error);
     throw error;
   }
 }
-
