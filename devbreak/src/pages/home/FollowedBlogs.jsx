@@ -140,8 +140,9 @@ const FirstLineContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: baseline;
   gap: 1vh;
-  margin-bottom: 1vh;
+  margin-bottom: 2vh;
 `;
 
 const SearchContainer = styled.div`
