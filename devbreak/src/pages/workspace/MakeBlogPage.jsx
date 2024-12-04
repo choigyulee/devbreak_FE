@@ -261,7 +261,7 @@ const FormSemiContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  gap: 2vh;
 `;
 
 const AddButton = styled.button`
@@ -291,16 +291,14 @@ const MemberList = styled.div`
   flex-direction: row;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
-  width: 200px;
-  height: 47px;
-  padding-top: 3.5px;
-  text-align: center;
-  justify-content: center;
+  padding: 1vh;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const MemberItem = styled.div`
-  margin-right: 10px;
-  font-size: 25px;
+  text-align: left;
+  font-size: 2.5vh;
 `;
 
 const DeleteMember = styled.span`
