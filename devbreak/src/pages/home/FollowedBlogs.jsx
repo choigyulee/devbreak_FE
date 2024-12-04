@@ -141,7 +141,7 @@ const FirstLineContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 1vh;
-  margin-bottom: 5vh;
+  margin-bottom: 1vh;
 `;
 
 const SearchContainer = styled.div`
