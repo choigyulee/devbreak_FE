@@ -75,14 +75,16 @@ function HomePage() {
   const bannerImages = ["/image/Banner1.png", "/image/Banner2.png"];
 
   const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: false,
+    dots: false, // 하단 점 표시 비활성화 (선택 사항)
+    infinite: true, // 무한 루프
+    speed: 1000, // 슬라이드 전환 속도 (1초)
+    slidesToShow: 1, // 한 번에 한 개의 슬라이드 표시
+    slidesToScroll: 1, // 한 번에 한 개의 슬라이드 이동
+    autoplay: true, // 자동 슬라이드 활성화
+    autoplaySpeed: 3000, // 3초 간격으로 전환
+    arrows: false, // 이전/다음 화살표 비활성화
+    fade: true, // 페이드 전환
+    draggable: false, // 드래그 비활성화 (사용자 조작 방지)
   };
 
   return (
@@ -133,12 +135,17 @@ const Container = styled.div`
 
 const BannerSlider = styled(Slider)`
   width: 100%;
+  height: 50vh; /* 슬라이더 높이를 명확히 지정 */
   margin-bottom: 4vh;
+  overflow: hidden; /* 슬라이더 영역 밖의 요소 숨김 */
+  .slick-list {
+    overflow: hidden; /* 추가적으로 슬라이더 리스트의 오버플로우 숨김 */
+  }
 `;
 
 const BannerImage = styled.img`
   width: 100%;
-  height: auto;
+  object-fit: cover; /* 이미지 비율을 유지하며 컨테이너에 맞춤 */
   border-radius: 10px;
 `;
 
