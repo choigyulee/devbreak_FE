@@ -10,6 +10,8 @@ import styled from "@emotion/styled";
 import getHomeArticle from "../../APIs/get/getHomeArticle";
 import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 가져오는 함수 임포트
 import Footer from "../../components/Footer";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function HomePage() {
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
@@ -75,17 +77,16 @@ function HomePage() {
   const bannerImages = ["/image/Banner1.png", "/image/Banner2.png"];
 
   const sliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: false,
-    draggable: false,
+    dots: true, // 네비게이션 도트 활성화
+    infinite: true, // 무한 루프
+    speed: 1000, // 슬라이드 전환 속도
+    slidesToShow: 1, // 한 번에 하나의 슬라이드만 보이도록 설정
+    slidesToScroll: 1, // 한 번에 하나의 슬라이드만 스크롤
+    autoplay: true, // 자동 재생
+    autoplaySpeed: 3000, // 자동 재생 간격
+    arrows: true, // 좌우 화살표 표시
+    draggable: true, // 슬라이드 드래그 가능
   };
-
   return (
     <>
       <NavBar onLogout={onLogout} isLoggedIn={isLoggedIn} />
@@ -131,16 +132,13 @@ const Container = styled.div`
   flex-direction: column;
   gap: 7vh;
 `;
+
 const BannerSlider = styled(Slider)`
   width: 100%;
-  height: 50vh;
-  margin-bottom: 4vh;
-  .slick-slide {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 100%; // 슬라이드 높이 명시
+  height: 50vh; /* 슬라이더 높이를 명확히 지정 */
+  overflow: hidden; /* 슬라이더 영역 밖의 요소 숨김 */
+  .slick-list {
+    overflow: hidden; /* 추가적으로 슬라이더 리스트의 오버플로우 숨김 */
   }
 `;
 
