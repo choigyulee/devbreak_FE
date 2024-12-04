@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Slider from "react-slick"; // 슬라이더 라이브러리 임포트
 import NavBar from "../../components/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BlogTenList from "../../components/HomePageItems/BlogTenList";
@@ -71,10 +72,28 @@ function HomePage() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  const bannerImages = ["/image/Banner1.png", "/image/Banner2.png"];
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: false,
+  };
+
   return (
     <>
       <NavBar onLogout={onLogout} isLoggedIn={isLoggedIn} />
       <Container>
+        <BannerSlider {...sliderSettings}>
+          {bannerImages.map((src, index) => (
+            <BannerImage key={index} src={src} alt={`Banner ${index + 1}`} />
+          ))}
+        </BannerSlider>
         <ListContainer>
           <BreakthroughTenList items={data.breakthroughs} />
         </ListContainer>
@@ -104,11 +123,23 @@ function HomePage() {
 
 export default HomePage;
 
+// Styled Components
 const Container = styled.div`
   margin: 0vh 15vw 13vh 15vw;
   display: flex;
   flex-direction: column;
   gap: 7vh;
+`;
+
+const BannerSlider = styled(Slider)`
+  width: 100%;
+  margin-bottom: 4vh;
+`;
+
+const BannerImage = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
 `;
 
 const ListContainer = styled.div`

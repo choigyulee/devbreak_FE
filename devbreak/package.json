@@ -21,8 +21,10 @@
     "react-markdown": "^9.0.1",
     "react-oauth": "^0.0.1",
     "react-router-dom": "^6.27.0",
+    "react-slick": "^0.30.2",
     "rehype-react": "^8.0.0",
     "remark-gfm": "^4.0.0",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.13",
     "typewriter-effect": "^2.21.0"
   },
