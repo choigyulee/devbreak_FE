@@ -83,7 +83,7 @@ function HomePage() {
     slidesToShow: 1, // 한 번에 하나의 슬라이드만 보이도록 설정
     slidesToScroll: 1, // 한 번에 하나의 슬라이드만 스크롤
     autoplay: true, // 자동 재생
-    autoplaySpeed: 3000, // 자동 재생 간격
+    autoplaySpeed: 2500, // 자동 재생 간격
     arrows: false, // 좌우 화살표 표시
     draggable: false, // 슬라이드 드래그 가능
     rtl: true, // 슬라이드 방향을 오른쪽으로 변경

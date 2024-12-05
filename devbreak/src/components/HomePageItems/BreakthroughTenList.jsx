@@ -60,7 +60,7 @@ export default BreakthroughTenList;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: -5vh 3vh 0vh 3vh;
+  margin: -6vh 3vh 0vh 3vh;
   gap: 3vh;
 `;
 
