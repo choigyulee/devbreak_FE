@@ -109,7 +109,7 @@ const Preview = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
   border-radius: 10px;
-  padding: 2vw 2vh;
+  padding: 2vh 2vw;
   color: #ffffff;
   overflow-y: auto;
   height: 100vh;
