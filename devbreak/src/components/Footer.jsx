@@ -10,13 +10,13 @@ const Footer = () => {
         <FooterCopyright>Copyright © 2024 devBreak | Catch Errorping. All rights reserved.</FooterCopyright>
 
         <FooterLinks>
-          <FooterLink href="#" target="_blank">
+          <FooterLink href="https://cake-tumble-2da.notion.site/Terms-153c6efb754180798744e9707c32480d?pvs=4" target="_blank">
             Terms
           </FooterLink>
-          <FooterLink href="#" target="_blank">
+          <FooterLink href="https://cake-tumble-2da.notion.site/Privacy-153c6efb7541809999e8db304d4b80b0?pvs=4" target="_blank">
             Privacy
           </FooterLink>
-          <FooterLink href="#">Security</FooterLink>
+          <FooterLink href="https://cake-tumble-2da.notion.site/Security-153c6efb75418003b094eb2bb2862d7c?pvs=4" target="_blank">Security</FooterLink>
           <StyledLink to="/blog/39">Official</StyledLink>
         </FooterLinks>
 
