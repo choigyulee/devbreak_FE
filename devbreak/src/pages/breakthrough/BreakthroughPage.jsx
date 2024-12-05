@@ -25,18 +25,20 @@ function BreakthroughPage() {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getBreakthrough(); // 데이터 API 호출
-        setFormData(data);
-        setFilteredData(data); // 초기 데이터 설정
-      } catch (error) {
-        console.error("데이터 로딩 실패:", error);
-      }
-    };
+      const fetchData = async () => {
+        try {
+          const data = await getBreakthrough(); // 데이터 API 호출
+          const filteredData = data.filter(item => item.blogId !== 39); // 블로그 ID가 39인 항목 제외
+          setFormData(filteredData);
+          setFilteredData(filteredData); // 초기 데이터 설정
+        } catch (error) {
+          console.error("데이터 로딩 실패:", error);
+        }
+      };
 
     fetchData();
   }, []);
+
 
   // 언어 선택 변경 시 필터링
   useEffect(() => {
