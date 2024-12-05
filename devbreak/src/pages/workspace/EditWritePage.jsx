@@ -13,7 +13,6 @@ import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 import putArticleArticleId from "../../APIs/put/putArtticleArticleId";
 import getArticleArticleId from "../../APIs/get/getArticleArticleId";
-import Footer from "../../components/Footer";
 
 function EditWritePage() {
   const { articleId } = useParams();
@@ -183,7 +182,6 @@ function EditWritePage() {
           </Form>
         </FormContainer>
       </Container>
-      <Footer />
     </>
   );
 }

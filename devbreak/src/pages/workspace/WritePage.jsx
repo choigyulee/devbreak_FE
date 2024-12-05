@@ -12,7 +12,6 @@ import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import postArticle from "../../APIs/post/postArticle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
-import Footer from "../../components/Footer";
 
 function WritePage() {
   const { blogId } = useParams(); // blogId 받아오기
@@ -179,7 +178,6 @@ function WritePage() {
           </Form>
         </FormContainer>
       </Container>
-      <Footer />
     </>
   );
 }

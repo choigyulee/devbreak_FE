@@ -14,7 +14,6 @@ import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import postBlog from "../../APIs/post/postBlog";
 import getCheckUser from "../../APIs/get/getCheckUser";
-import Footer from "../../components/Footer";
 
 function MakeBlogPage() {
   const navigate = useNavigate();
@@ -222,7 +221,6 @@ function MakeBlogPage() {
           </Form>
         </FormContainer>
       </Container>
-      <Footer />
     </>
   );
 }

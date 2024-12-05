@@ -14,7 +14,6 @@ import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 import putBlogBlogId from "../../APIs/put/putBlogBlogId";
-import Footer from "../../components/Footer";
 
 function EditBlogPage() {
   const { blogId } = useParams();
@@ -208,7 +207,6 @@ function EditBlogPage() {
           </Form>
         </FormContainer>
       </Container>
-      <Footer />
     </>
   );
 }

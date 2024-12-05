@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import { useAuth } from "../../context/AuthContext";
 import getHomeBlogLike from "../../APIs/get/getHomeBlogLike";
-import Footer from "../../components/Footer";
 
 function FollowedBlogs() {
   const { isLoggedIn } = useAuth();
@@ -80,7 +79,6 @@ function FollowedBlogs() {
           ))}
         </MyBlogContainer>
       </Container>
-      <Footer />
     </>
   );
 }
