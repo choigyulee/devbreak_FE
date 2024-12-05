@@ -17,22 +17,22 @@ function ContentItem({ children }) {
     del: ({ children }) => <del style={{ textDecoration: "line-through", color: "white" }}>{children}</del>,
     // 헤더
     h1: ({ children }) => (
-      <h1 style={{ fontSize: "3.9vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h1>
+      <h1 style={{ fontSize: "3.9vh", fontWeight: "700", color: "white", margin: "2vh 0" }}>{children}</h1>
     ),
     h2: ({ children }) => (
-      <h2 style={{ fontSize: "3.5vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h2>
+      <h2 style={{ fontSize: "3.5vh", fontWeight: "700", color: "white", margin: "2vh 0" }}>{children}</h2>
     ),
     h3: ({ children }) => (
-      <h3 style={{ fontSize: "3.1vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h3>
+      <h3 style={{ fontSize: "3.1vh", fontWeight: "700", color: "white", margin: "2vh 0" }}>{children}</h3>
     ),
     h4: ({ children }) => (
-      <h4 style={{ fontSize: "2.7vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h4>
+      <h4 style={{ fontSize: "2.7vh", fontWeight: "700", color: "white", margin: "2vh 0" }}>{children}</h4>
     ),
     h5: ({ children }) => (
-      <h5 style={{ fontSize: "2.8vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h5>
+      <h5 style={{ fontSize: "2.8vh", fontWeight: "700", color: "white", margin: "2vh 0" }}>{children}</h5>
     ),
     h6: ({ children }) => (
-      <h6 style={{ fontSize: "2.5vh", fontWeight: "700", color: "white", margin: "1.5vh 0" }}>{children}</h6>
+      <h6 style={{ fontSize: "2.5vh", fontWeight: "700", color: "white", margin: "2vh 0" }}>{children}</h6>
     ),
     // 리스트
     ul: ({ children }) => <ul style={{ listStyleType: "circle", paddingLeft: "2vh", color: "white" }}>{children}</ul>,
@@ -134,7 +134,7 @@ function ContentItem({ children }) {
     ),
     // 텍스트 기본 설정
     p: ({ children }) => (
-      <p style={{ color: "#c9c9c9", margin: "1vh 0", lineHeight: "3.5vh", fontSize: "2.5vh" }}>{children}</p>
+      <p style={{ color: "#c9c9c9", margin: "1vh 0", lineHeight: "4vh", fontSize: "2.5vh" }}>{children}</p>
     ),
   };
 

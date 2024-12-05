@@ -62,7 +62,7 @@ const Editor = styled.div`
   width: 100%;
   textarea {
     width: 100%;
-    height: 50vh;
+    height: 80vh;
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.05);
@@ -109,10 +109,10 @@ const Preview = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
   border-radius: 10px;
-  padding: 15px;
+  padding: 2vh;
   color: #ffffff;
   overflow-y: auto;
-  height: 500px;
+  height: 80vh;
   ::-webkit-scrollbar {
     width: 8px;
   }
