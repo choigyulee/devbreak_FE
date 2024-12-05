@@ -156,7 +156,7 @@ const NavItem = styled.li`
 
   a {
     text-decoration: none;
-    font-size: 1.1vw;
+    font-size: 2vw;
     color: inherit;
     display: block;
     padding: 1rem;
