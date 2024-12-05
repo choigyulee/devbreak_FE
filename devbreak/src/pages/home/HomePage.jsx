@@ -74,7 +74,10 @@ function HomePage() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const bannerImages = ["/image/Banner1.png", "/image/Banner2.png"];
+  const bannerImages = [
+    { src: "/image/Banner1.png", link: "/blog/39" }, // Banner1 링크 추가
+    { src: "/image/Banner2.png" }, // Banner2 링크 추가 (예시)
+  ];
 
   const sliderSettings = {
     dots: true, // 네비게이션 도트 활성화
@@ -94,8 +97,10 @@ function HomePage() {
       <NavBar onLogout={onLogout} isLoggedIn={isLoggedIn} />
       <Container>
         <BannerSlider {...sliderSettings}>
-          {bannerImages.map((src, index) => (
-            <BannerImage key={index} src={src} alt={`Banner ${index + 1}`} />
+          {bannerImages.map((banner, index) => (
+            <Link to={banner.link} key={index}>
+              <BannerImage src={banner.src} alt={`Banner ${index + 1}`} />
+            </Link>
           ))}
         </BannerSlider>
         <ListContainer>
@@ -150,6 +155,7 @@ const BannerImage = styled.img`
   margin: -1vh;
   object-fit: cover; /* 이미지 비율을 유지하며 컨테이너에 맞춤 */
   border-radius: 10px;
+  cursor: pointer; /* 클릭 가능한 아이콘으로 표시 */
 `;
 
 const ListContainer = styled.div`
