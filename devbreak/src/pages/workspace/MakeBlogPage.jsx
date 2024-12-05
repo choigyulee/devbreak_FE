@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable no-undef */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
@@ -12,6 +14,7 @@ import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import postBlog from "../../APIs/post/postBlog";
 import getCheckUser from "../../APIs/get/getCheckUser";
+import Footer from "../../components/Footer";
 
 function MakeBlogPage() {
   const navigate = useNavigate();
@@ -81,10 +84,10 @@ function MakeBlogPage() {
 
   const handleAddContributor = async () => {
     if (newMember.trim() === "") return; // 빈 값은 추가하지 않음
-  
+
     try {
       const checkUserResponse = await getCheckUser(newMember.trim());
-  
+
       if (checkUserResponse.isexists) {
         setFormData((prev) => ({
           ...prev,
@@ -219,6 +222,7 @@ function MakeBlogPage() {
           </Form>
         </FormContainer>
       </Container>
+      <Footer />
     </>
   );
 }

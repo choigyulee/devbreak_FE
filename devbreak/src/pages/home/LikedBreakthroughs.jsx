@@ -7,6 +7,7 @@ import Pagination from "../../components/Breakthrough/Pagination";
 import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
 import { FaSearch } from "react-icons/fa";
 import getHomeArticleLike from "../../APIs/get/getHomeArticleLike";
+import Footer from "../../components/Footer";
 
 function LikedBreakthroughs() {
   // 로그인 상태 관리 (로컬 스토리지 사용)
@@ -133,6 +134,7 @@ function LikedBreakthroughs() {
           />
         </BreakthroughContainer>
       </Container>
+      <Footer />
     </>
   );
 }

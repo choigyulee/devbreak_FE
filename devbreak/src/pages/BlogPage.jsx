@@ -9,6 +9,7 @@ import BlogInfo from "../components/BlogPageItems/BlogInfo";
 import BlogContent from "../components/BlogPageItems/BlogContent";
 import getAuthInfo from "../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API 추가
 import getIssuesAndCommits from "../APIs/get/getIssuesAndCommits"; // 수정된 API 호출
+import Footer from "../components/Footer";
 
 function BlogPage() {
   const { blogId } = useParams(); // 기존에 사용했던 blogId
@@ -89,6 +90,7 @@ function BlogPage() {
           activities={activities}
         />
       </Container>
+      <Footer />
     </>
   );
 }

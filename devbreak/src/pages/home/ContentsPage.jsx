@@ -16,6 +16,7 @@ import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteMo
 import getAuthInfo from "../../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API
 import getCommentArticleId from "../../APIs/get/getCommentArticleId";
 import postComment from "../../APIs/post/postComment";
+import Footer from "../../components/Footer";
 
 function ContentsPage() {
   const { articleId } = useParams();
@@ -157,6 +158,7 @@ function ContentsPage() {
         />
         <LinkItem blogName={article.blogName} blogId={article.blogId} />
       </Container>
+      <Footer />
     </>
   );
 }

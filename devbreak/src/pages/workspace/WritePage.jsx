@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom"; // useParams 추가
 import styled from "@emotion/styled";
@@ -11,6 +12,7 @@ import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import postArticle from "../../APIs/post/postArticle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
+import Footer from "../../components/Footer";
 
 function WritePage() {
   const { blogId } = useParams(); // blogId 받아오기
@@ -59,12 +61,12 @@ function WritePage() {
           console.error("Git repository URL is missing.");
           return;
         }
-        
+
         setGitRepoUrl(git_repo_url); // 상태에 저장
-  
+
         // 확인용 콘솔 로그 추가
         console.log("Fetching issues and commits for URL:", git_repo_url);
-        
+
         // git_repo_url을 이용해 이슈 및 커밋 제목 가져오기
         const issuesData = await getIssuesAndCommitsTitle(git_repo_url);
         setIssuesAndCommits(issuesData); // 이슈 및 커밋 제목 상태에 저장
@@ -177,6 +179,7 @@ function WritePage() {
           </Form>
         </FormContainer>
       </Container>
+      <Footer />
     </>
   );
 }

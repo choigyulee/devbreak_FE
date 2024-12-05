@@ -6,6 +6,7 @@ import GoToButton from "../../components/GoToButton";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useAuth } from "../../context/AuthContext";
 import getBlog from "../../APIs/get/getBlog";
+import Footer from "../../components/Footer";
 
 function WorkspacePage() {
   const { isLoggedIn } = useAuth();
@@ -77,6 +78,7 @@ function WorkspacePage() {
           </CreateContainer>
         )}
       </Container>
+      <Footer />
     </>
   );
 }

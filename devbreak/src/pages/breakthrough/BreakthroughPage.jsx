@@ -7,6 +7,7 @@ import Pagination from "../../components/Breakthrough/Pagination";
 import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
 import getBreakthrough from "../../APIs/get/getBreakthrough";
 import { FaSearch } from "react-icons/fa";
+import Footer from "../../components/Footer";
 
 function BreakthroughPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -130,6 +131,7 @@ function BreakthroughPage() {
           />
         </BreakthroughContainer>
       </Container>
+      <Footer />
     </>
   );
 }

@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import { useAuth } from "../../context/AuthContext";
 import getHomeBlogLike from "../../APIs/get/getHomeBlogLike";
-import { FaSearch } from "react-icons/fa";
+import Footer from "../../components/Footer";
 
 function FollowedBlogs() {
   const { isLoggedIn } = useAuth();
@@ -14,7 +15,6 @@ function FollowedBlogs() {
   const [searchQuery, setSearchQuery] = useState(""); // 검색어
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isComposing, setIsComposing] = useState(false); // IME 입력 상태
 
   useEffect(() => {
     const fetchMyBlogList = async () => {
@@ -60,10 +60,6 @@ function FollowedBlogs() {
     return null; // 로그인 상태가 아니면 내용 표시하지 않음
   }
 
-  const borderColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
-  const iconColor = searchQuery || isComposing ? "#02F798" : "#ffffff85";
-  const textColor = searchQuery ? "#02F798" : "#ffffff";
-
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -84,6 +80,7 @@ function FollowedBlogs() {
           ))}
         </MyBlogContainer>
       </Container>
+      <Footer />
     </>
   );
 }

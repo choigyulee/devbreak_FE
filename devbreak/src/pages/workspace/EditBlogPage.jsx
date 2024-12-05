@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-key */
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
@@ -12,6 +14,7 @@ import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 import putBlogBlogId from "../../APIs/put/putBlogBlogId";
+import Footer from "../../components/Footer";
 
 function EditBlogPage() {
   const { blogId } = useParams();
@@ -163,14 +166,14 @@ function EditBlogPage() {
               />
             </FormField>
 
-              <FormField label="Github repository link | This field cannot be edited." required>
-                <Dropdown
-                  selectedValue={formData.gitRepoUrl}
-                  setSelectedValue={handleGitRepoSelection}
-                  items={githubRepos}
-                  disabled
-                />
-              </FormField>
+            <FormField label="Github repository link | This field cannot be edited." required>
+              <Dropdown
+                selectedValue={formData.gitRepoUrl}
+                setSelectedValue={handleGitRepoSelection}
+                items={githubRepos}
+                disabled
+              />
+            </FormField>
 
             <FormSemiContainer>
               <FormField label="Additional contributors' Github Id" required>
@@ -205,6 +208,7 @@ function EditBlogPage() {
           </Form>
         </FormContainer>
       </Container>
+      <Footer />
     </>
   );
 }

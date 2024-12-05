@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
@@ -12,6 +13,7 @@ import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 import putArticleArticleId from "../../APIs/put/putArtticleArticleId";
 import getArticleArticleId from "../../APIs/get/getArticleArticleId";
+import Footer from "../../components/Footer";
 
 function EditWritePage() {
   const { articleId } = useParams();
@@ -181,6 +183,7 @@ function EditWritePage() {
           </Form>
         </FormContainer>
       </Container>
+      <Footer />
     </>
   );
 }
