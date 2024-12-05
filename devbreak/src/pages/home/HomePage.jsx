@@ -77,6 +77,7 @@ function HomePage() {
   const bannerImages = [
     { src: "/image/Banner1.png", link: "/blog/39" }, // Banner1 링크 추가
     { src: "/image/Banner2.png" }, // Banner2 링크 추가 (예시)
+    { src: "/image/Banner3.png", link: "/breakthrough/25" }, // Banner2 링크 추가 (예시)
   ];
 
   const sliderSettings = {
