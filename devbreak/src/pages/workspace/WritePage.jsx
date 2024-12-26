@@ -7,17 +7,21 @@ import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
 import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
 import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import postArticle from "../../APIs/post/postArticle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../../store/authSlice';
+
 function WritePage() {
   const { blogId } = useParams(); // blogId 받아오기
   const navigate = useNavigate();
 
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const [formData, setFormData] = useState({
     title: "",
