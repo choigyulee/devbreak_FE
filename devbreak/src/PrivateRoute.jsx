@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';  // 여기서 사용
+import { useAuth } from './context/AuthContext';
 
 const PrivateRoute = ({ element }) => {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);  // 인증 상태 확인
+  const { isLoggedIn } = useAuth();
 
   return isLoggedIn ? element : <Navigate to="/login" replace />;
 };
