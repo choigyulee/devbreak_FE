@@ -4,18 +4,13 @@ import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
 import GoToButton from "../../components/GoToButton";
 import { AiFillPlusCircle } from "react-icons/ai";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import getBlog from "../../APIs/get/getBlog";
 import Footer from "../../components/Footer";
 
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../../store/authSlice';
-
-
 function WorkspacePage() {
-  // const { isLoggedIn } = useAuth();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
+  const { isLoggedIn } = useAuth();
+  // const [ isLoggedIn, setIsLoggedIn ] = useState(false);
   const navigate = useNavigate();
 
   const [myBlogList, setMyBlogList] = useState([]);

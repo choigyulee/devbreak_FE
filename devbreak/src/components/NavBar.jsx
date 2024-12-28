@@ -4,60 +4,53 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
 import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
 
-import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from '../store/authSlice';
-
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  // // 로그인 상태를 세션 스토리지의 값으로 초기화
-  // const [isLoggedIn, setIsLoggedIn] = useState(() => {
-  //   const storedAccessToken = sessionStorage.getItem("accessToken");
-  //   const storedRefreshToken = sessionStorage.getItem("refreshToken");
-  //   return !!storedAccessToken && !!storedRefreshToken;
-  // });
-
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);  // Redux 상태로 로그인 여부 가져오기
-  const userName = useSelector(state => state.auth.userName); 
+  // 로그인 상태를 세션 스토리지의 값으로 초기화
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const storedAccessToken = sessionStorage.getItem("accessToken");
+    const storedRefreshToken = sessionStorage.getItem("refreshToken");
+    return !!storedAccessToken && !!storedRefreshToken;
+  });
 
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
-  // useEffect(() => {
-  //   // URL에서 토큰 파라미터 추출
-  //   const params = new URLSearchParams(location.search);
-  //   const accessToken = params.get("accessToken");
-  //   const refreshToken = params.get("refreshToken");
+  useEffect(() => {
+    // URL에서 토큰 파라미터 추출
+    const params = new URLSearchParams(location.search);
+    const accessToken = params.get("accessToken");
+    const refreshToken = params.get("refreshToken");
 
-  //   // URL에 토큰이 있으면 세션 스토리지에 저장
-  //   if (accessToken && refreshToken) {
-  //     sessionStorage.setItem("accessToken", accessToken);
-  //     sessionStorage.setItem("refreshToken", refreshToken);
-  //     sessionStorage.setItem("isLoggedIn", "true");
+    // URL에 토큰이 있으면 세션 스토리지에 저장
+    if (accessToken && refreshToken) {
+      sessionStorage.setItem("accessToken", accessToken);
+      sessionStorage.setItem("refreshToken", refreshToken);
+      sessionStorage.setItem("isLoggedIn", "true");
 
-  //     // 토큰을 저장한 후 URL 파라미터 제거 및 강제 리로드
-  //     sessionStorage.setItem("forceReload", "true");
-  //     navigate("/home", { replace: true });
-  //     window.location.reload();
-  //     return;
-  //   }
+      // 토큰을 저장한 후 URL 파라미터 제거 및 강제 리로드
+      sessionStorage.setItem("forceReload", "true");
+      navigate("/home", { replace: true });
+      window.location.reload();
+      return;
+    }
 
-  //   // 로그인 상태 확인 (토큰 존재 여부로 판단)
-  //   const storedAccessToken = sessionStorage.getItem("accessToken");
-  //   const storedRefreshToken = sessionStorage.getItem("refreshToken");
-  //   const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
+    // 로그인 상태 확인 (토큰 존재 여부로 판단)
+    const storedAccessToken = sessionStorage.getItem("accessToken");
+    const storedRefreshToken = sessionStorage.getItem("refreshToken");
+    const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
 
-  //   // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
-  //   if (currentLoginStatus !== isLoggedIn) {
-  //     setIsLoggedIn(currentLoginStatus);
-  //   }
+    // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
+    if (currentLoginStatus !== isLoggedIn) {
+      setIsLoggedIn(currentLoginStatus);
+    }
 
-  //   // 강제 리로드 로직 (로그인 직후 또는 특정 조건에서)
-  //   if (sessionStorage.getItem("forceReload") === "true") {
-  //     sessionStorage.removeItem("forceReload");
-  //   }
-  // }, [location, navigate, isLoggedIn]);
+    // 강제 리로드 로직 (로그인 직후 또는 특정 조건에서)
+    if (sessionStorage.getItem("forceReload") === "true") {
+      sessionStorage.removeItem("forceReload");
+    }
+  }, [location, navigate, isLoggedIn]);
 
   const handleLogout = () => {
     // 로그아웃 시 모든 토큰 제거
@@ -66,10 +59,9 @@ const NavBar = () => {
     sessionStorage.removeItem("isLoggedIn");
 
     // 강제 리로드 설정
-    // sessionStorage.setItem("forceReload", "true");
-    dispatch(logout());
+    sessionStorage.setItem("forceReload", "true");
 
-    // setIsLoggedIn(false);
+    setIsLoggedIn(false);
     window.location.reload(); // 로그아웃 시 강제 리로드
   };
 

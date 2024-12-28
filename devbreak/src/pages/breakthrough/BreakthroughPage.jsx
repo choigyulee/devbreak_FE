@@ -9,9 +9,6 @@ import getBreakthrough from "../../APIs/get/getBreakthrough";
 import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/Footer";
 
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../../store/authSlice';
-
 function BreakthroughPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState([]); // 전체 데이터
@@ -23,9 +20,7 @@ function BreakthroughPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // const loggedIn = sessionStorage.getItem("isLoggedIn") === "true";
-    const loggedIn = useSelector((state) => state.auth.isLoggedIn);
-
+    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
 

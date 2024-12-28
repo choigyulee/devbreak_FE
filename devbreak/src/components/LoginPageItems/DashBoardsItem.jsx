@@ -2,19 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import DashBoard from './DashBoard';
-// import { useAuth } from '../../context/AuthContext';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../../store/authSlice';
-
+import { useAuth } from '../../context/AuthContext';
 
 const DashBoardsItem = () => {
-  
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
-
-  // const { login } = useAuth();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const { login } = useAuth();
 
   const handleGitHubLogin = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;

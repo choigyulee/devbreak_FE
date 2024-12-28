@@ -3,29 +3,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
-// import { useAuth } from "../context/AuthContext"; // 로그인 관련 훅
+import { useAuth } from "../context/AuthContext"; // 로그인 관련 훅
 import getBlogBlogId from "../APIs/get/getBlogBlogId";
 import BlogInfo from "../components/BlogPageItems/BlogInfo";
 import BlogContent from "../components/BlogPageItems/BlogContent";
 import getAuthInfo from "../APIs/get/getAuthInfo"; // 사용자 정보 가져오는 API 추가
 import getIssuesAndCommits from "../APIs/get/getIssuesAndCommits"; // 수정된 API 호출
 
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../store/authSlice';
-import { setFavButton } from '../store/userSlice';  
-
-
 function BlogPage() {
   const { blogId } = useParams(); // 기존에 사용했던 blogId
   const navigate = useNavigate();
-
-  // const { isLoggedIn, onLogout } = useAuth();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const dispatch = useDispatch();
-  const favButton = useSelector((state) => state.user.favoriteBlogs[blogId]);
-  
+  const { isLoggedIn, onLogout } = useAuth();
   const [blogData, setBlogData] = useState(null);
-  // const [favButton, setFavButton] = useState(false);
+  const [favButton, setFavButton] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [activities, setActivities] = useState([]); // 활동 정보 상태
   const [isLoading, setIsLoading] = useState(false);
@@ -70,10 +60,7 @@ function BlogPage() {
     fetchBlogData(); // 블로그 데이터는 항상 호출
   }, [blogId, isLoggedIn, navigate]);
 
-  // const handleFavButtonClick = () => setFavButton(!favButton);
-  const handleFavButtonClick = () => {
-    dispatch(setFavButton({ blogId, favButton: !favButton }));
-  };
+  const handleFavButtonClick = () => setFavButton(!favButton);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -83,7 +70,7 @@ function BlogPage() {
 
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn}/>
+      <NavBar isLoggedIn={isLoggedIn} onLogout={onLogout} />
       <Container>
         <BlogInfo
           blogData={blogData}
