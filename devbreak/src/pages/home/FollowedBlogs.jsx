@@ -3,11 +3,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavBar";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import getHomeBlogLike from "../../APIs/get/getHomeBlogLike";
 
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../../store/authSlice';
+
 function FollowedBlogs() {
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const navigate = useNavigate();
   const [myBlogList, setMyBlogList] = useState([]);
   const [filteredData, setFilteredData] = useState([]); // 검색 결과 저장
