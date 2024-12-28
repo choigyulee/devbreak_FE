@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import getAuthGithub from '../APIs/get/getAuthGithub';
-import { useAuth } from '../context/AuthContext';
+// import { useAuth } from '../context/AuthContext';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../store/authSlice';
 
 const GithubLogin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { isLoggedIn } = useAuth();
+ 
+  const dispatch = useDispatch(); 
+  // const { isLoggedIn } = useAuth();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   useEffect(() => {
     const handleGithubAuth = async () => {
@@ -19,6 +25,8 @@ const GithubLogin = () => {
         sessionStorage.setItem('accessToken', accessToken);
         sessionStorage.setItem('refreshToken', refreshToken);
         sessionStorage.setItem('isLoggedIn', 'true');
+
+        dispatch(login({ userName })); 
 
         // // 상태 저장이 완료된 것을 확인하고 새로고침
         // window.location.reload();  // 페이지 새로 고침 (리렌더링)
@@ -33,7 +41,7 @@ const GithubLogin = () => {
     };
 
     handleGithubAuth();
-  }, []);
+  }, [dispatch]);
 
   if (loading) {
     return (

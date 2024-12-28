@@ -9,7 +9,7 @@ import ContentItem from "../../components/ContentsPageItems/ContentItem";
 import LikesItem from "../../components/ContentsPageItems/LikesItem";
 import LinkItem from "../../components/ContentsPageItems/LinkItem";
 import CommentItem from "../../components/ContentsPageItems/CommentItem"; // 댓글 컴포넌트 추가
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import putArticleArticleIdLike from "../../APIs/put/putArticleArticleIdLike";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import EditOrDeleteModal from "../../components/ContentsPageItems/EditOrDeleteModal";
@@ -17,10 +17,14 @@ import getAuthInfo from "../../APIs/get/getAuthInfo"; // 사용자 정보 가져
 import getCommentArticleId from "../../APIs/get/getCommentArticleId";
 import postComment from "../../APIs/post/postComment";
 
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../../store/authSlice';
+import { setLiked } from '../../store/userSlice';  
+
 function ContentsPage() {
   const { articleId } = useParams();
   const [article, setArticle] = useState(null);
-  const [liked, setLiked] = useState(false);
+  // const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [isWriter, setIsWriter] = useState(false); // 작성자 여부 상태
@@ -28,7 +32,11 @@ function ContentsPage() {
   const [currentUserId, setCurrentUserId] = useState(null); // 현재 로그인한 사용자 ID 상태
   const [comments, setComments] = useState([]); // 댓글 리스트 상태
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth(); // 로그인 상태 가져오기
+
+  // const { isLoggedIn } = useAuth(); // 로그인 상태 가져오기
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+  const liked = useSelector((state) => state.user.likedArticles[articleId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,13 +47,13 @@ function ContentsPage() {
         setLikeCount(fetchedArticle.likeCount);
 
         // localStorage에서 'liked' 상태를 불러와서 설정
-        const storedLikeStatus = localStorage.getItem(`liked_${articleId}`);
-        if (storedLikeStatus !== null) {
-          setLiked(JSON.parse(storedLikeStatus));
-        } else {
-          setLiked(fetchedArticle.likeButton);
-          localStorage.setItem(`liked_${articleId}`, JSON.stringify(fetchedArticle.likeButton));
-        }
+        // const storedLikeStatus = localStorage.getItem(`liked_${articleId}`);
+        // if (storedLikeStatus !== null) {
+        //   setLiked(JSON.parse(storedLikeStatus));
+        // } else {
+        //   setLiked(fetchedArticle.likeButton);
+        //   localStorage.setItem(`liked_${articleId}`, JSON.stringify(fetchedArticle.likeButton));
+        // }
 
         // 로그인한 경우 사용자 정보와 작성자 여부 체크
         if (isLoggedIn) {
@@ -73,9 +81,10 @@ function ContentsPage() {
     }
     try {
       const updatedData = await putArticleArticleIdLike(articleId);
-      setLiked(updatedData.likeButton);
+      // setLiked(updatedData.likeButton);
       setLikeCount(updatedData.likeCount);
-      localStorage.setItem(`liked_${articleId}`, JSON.stringify(updatedData.likeButton));
+      // localStorage.setItem(`liked_${articleId}`, JSON.stringify(updatedData.likeButton));
+      dispatch(setLiked({ articleId, liked: !liked }));  
     } catch (error) {
       console.error("Error updating like:", error);
     }

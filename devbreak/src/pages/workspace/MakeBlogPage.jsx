@@ -9,15 +9,21 @@ import FormField from "../../components/Workspace/FormField";
 import Input from "../../components/Workspace/Input";
 import TextArea from "../../components/Workspace/TextArea";
 import Dropdown from "../../components/Workspace/Dropdown";
-import { useAuth } from "../../context/AuthContext";
+// import { useAuth } from "../../context/AuthContext";
 import getRepos from "../../APIs/get/getRepos";
 import getAuthInfo from "../../APIs/get/getAuthInfo";
 import postBlog from "../../APIs/post/postBlog";
 import getCheckUser from "../../APIs/get/getCheckUser";
 
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../../store/authSlice';
+
 function MakeBlogPage() {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
+
+  // const { isLoggedIn, logout } = useAuth();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const [formData, setFormData] = useState({
     blogName: "",
     description: "",

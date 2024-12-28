@@ -2,13 +2,18 @@ import styled from "@emotion/styled";
 import { css, keyframes } from '@emotion/react';
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
 import StartPageNavBar from "../components/StartPageItems/StartPageNavBar";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 import { BsArrowRight } from "react-icons/bs";
 import { Link } from "react-router-dom"; 
 
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from '../store/authSlice';
+
 function StartPage() {
 
-  const { isLoggedIn } = useAuth(); 
+  // const { isLoggedIn } = useAuth(); 
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
 
   return (
     <>
