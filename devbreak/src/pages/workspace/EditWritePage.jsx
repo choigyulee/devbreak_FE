@@ -7,22 +7,18 @@ import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
 import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
 import LanguageDropdown from "../../components/WritePageItem/LanguageDropdown";
-// import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import MarkdownEditor from "../../components/WritePageItem/MarkdownEditor ";
 import getIssuesAndCommitsTitle from "../../APIs/get/getIssuseAndCommitsTitle";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 import putArticleArticleId from "../../APIs/put/putArtticleArticleId";
 import getArticleArticleId from "../../APIs/get/getArticleArticleId";
 
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../../store/authSlice';
-
 function EditWritePage() {
   const { articleId } = useParams();
   const navigate = useNavigate();
 
-  // const { isLoggedIn } = useAuth();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const { isLoggedIn } = useAuth();
 
   const [formData, setFormData] = useState({
     title: "",

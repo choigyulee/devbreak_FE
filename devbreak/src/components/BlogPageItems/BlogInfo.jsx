@@ -10,19 +10,10 @@ import StarItem from "./StarItem";
 import putBlogBlogIdFavorites from "../../APIs/put/putBlogBlogIdFavorites";
 import getBlogBlogId from "../../APIs/get/getBlogBlogId";
 
-import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '../../store/authSlice';
-import { setFavButton } from '../../store/userSlice';  
-
 function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const [followed, setFollowed] = useState(false); // 즐겨찾기 상태
-  const followed = useSelector((state) => state.user.favoriteBlogs[blogId]);
-
+  const [followed, setFollowed] = useState(false); // 즐겨찾기 상태
 
   // blogId로 블로그 정보 불러오기
   useEffect(() => {
@@ -30,23 +21,22 @@ function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
       try {
         const blog = await getBlogBlogId(blogId); // API 호출로 블로그 정보 얻기
 
-        // // 로컬 저장소에서 즐겨찾기 상태 확인
-        // const storedFavoriteStatus = localStorage.getItem(`fav_button_${blogId}`);
-        // if (storedFavoriteStatus !== null) {
-        //   setFollowed(JSON.parse(storedFavoriteStatus)); // 로컬 저장소에 저장된 값 사용
-        // } else {
-        //   // 로컬 저장소에 없는 경우 서버에서 받은 fav_button 값으로 설정
-        //   setFollowed(blog.fav_button);
-        //   localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(blog.fav_button)); // 로컬 저장소에 설정
-        // }
-        dispatch(setFavButton({ blogId, favButton: blog.fav_button }));
+        // 로컬 저장소에서 즐겨찾기 상태 확인
+        const storedFavoriteStatus = localStorage.getItem(`fav_button_${blogId}`);
+        if (storedFavoriteStatus !== null) {
+          setFollowed(JSON.parse(storedFavoriteStatus)); // 로컬 저장소에 저장된 값 사용
+        } else {
+          // 로컬 저장소에 없는 경우 서버에서 받은 fav_button 값으로 설정
+          setFollowed(blog.fav_button);
+          localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(blog.fav_button)); // 로컬 저장소에 설정
+        }
       } catch (error) {
         console.error("블로그 즐겨찾기 정보 가져오기 실패:", error);
       }
     };
 
     fetchBlogData();
-  }, [blogId, dispatch]); // blogId가 변경될 때마다 재호출
+  }, [blogId]); // blogId가 변경될 때마다 재호출
 
   // 즐겨찾기 상태 변경
   const handleFollowClick = async () => {
@@ -58,15 +48,14 @@ function BlogInfo({ blogData, isLoggedIn, blogId, currentUserId }) {
 
     try {
       // 즐겨찾기 API 호출 (서버에서 상태 반영)
-      await putBlogBlogIdFavorites(blogId);
+      const updatedBlogData = await putBlogBlogIdFavorites(blogId);
 
       // 상태 반전
       const newFavStatus = !followed;
-      // setFollowed(newFavStatus);
-      dispatch(setFavButton({ blogId, favButton: newFavStatus }));
+      setFollowed(newFavStatus);
 
       // 로컬 저장소에 반영
-      // localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(newFavStatus));
+      localStorage.setItem(`fav_button_${blogId}`, JSON.stringify(newFavStatus));
     } catch (error) {
       console.error("즐겨찾기 업데이트 오류:", error);
     }
