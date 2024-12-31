@@ -26,7 +26,7 @@ function HomePage() {
 
       // 페이지 첫 로드 시 항상 리로드
       if (!Cookies.get("homePageLoaded")) {
-        Cookies.set("homePageLoaded", "true", { expires: 7, path: '/' });
+        Cookies.set("homePageLoaded", "true", { expires: 7, path: '/home' });
         window.location.reload();
         return;
       }

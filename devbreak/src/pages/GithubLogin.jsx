@@ -20,9 +20,9 @@ const GithubLogin = () => {
         // sessionStorage.setItem('accessToken', accessToken);
         // sessionStorage.setItem('refreshToken', refreshToken);
         // sessionStorage.setItem('isLoggedIn', 'true');
-        Cookies.set('accessToken', accessToken, { expires: 7, path: '/' });
-        Cookies.set('refreshToken', refreshToken, { expires: 7, path: '/' });
-        Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
+        Cookies.set('accessToken', accessToken, { expires: 7, path: '/home' });
+        Cookies.set('refreshToken', refreshToken, { expires: 7, path: '/home' });
+        Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/home' });
 
         // // 상태 저장이 완료된 것을 확인하고 새로고침
         // window.location.reload();  // 페이지 새로 고침 (리렌더링)

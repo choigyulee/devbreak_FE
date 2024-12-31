@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
           console.log('Successfully refreshed access token');
 
           // 새로운 액세스 토큰을 쿠키에 저장
-          Cookies.set('accessToken', response.data.accessToken, { expires: 7, path: '/' });
+          Cookies.set('accessToken', response.data.accessToken, { expires: 7, path: '/home' });
 
           // 원래 요청에 새로운 액세스 토큰을 포함하여 재요청
           originalRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
