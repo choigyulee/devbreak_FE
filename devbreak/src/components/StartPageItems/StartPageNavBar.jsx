@@ -4,6 +4,7 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
 import ProfileModal from "../ProfileModal"; // ProfileModal 컴포넌트
 import { useAuth } from "../../context/AuthContext";
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const location = useLocation();
