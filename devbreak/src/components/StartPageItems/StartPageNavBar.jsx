@@ -10,46 +10,30 @@ const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
- // 로그인 상태를 쿠키에서 확인
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const storedAccessToken = Cookies.get("accessToken");
-    const storedRefreshToken = Cookies.get("refreshToken");
-    return !!storedAccessToken && !!storedRefreshToken;
-  });
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
   useEffect(() => {
-    // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
+    // 쿠키에서 로그인 상태 확인
     const storedAccessToken = Cookies.get("accessToken");
     const storedRefreshToken = Cookies.get("refreshToken");
     const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
 
-    // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
-    if (currentLoginStatus !== isLoggedIn) {
-      setIsLoggedIn(currentLoginStatus);
-    }
-  }, [location, isLoggedIn]);
+    // 로그인 상태를 갱신
+    setIsLoggedIn(currentLoginStatus);
+  }, [location]);
 
   const handleLogout = () => {
     // 로그아웃 시 모든 쿠키 제거
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    Cookies.remove("isLoggedIn");
+    Cookies.remove("accessToken", { path: '/' });
+    Cookies.remove("refreshToken", { path: '/' });
+    Cookies.remove("isLoggedIn", { path: '/' });
 
     setIsLoggedIn(false);
     window.location.reload(); // 로그아웃 시 강제 리로드
   };
-
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => !prev); // 프로필 모달 토글
-  };
-
-  const handleWorkspaceClick = () => {
-    if (!isLoggedIn) {
-      alert("Login is required to access this service!\nPlease log in to continue.");
-      navigate("/login"); // 로그인 페이지로 이동
-    }
   };
 
   const handleLogin = () => {
