@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import getAuthGithub from '../APIs/get/getAuthGithub';
 import { useAuth } from '../context/AuthContext';
+import Cookies from 'js-cookie';
 
 const GithubLogin = () => {
   const navigate = useNavigate();
@@ -16,9 +17,12 @@ const GithubLogin = () => {
         const { accessToken, refreshToken } = await getAuthGithub();
         
         // 토큰 저장
-        sessionStorage.setItem('accessToken', accessToken);
-        sessionStorage.setItem('refreshToken', refreshToken);
-        sessionStorage.setItem('isLoggedIn', 'true');
+        // sessionStorage.setItem('accessToken', accessToken);
+        // sessionStorage.setItem('refreshToken', refreshToken);
+        // sessionStorage.setItem('isLoggedIn', 'true');
+        Cookies.set('accessToken', accessToken, { expires: 7, path: '/' });
+        Cookies.set('refreshToken', refreshToken, { expires: 7, path: '/' });
+        Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
 
         // // 상태 저장이 완료된 것을 확인하고 새로고침
         // window.location.reload();  // 페이지 새로 고침 (리렌더링)

@@ -3,63 +3,38 @@ import styled from "@emotion/styled";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
 import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 로그인 상태를 세션 스토리지의 값으로 초기화
+  // 로그인 상태를 쿠키에서 확인
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const storedAccessToken = sessionStorage.getItem("accessToken");
-    const storedRefreshToken = sessionStorage.getItem("refreshToken");
+    const storedAccessToken = Cookies.get("accessToken");
+    const storedRefreshToken = Cookies.get("refreshToken");
     return !!storedAccessToken && !!storedRefreshToken;
   });
 
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
   useEffect(() => {
-    // URL에서 토큰 파라미터 추출
-    const params = new URLSearchParams(location.search);
-    const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
-
-    // URL에 토큰이 있으면 세션 스토리지에 저장
-    if (accessToken && refreshToken) {
-      sessionStorage.setItem("accessToken", accessToken);
-      sessionStorage.setItem("refreshToken", refreshToken);
-      sessionStorage.setItem("isLoggedIn", "true");
-
-      // 토큰을 저장한 후 URL 파라미터 제거 및 강제 리로드
-      sessionStorage.setItem("forceReload", "true");
-      navigate("/home", { replace: true });
-      window.location.reload();
-      return;
-    }
-
-    // 로그인 상태 확인 (토큰 존재 여부로 판단)
-    const storedAccessToken = sessionStorage.getItem("accessToken");
-    const storedRefreshToken = sessionStorage.getItem("refreshToken");
+    // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
+    const storedAccessToken = Cookies.get("accessToken");
+    const storedRefreshToken = Cookies.get("refreshToken");
     const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
 
     // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
     if (currentLoginStatus !== isLoggedIn) {
       setIsLoggedIn(currentLoginStatus);
     }
-
-    // 강제 리로드 로직 (로그인 직후 또는 특정 조건에서)
-    if (sessionStorage.getItem("forceReload") === "true") {
-      sessionStorage.removeItem("forceReload");
-    }
-  }, [location, navigate, isLoggedIn]);
+  }, [location, isLoggedIn]);
 
   const handleLogout = () => {
-    // 로그아웃 시 모든 토큰 제거
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
-    sessionStorage.removeItem("isLoggedIn");
-
-    // 강제 리로드 설정
-    sessionStorage.setItem("forceReload", "true");
+    // 로그아웃 시 모든 쿠키 제거
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+    Cookies.remove("isLoggedIn");
 
     setIsLoggedIn(false);
     window.location.reload(); // 로그아웃 시 강제 리로드
