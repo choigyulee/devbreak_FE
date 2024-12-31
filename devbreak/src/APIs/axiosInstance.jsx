@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
   timeout: 100000,
-  withCredentials: isLoggedIn,
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
