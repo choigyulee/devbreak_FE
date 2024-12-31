@@ -15,7 +15,7 @@ const DashBoardsItem = () => {
 
     // 현재 경로를 쿠키에 저장 (리디렉션용)
     const currentPath = window.location.pathname;
-    Cookies.set('loginRedirectPath', currentPath, { expires: 7, path: '/home' });
+    Cookies.set('loginRedirectPath', currentPath, { expires: 7, path: '/' });
 
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
     window.location.href = githubAuthUrl;
