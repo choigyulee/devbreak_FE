@@ -12,6 +12,7 @@ import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 
 import Footer from "../../components/Footer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Cookies from 'js-cookie';
 
 function HomePage() {
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
