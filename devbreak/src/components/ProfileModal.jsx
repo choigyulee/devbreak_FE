@@ -5,6 +5,7 @@ import getAuthInfo from "../APIs/get/getAuthInfo";
 import postAuthLogout from "../APIs/post/postAuthLogout";
 import deleteAuthDeleteAccount from "../APIs/delete/deleteAuthDeleteAccount";
 import AccountDeleteModal from "./AccountDeleteModal";
+import Cookies from 'js-cookie';
 
 const ProfileModal = ({ onLogout }) => {
   const [githubId, setGithubId] = useState("");  // githubId 상태 관리
@@ -34,7 +35,7 @@ const ProfileModal = ({ onLogout }) => {
       // API로 로그아웃 요청
       await postAuthLogout();
       // 로그아웃 성공 후 로컬 상태 및 세션 스토리지 처리
-      sessionStorage.removeItem("isLoggedIn");
+      Cookies.remove("isLoggedIn");
       setIsLoggedIn(false);
       onLogout(); // 부모 컴포넌트에서 전달된 로그아웃 함수 호출
     } catch (error) {

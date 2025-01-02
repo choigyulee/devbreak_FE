@@ -1,9 +1,10 @@
 // 리프레시 토큰을 사용하여 액세스 토큰 갱신
 import axiosInstance from "../axiosInstance";
+import Cookies from 'js-cookie';
 
 export default async function postAuthRefresh(refreshToken) {
   try {
-    const refreshToken = sessionStorage.getItem('refreshToken');  // 세션 스토리지에서 리프레시 토큰 가져오기
+    const refreshToken = Cookies.get('refreshToken');  // 세션 스토리지에서 리프레시 토큰 가져오기
     if (!refreshToken) {
       throw new Error('No refresh token available');
     }
