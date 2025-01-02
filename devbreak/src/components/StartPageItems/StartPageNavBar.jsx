@@ -19,40 +19,17 @@ const [isLoggedIn, setIsLoggedIn] = useState(() => {
 
 const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
-useEffect(() => {
-  // URL에서 토큰 파라미터 추출
-  const params = new URLSearchParams(location.search);
-  const accessToken = params.get('accessToken');
-  const refreshToken = params.get('refreshToken');
+  useEffect(() => {
+    // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
+    const storedAccessToken = Cookies.get("accessToken");
+    const storedRefreshToken = Cookies.get("refreshToken");
+    const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
 
-  // URL에 토큰이 있으면 세션 스토리지에 저장
-  if (accessToken && refreshToken) {
-    Cookies.set('accessToken', accessToken);
-    Cookies.set('refreshToken', refreshToken);
-    Cookies.set('isLoggedIn', 'true');
-    
-    // 토큰을 저장한 후 URL 파라미터 제거 및 강제 리로드
-    Cookies.set('forceReload', 'true');
-    navigate('/home', { replace: true });
-    window.location.reload();
-    return;
-  }
-
-  // 로그인 상태 확인 (토큰 존재 여부로 판단)
-  const storedAccessToken = Cookies.get('accessToken');
-  const storedRefreshToken = Cookies.get('refreshToken');
-  const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
-  
-  // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
-  if (currentLoginStatus !== isLoggedIn) {
-    setIsLoggedIn(currentLoginStatus);
-  }
-
-  // 강제 리로드 로직 (로그인 직후 또는 특정 조건에서)
-  if (Cookies.get('forceReload') === 'true') {
-    Cookies.remove('forceReload');
-  }
-}, [location, navigate, isLoggedIn]);
+    // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
+    if (currentLoginStatus !== isLoggedIn) {
+      setIsLoggedIn(currentLoginStatus);
+    }
+  }, [location, isLoggedIn]);
 
 const handleLogout = () => {
   // 로그아웃 시 모든 토큰 제거
