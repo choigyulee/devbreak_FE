@@ -10,14 +10,14 @@ const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-// 로그인 상태를 세션 스토리지의 값으로 초기화
-const [isLoggedIn, setIsLoggedIn] = useState(() => {
-  const storedAccessToken = Cookies.get('accessToken');
-  const storedRefreshToken = Cookies.get('refreshToken');
-  return !!storedAccessToken && !!storedRefreshToken;
-});
+  // 로그인 상태를 쿠키의 값으로 초기화
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const storedAccessToken = Cookies.get('accessToken');
+    const storedRefreshToken = Cookies.get('refreshToken');
+    return !!storedAccessToken && !!storedRefreshToken;
+  });
 
-const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
   useEffect(() => {
     // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
@@ -31,29 +31,22 @@ const [isProfileModalOpen, setProfileModalOpen] = useState(false);
     }
   }, [location, isLoggedIn]);
 
-const handleLogout = () => {
-  // 로그아웃 시 모든 토큰 제거
-  Cookies.remove('accessToken');
-  Cookies.remove('refreshToken');
-  Cookies.remove('isLoggedIn');
-  
-  // 강제 리로드 설정
-  Cookies.set('forceReload', 'true');
-  
-  setIsLoggedIn(false);
-  window.location.reload(); // 로그아웃 시 강제 리로드
-};
+  const handleLogout = () => {
+    // 로그아웃 시 모든 토큰 제거
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
+    Cookies.remove('isLoggedIn');
+
+    // 강제 리로드 설정
+    Cookies.set('forceReload', 'true');
+
+    setIsLoggedIn(false);
+    window.location.reload(); // 로그아웃 시 강제 리로드
+  };
 
 
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => !prev); // 프로필 모달 토글
-  };
-
-  const handleWorkspaceClick = () => {
-    if (!isLoggedIn) {
-      alert("Login is required to access this service!\nPlease log in to continue.");
-      navigate("/login"); // 로그인 페이지로 이동
-    }
   };
 
   const handleLogin = () => {
