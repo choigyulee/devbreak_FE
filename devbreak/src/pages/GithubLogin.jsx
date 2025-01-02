@@ -21,20 +21,18 @@ const GithubLogin = () => {
         Cookies.set('refreshToken', refreshToken, { expires: 7, path: '/' });
         Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
 
-        // // 상태 저장이 완료된 것을 확인하고 새로고침
-        // window.location.reload();  // 페이지 새로 고침 (리렌더링)
-        // 상태 저장이 완료된 것을 확인하고 리다이렉트
-        window.location.replace('/home');  // navigate 대신 window.location.replace 사용
+        const loginRedirectPath = Cookies.get('loginRedirectPath') || '/home';
+        navigate(loginRedirectPath);
       } catch (err) {
         console.error('GitHub 인증 실패:', err);
-        window.location.replace('/login');  // 에러 시에도 window.location.replace 사용
+        navigate('/login');  
       } finally {
         setLoading(false);
       }
     };
 
     handleGithubAuth();
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return (
