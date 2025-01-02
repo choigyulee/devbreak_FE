@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 const GithubLogin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { isLoggedIn } = useAuth();
+  const { login } = useAuth();
 
   useEffect(() => {
     const handleGithubAuth = async () => {
@@ -21,7 +21,11 @@ const GithubLogin = () => {
         Cookies.set('refreshToken', refreshToken, { expires: 7, path: '/' });
         Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
 
+        // useAuth의 login 함수를 호출하여 상태 업데이트
+        login(accessToken, refreshToken);
+
         const loginRedirectPath = Cookies.get('loginRedirectPath') || '/home';
+
         navigate(loginRedirectPath);
       } catch (err) {
         console.error('GitHub 인증 실패:', err);
@@ -32,7 +36,7 @@ const GithubLogin = () => {
     };
 
     handleGithubAuth();
-  }, [navigate]);
+  }, [navigate, login]);
 
   if (loading) {
     return (
