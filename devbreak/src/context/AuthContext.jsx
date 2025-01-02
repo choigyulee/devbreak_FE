@@ -19,9 +19,13 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (accessToken, refreshToken) => {
+    console.log("login 함수 호출", { accessToken, refreshToken });
+
     Cookies.set('accessToken', accessToken);  // 액세스 토큰 저장
     Cookies.set('refreshToken', refreshToken); // 리프레시 토큰 저장
+    
     setIsLoggedIn(true);  // 로그인 상태 true로 설정
+    console.log("로그인 상태 변경: ", isLoggedIn);  
   };
 
   const logout = () => {
