@@ -8,6 +8,7 @@ import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
 import getBreakthrough from "../../APIs/get/getBreakthrough";
 import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/Footer";
+import Cookies from 'js-cookie';
 
 function BreakthroughPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,7 +21,7 @@ function BreakthroughPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+    const loggedIn = Cookies.get("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
 

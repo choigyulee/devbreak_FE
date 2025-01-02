@@ -1,5 +1,6 @@
 import axios from 'axios';
 import postAuthRefresh from './post/postAuthRefresh';
+import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
@@ -8,7 +9,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
-    const accessToken = sessionStorage.getItem('accessToken'); // 세션 스토리지에서 액세스 토큰 가져오기
+    const accessToken = Cookies.get('accessToken'); // 세션 스토리지에서 액세스 토큰 가져오기
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -35,8 +36,8 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest); // 요청 재시도
       } catch (refreshError) {
         console.error('Failed to refresh access token:', refreshError);
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('refreshToken');
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
         window.location.href = '/login'; // 로그인 페이지로 리디렉션
         return Promise.reject(refreshError);
       }

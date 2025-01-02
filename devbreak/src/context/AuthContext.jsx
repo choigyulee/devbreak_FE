@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import postAuthRefresh from '../APIs/post/postAuthRefresh';
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext(null);
 
@@ -9,8 +10,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // 초기 로그인 상태 체크
     const checkAuth = () => {
-      const accessToken = sessionStorage.getItem('accessToken');
-      const refreshToken = sessionStorage.getItem('refreshToken');
+      const accessToken = Cookies.get('accessToken');
+      const refreshToken = Cookies.get('refreshToken');
       setIsLoggedIn(!!accessToken && !!refreshToken); // 두 토큰이 모두 존재하면 로그인 상태로 간주
     };
 
@@ -18,15 +19,15 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (accessToken, refreshToken) => {
-    sessionStorage.setItem('accessToken', accessToken);  // 액세스 토큰 저장
-    sessionStorage.setItem('refreshToken', refreshToken); // 리프레시 토큰 저장
+    Cookies.set('accessToken', accessToken);  // 액세스 토큰 저장
+    Cookies.set('refreshToken', refreshToken); // 리프레시 토큰 저장
     setIsLoggedIn(true);  // 로그인 상태 true로 설정
   };
 
   const logout = () => {
     console.log('Logging out, removing tokens');
-    sessionStorage.removeItem('accessToken');
-    sessionStorage.removeItem('refreshToken');
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
     setIsLoggedIn(false); // 로그인 상태 false로 설정
   };
 
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('Refreshing access token using refresh token');
       const accessToken = await postAuthRefresh();
-      sessionStorage.setItem('accessToken', accessToken);
+      Cookies.set('accessToken', accessToken);
       setIsLoggedIn(true);
       console.log('Successfully refreshed access token');
       return accessToken;
