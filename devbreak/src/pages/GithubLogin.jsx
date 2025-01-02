@@ -11,6 +11,7 @@ const GithubLogin = () => {
   const { login } = useAuth();
 
   useEffect(() => {
+    console.log("GithubLogin useEffect 실행됨"); 
     const handleGithubAuth = async () => {
       try {
         console.log("GitHub 인증 시작");
