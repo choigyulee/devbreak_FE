@@ -7,6 +7,7 @@ import Pagination from "../../components/Breakthrough/Pagination";
 import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
 import { FaSearch } from "react-icons/fa";
 import getHomeArticleLike from "../../APIs/get/getHomeArticleLike";
+import Cookies from 'js-cookie';
 
 function LikedBreakthroughs() {
   // 로그인 상태 관리 (로컬 스토리지 사용)
@@ -19,9 +20,9 @@ function LikedBreakthroughs() {
   const [isComposing, setIsComposing] = useState(false); // IME 입력 상태
   const navigate = useNavigate();
 
-  // 로그인 상태를 로컬 스토리지에서 가져오기
+  // 로그인 상태를 쿠키에서 가져오기
   useEffect(() => {
-    const loggedIn = sessionStorage.getItem("isLoggedIn") === "true"; // 세션 스토리지에서 로그인 상태 확인
+    const loggedIn = Cookies.get("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
 

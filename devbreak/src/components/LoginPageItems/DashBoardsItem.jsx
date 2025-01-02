@@ -13,23 +13,17 @@ const DashBoardsItem = () => {
   const handleGitHubLogin = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
 
-    // 현재 경로를 쿠키에 저장 (리디렉션용)
     const currentPath = window.location.pathname;
-    Cookies.set('loginRedirectPath', currentPath, { expires: 7, path: '/home' });
+    Cookies.set('loginRedirectPath', currentPath, { expires: 7, path: '/' });
 
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
     window.location.href = githubAuthUrl;
   };
 
-  // 로그인 성공 시 쿠키에 로그인 상태 저장
+  // 로그인 성공 시 로컬 스토리지에 로그인 상태 저장
   const handleLoginSuccess = (accessToken, refreshToken) => {
     login(accessToken, refreshToken); // 로그인 처리
-
-    // 쿠키에서 리디렉션 경로 가져오기
-    const redirectPath = Cookies.get('loginRedirectPath') || '/home';
-
-    // 로그인 후 해당 경로로 리디렉션
-    navigate(redirectPath);
+    navigate('/home'); // 로그인 후 리디렉션
   };
 
   return (

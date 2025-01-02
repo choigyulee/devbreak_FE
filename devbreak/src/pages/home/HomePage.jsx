@@ -12,6 +12,7 @@ import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 
 import Footer from "../../components/Footer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Cookies from 'js-cookie';
 
 function HomePage() {
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
@@ -22,11 +23,11 @@ function HomePage() {
   // 로그인 상태 확인 및 강제 리로드 로직 개선
   useEffect(() => {
     const checkLoginStatus = () => {
-      const accessToken = Cookies.get("accessToken"); 
+      const accessToken = Cookies.get("accessToken");
 
       // 페이지 첫 로드 시 항상 리로드
       if (!Cookies.get("homePageLoaded")) {
-        Cookies.set("homePageLoaded", "true", { expires: 7, path: '/home' });
+        Cookies.set("homePageLoaded", "true");
         window.location.reload();
         return;
       }
@@ -44,8 +45,8 @@ function HomePage() {
 
   // 로그아웃 함수 수정
   const onLogout = () => {
-    Cookies.remove("accessToken"); // 쿠키에서 accessToken 제거
-    Cookies.remove("refreshToken"); // 쿠키에서 refreshToken 제거
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     Cookies.remove("homePageLoaded"); // 로그아웃 시 리로드 상태 초기화
     setIsLoggedIn(false);
     window.location.reload(); // 로그아웃 후 리로드
