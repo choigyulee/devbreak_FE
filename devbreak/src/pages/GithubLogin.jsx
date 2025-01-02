@@ -13,18 +13,23 @@ const GithubLogin = () => {
   useEffect(() => {
     const handleGithubAuth = async () => {
       try {
+        console.log("GitHub 인증 시작");
         // GitHub OAuth 인증 처리
         const { accessToken, refreshToken } = await getAuthGithub();
+        console.log("GitHub 인증 성공", { accessToken, refreshToken });
         
         // 토큰 저장
         Cookies.set('accessToken', accessToken, { expires: 7, path: '/' });
         Cookies.set('refreshToken', refreshToken, { expires: 7, path: '/' });
         Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
+        console.log("쿠키에 토큰 저장됨");
 
         // useAuth의 login 함수를 호출하여 상태 업데이트
         login(accessToken, refreshToken);
+        console.log("login 함수 호출 후");
 
         const loginRedirectPath = Cookies.get('loginRedirectPath') || '/home';
+        console.log("리디렉션 경로: ", loginRedirectPath);
 
         navigate(loginRedirectPath);
       } catch (err) {
@@ -49,6 +54,8 @@ const GithubLogin = () => {
   return <div>GitHub 로그인 중...</div>;
 };
 
+export default GithubLogin;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -61,5 +68,3 @@ const LoadingText = styled.div`
   font-size: 1.5rem;
   color: #333;
 `;
-
-export default GithubLogin;
