@@ -9,7 +9,7 @@ const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 로그인 상태를 세션 스토리지의 값으로 초기화
+  // 쿠키 보고 로그인 상태 초기화
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const storedAccessToken = Cookies.get("accessToken");
     const storedRefreshToken = Cookies.get("refreshToken");
