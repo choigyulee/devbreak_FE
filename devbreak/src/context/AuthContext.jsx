@@ -43,9 +43,8 @@ export const AuthProvider = ({ children }) => {
   const refreshTokenAndLogin = async () => {
     try {
       const accessToken = await postAuthRefresh();
-      Cookies.set('accessToken', accessToken);
-      setIsLoggedIn(true);
 
+      setIsLoggedIn(true);
       console.log('Successfully refreshed access token');
       return accessToken;
     } catch (error) {
