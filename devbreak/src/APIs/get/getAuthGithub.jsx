@@ -13,16 +13,16 @@ export default async function getAuthGithub() {
 
     // 인증 코드를 백엔드로 전달
     const response = await axiosInstance.get(`/api/auth/github`, {
-      params: { code }
+      params: { code },
+      withCredentials: true, 
     });
 
-    const { accessToken, refreshToken } = response.data;
-    
-    if (!accessToken || !refreshToken) {
-      throw new Error("토큰 데이터가 올바르지 않습니다.");
+    if (response.status === 200) {
+      // 서버에서 쿠키가 자동으로 처리되므로 클라이언트는 쿠키를 직접 저장할 필요 없음
+      console.log("GitHub 인증 성공");
+    } else {
+      throw new Error("GitHub 인증 실패");
     }
-    
-    return { accessToken, refreshToken };
   } catch (error) {
     console.error("GitHub 인증 실패:", error);
     throw error;
