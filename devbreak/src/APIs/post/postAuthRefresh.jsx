@@ -9,7 +9,7 @@ export default async function postAuthRefresh() {
       }
     );
 
-    if (response.status === 200) {
+    if (response.status === 200 && response.data.accessToken) {
       return response.data.accessToken;
     } else {
       throw new Error('리프레시 토큰 갱신 실패');

@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(
         // 리프레시 토큰을 이용해 액세스 토큰 갱신
         const accessToken = await postAuthRefresh(); 
         console.log('Successfully refreshed access token');
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
 
         return axiosInstance(originalRequest); // 요청 재시도
       } catch (refreshError) {
