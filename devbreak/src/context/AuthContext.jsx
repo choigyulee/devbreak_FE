@@ -25,16 +25,11 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    const storedIsLoggedIn = Cookies.get('isLoggedIn') === 'true';
-    if (storedIsLoggedIn) {
-      checkAuthStatus(); // 로그인 상태일 경우에만 유효성 검사
-    } else {
-      setIsLoggedIn(false);
-    }
+    checkAuthStatus();
   }, []);
 
 
-  const login = (accessToken, refreshToken) => {
+  const login = () => {
     setIsLoggedIn(true);
     Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
   };
@@ -50,7 +45,7 @@ export const AuthProvider = ({ children }) => {
       const accessToken = await postAuthRefresh();
       Cookies.set('accessToken', accessToken);
       setIsLoggedIn(true);
-      
+
       console.log('Successfully refreshed access token');
       return accessToken;
     } catch (error) {
