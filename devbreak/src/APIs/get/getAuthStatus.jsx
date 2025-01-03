@@ -9,7 +9,7 @@ export default async function getAuthStatus() {
         withCredentials: true
       }
     )
-    return response.data;
+    return response;
   } catch (error) {
     console.error('에러 발생:', error);
     throw error;

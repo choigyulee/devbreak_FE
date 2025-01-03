@@ -9,11 +9,11 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // 서버에 토큰 유효성 확인 요청
-  useEffect(()=> {
+  useEffect(() => {
     const checkAuthStatus = async () => {
       try {
         const response = await getAuthStatus();
-        
+
         if (response.status === 200 && response.data.isValid) {
           setIsLoggedIn(true);
         } else {
@@ -23,10 +23,15 @@ export const AuthProvider = ({ children }) => {
         console.error('토큰 검증 실패:', error);
         setIsLoggedIn(false);
       }
-      };
+    };
 
-      checkAuthStatus();
-    }, []);
+    const storedIsLoggedIn = Cookies.get('isLoggedIn') === 'true';
+    if (storedIsLoggedIn) {
+      checkAuthStatus(); // 로그인 상태일 경우에만 유효성 검사
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
 
   const login = (accessToken, refreshToken) => {
@@ -42,10 +47,10 @@ export const AuthProvider = ({ children }) => {
   // 리프레시 토큰을 이용해 액세스 토큰 갱신 후 로그인 상태 유지
   const refreshTokenAndLogin = async () => {
     try {
-      console.log('Refreshing access token using refresh token');
       const accessToken = await postAuthRefresh();
       Cookies.set('accessToken', accessToken);
       setIsLoggedIn(true);
+      
       console.log('Successfully refreshed access token');
       return accessToken;
     } catch (error) {
