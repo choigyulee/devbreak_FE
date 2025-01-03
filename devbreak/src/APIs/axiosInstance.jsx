@@ -9,10 +9,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   config => {
-    const accessToken = Cookies.get('accessToken'); // 세션 스토리지에서 액세스 토큰 가져오기
-    if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
-    }
     return config;
   },
   error => Promise.reject(error)
@@ -31,11 +27,10 @@ axiosInstance.interceptors.response.use(
         // 리프레시 토큰을 이용해 액세스 토큰 갱신
         const accessToken = await postAuthRefresh(); 
         console.log('Successfully refreshed access token');
-        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
         return axiosInstance(originalRequest); // 요청 재시도
       } catch (refreshError) {
-        console.error('Failed to refresh access token:', refreshError);
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
         window.location.href = '/login'; // 로그인 페이지로 리디렉션
