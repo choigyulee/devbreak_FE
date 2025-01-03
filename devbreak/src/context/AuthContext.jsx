@@ -1,37 +1,41 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import postAuthRefresh from '../APIs/post/postAuthRefresh';
 import Cookies from 'js-cookie';
+import getAuthStatus from '../APIs/get/getAuthStatus';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    // 초기 로그인 상태 체크
-    const checkAuth = () => {
-      const accessToken = Cookies.get('accessToken');
-      const refreshToken = Cookies.get('refreshToken');
-      setIsLoggedIn(!!accessToken && !!refreshToken); // 두 토큰이 모두 존재하면 로그인 상태로 간주
-    };
+  // 서버에 토큰 유효성 확인 요청
+  useEffect(()=> {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await getAuthStatus();
+        
+        if (response.status === 200 && response.data.isValid) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('토큰 검증 실패:', error);
+        setIsLoggedIn(false);
+      }
+      };
 
-    checkAuth(); // 컴포넌트 로드 시 로그인 상태 체크
-  }, []);
+      checkAuthStatus();
+    }, []);
+
 
   const login = (accessToken, refreshToken) => {
-    console.log("login 함수 호출", { accessToken, refreshToken });
-
-    Cookies.set('accessToken', accessToken);  // 액세스 토큰 저장
-    Cookies.set('refreshToken', refreshToken); // 리프레시 토큰 저장
-    
-    setIsLoggedIn(true);  // 로그인 상태 true로 설정
-    console.log("로그인 상태 변경: ", isLoggedIn);  
+    setIsLoggedIn(true);
+    Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
   };
 
   const logout = () => {
-    console.log('Logging out, removing tokens');
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
+    Cookies.remove('isLoggedIn');
     setIsLoggedIn(false); // 로그인 상태 false로 설정
   };
 

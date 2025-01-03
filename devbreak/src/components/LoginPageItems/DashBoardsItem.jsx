@@ -20,12 +20,6 @@ const DashBoardsItem = () => {
     window.location.href = githubAuthUrl;
   };
 
-  // 로그인 성공 시 로컬 스토리지에 로그인 상태 저장
-  const handleLoginSuccess = (accessToken, refreshToken) => {
-    login(accessToken, refreshToken); // 로그인 처리
-    navigate('/home'); // 로그인 후 리디렉션
-  };
-
   return (
     <ItemBox>
       <DashBoard />
