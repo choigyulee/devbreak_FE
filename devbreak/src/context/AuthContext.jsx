@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import postAuthRefresh from '../APIs/post/postAuthRefresh';
 import Cookies from 'js-cookie';
+import getAuthStatus from '../APIs/get/getAuthStatus';
 
 const AuthContext = createContext(null);
 
@@ -8,6 +9,24 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // 서버에 토큰 유효성 확인 요청
+  useEffect(()=> {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await getAuthStatus();
+        
+        if (response.status === 200 && response.data.isValid) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('토큰 검증 실패:', error);
+        setIsLoggedIn(false);
+      }
+      };
+
+      checkAuthStatus();
+    }, []);
 
 
   const login = (accessToken, refreshToken) => {
