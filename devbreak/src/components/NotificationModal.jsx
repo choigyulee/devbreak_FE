@@ -79,7 +79,7 @@ const Header = styled.h2`
   }
 
   div:last-of-type {
-    font-size: 1.8; /* 두 번째 문구의 크기를 2vw로 설정 */
+    font-size: 1.8vw; /* 두 번째 문구의 크기를 2vw로 설정 */
     font-weight: 400;
 
     strong {
