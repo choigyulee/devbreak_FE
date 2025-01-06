@@ -6,7 +6,10 @@ const NotificationModal = ({ notifications }) => {
     <ModalContainer>
       <DashBoard>
         <Header>
-          Check out your <strong>new notifications!</strong> <span>🔔</span>
+          <div>Check out your</div>
+          <div>
+            <strong>new notifications!</strong> <span>🔔</span>
+          </div>
         </Header>
         <Divider />
         <Content>
@@ -51,12 +54,12 @@ const ModalContainer = styled.div`
 const DashBoard = styled.div`
   box-sizing: border-box;
   padding: 4vh 3vw;
-  width: 40vw;
+  width: 30vw;
   gap: 2vh;
   display: flex;
   flex-direction: column;
   background: rgba(0, 0, 0, 0.9);
-  border: 0.3vh solid #02f798;
+  border: 0.1vh solid #02f798;
   backdrop-filter: blur(5vh);
   border-radius: 2vh;
   color: #ffffff;
@@ -67,9 +70,13 @@ const Header = styled.h2`
   color: #ffffff;
   text-align: left;
   margin-bottom: 2vh;
+  display: flex;
+  font-weight: 400;
+  flex-direction: column;
+  gap: 1vh;
 
   strong {
-    color: #02f798;
+    font-weight: 700;
   }
 
   span {
@@ -87,17 +94,19 @@ const NotificationItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1vh 0;
+  padding: 2vh 0;
 `;
 
 const NotificationText = styled.span`
   font-size: 1.8vh;
-  font-weight: bold;
+  font-weight: 400;
+  width: 80vw;
   color: #ffffff;
 `;
 
 const NotificationTime = styled.span`
   font-size: 1.5vh;
+  width: 15vw;
   color: rgba(255, 255, 255, 0.6);
 `;
 
