@@ -75,12 +75,17 @@ const Header = styled.h2`
   flex-direction: column;
   gap: 0.3vh;
 
+  div {
+    font-size: 3vh;
+    font-weight: 400;
+  }
+
   strong {
     font-weight: 700;
   }
 
   span {
-    font-size: 2vh;
+    font-size: 3vh;
   }
 `;
 
@@ -106,6 +111,7 @@ const NotificationText = styled.span`
 
 const NotificationTime = styled.span`
   font-size: 1.5vh;
+  text-align: right;
   width: 19vw;
   color: rgba(255, 255, 255, 0.6);
 `;
