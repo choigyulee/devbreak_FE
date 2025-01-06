@@ -43,8 +43,8 @@ export default NotificationModal;
 
 const ModalContainer = styled.div`
   position: absolute;
-  top: 10vh;
-  right: 5vw;
+  top: 2vh;
+  right: 2vw;
   z-index: 1000;
   display: flex;
   justify-content: center;
