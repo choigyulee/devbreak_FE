@@ -4,6 +4,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
 import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
+import NotificationModal from "./NotificationModal";
 // import Cookies from "js-cookie";
 
 const NavBar = () => {
@@ -67,6 +68,20 @@ const NavBar = () => {
     navigate("/login"); // 로그인 페이지로 이동
   };
 
+  const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
+
+  const toggleNotificationModal = () => {
+    setNotificationModalOpen((prev) => !prev);
+  };
+
+  const notifications = [
+    { text: "UserName liked your Breakthrough", time: "1 min ago" },
+    { text: "A new breakthrough has been posted to BlogName you follow.", time: "3 min ago" },
+    { text: "A new breakthrough has been posted to BlogName you follow.", time: "10 hours ago" },
+    { text: "You have been invited to BlogName", time: "1 day ago" },
+    { text: "You have been invited to BlogName", time: "2 days ago" },
+  ];
+
   return (
     <NavContainer>
       <Link to="/">
@@ -86,18 +101,8 @@ const NavBar = () => {
       {isLoggedIn ? (
         <LoggedInContainer>
           <LoggedInBtnContainer>
-            <StyledIoMdNotificationsOutline onClick={toggleProfileModal} active={isProfileModalOpen} />
-            {isProfileModalOpen && (
-              <ModalContainer>
-                <ProfileModal
-                  githubId="your_github_id"
-                  onLogout={handleLogout}
-                  onDeleteAccount={() => {
-                    console.log("Account deleted");
-                  }}
-                />
-              </ModalContainer>
-            )}
+            <StyledIoMdNotificationsOutline onClick={toggleNotificationModal} active={isNotificationModalOpen} />
+            {isNotificationModalOpen && <NotificationModal notifications={notifications} />}
           </LoggedInBtnContainer>
           <LoggedInBtnContainer>
             <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
