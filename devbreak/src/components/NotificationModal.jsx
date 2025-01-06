@@ -43,7 +43,7 @@ export default NotificationModal;
 
 const ModalContainer = styled.div`
   position: absolute;
-  top: 2vh;
+  top: 3vh;
   right: 2vw;
   z-index: 1000;
   display: flex;
@@ -53,7 +53,7 @@ const ModalContainer = styled.div`
 
 const DashBoard = styled.div`
   box-sizing: border-box;
-  padding: 4vh 3vw;
+  padding: 4.5vh 3vw 4vh 3vw;
   width: 30vw;
   gap: 2vh;
   display: flex;
@@ -66,10 +66,10 @@ const DashBoard = styled.div`
 `;
 
 const Header = styled.h2`
-  font-size: 2vh;
+  font-size: 3vh;
   color: #ffffff;
   text-align: left;
-  margin-bottom: 2vh;
+  margin-bottom: 1vh;
   display: flex;
   font-weight: 400;
   flex-direction: column;
@@ -94,7 +94,7 @@ const NotificationItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2vh 0;
+  padding: 3vh 0;
 `;
 
 const NotificationText = styled.span`
@@ -106,7 +106,7 @@ const NotificationText = styled.span`
 
 const NotificationTime = styled.span`
   font-size: 1.5vh;
-  width: 18vw;
+  width: 19vw;
   color: rgba(255, 255, 255, 0.6);
 `;
 
