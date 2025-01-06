@@ -58,7 +58,7 @@ const DashBoard = styled.div`
   gap: 2vh;
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.5);
   border: 0.1vh solid #02f798;
   backdrop-filter: blur(5vh);
   border-radius: 2vh;
@@ -73,14 +73,14 @@ const Header = styled.h2`
   display: flex;
   font-weight: 400;
   flex-direction: column;
-  gap: 1vh;
+  gap: 0.3vh;
 
   strong {
     font-weight: 700;
   }
 
   span {
-    font-size: 3vh;
+    font-size: 2vh;
   }
 `;
 
@@ -106,7 +106,7 @@ const NotificationText = styled.span`
 
 const NotificationTime = styled.span`
   font-size: 1.5vh;
-  width: 15vw;
+  width: 18vw;
   color: rgba(255, 255, 255, 0.6);
 `;
 
@@ -119,7 +119,7 @@ const ReadMoreButton = styled.button`
   background: transparent;
   color: #ffffff;
   padding: 1.5vh 3vw;
-  font-size: 2vh;
+  font-size: 3vh;
   font-weight: 700;
   cursor: pointer;
   text-align: center;

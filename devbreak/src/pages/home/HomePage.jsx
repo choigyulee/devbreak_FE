@@ -139,7 +139,7 @@ const Container = styled.div`
   margin: 0vh 15vw 13vh 15vw;
   display: flex;
   flex-direction: column;
-  gap: 7vh;
+  gap: 8vh;
 `;
 
 const BannerSlider = styled(Slider)`
