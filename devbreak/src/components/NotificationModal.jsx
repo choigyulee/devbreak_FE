@@ -43,7 +43,7 @@ export default NotificationModal;
 
 const ModalContainer = styled.div`
   position: absolute;
-  top: 4vh;
+  top: 5vh;
   right: 0vw;
   z-index: 1000;
   display: flex;
@@ -74,12 +74,12 @@ const Header = styled.h2`
   gap: 0.3vh;
 
   div:first-of-type {
-    font-size: 1vw; /* 첫 번째 문구의 크기를 1vw로 설정 */
+    font-size: 1.5vw; /* 첫 번째 문구의 크기를 1vw로 설정 */
     font-weight: 400;
   }
 
   div:last-of-type {
-    font-size: 2vw; /* 두 번째 문구의 크기를 2vw로 설정 */
+    font-size: 1.8; /* 두 번째 문구의 크기를 2vw로 설정 */
     font-weight: 400;
 
     strong {
