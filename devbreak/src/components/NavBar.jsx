@@ -1,9 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
 import styled from "@emotion/styled";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect } from "react";
 import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const location = useLocation();
@@ -75,20 +76,36 @@ const NavBar = () => {
         </NavItem>
       </NavItems>
       {isLoggedIn ? (
-        <ProfileContainer>
-          <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
-          {isProfileModalOpen && (
-            <ProfileModalContainer>
-              <ProfileModal
-                githubId="your_github_id"
-                onLogout={handleLogout}
-                onDeleteAccount={() => {
-                  console.log("Account deleted");
-                }}
-              />
-            </ProfileModalContainer>
-          )}
-        </ProfileContainer>
+        <LoggedInContainer>
+          <LoggedInBtnContainer>
+            <StyledIoMdNotificationsOutline onClick={toggleProfileModal} active={isProfileModalOpen} />
+            {isProfileModalOpen && (
+              <ModalContainer>
+                <ProfileModal
+                  githubId="your_github_id"
+                  onLogout={handleLogout}
+                  onDeleteAccount={() => {
+                    console.log("Account deleted");
+                  }}
+                />
+              </ModalContainer>
+            )}
+          </LoggedInBtnContainer>
+          <LoggedInBtnContainer>
+            <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
+            {isProfileModalOpen && (
+              <ModalContainer>
+                <ProfileModal
+                  githubId="your_github_id"
+                  onLogout={handleLogout}
+                  onDeleteAccount={() => {
+                    console.log("Account deleted");
+                  }}
+                />
+              </ModalContainer>
+            )}
+          </LoggedInBtnContainer>
+        </LoggedInContainer>
       ) : (
         <ButtonContainer onClick={handleLogin}>
           <Link to="/login">Login</Link>
@@ -145,23 +162,39 @@ const NavItem = styled.li`
   }
 `;
 
-const ProfileContainer = styled.div`
+const LoggedInContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+`;
+
+const LoggedInBtnContainer = styled.div`
   position: relative; // 상대 위치 설정
   display: flex;
   align-items: center; // 아이콘과 모달을 수직 정렬
 `;
 
-const ProfileModalContainer = styled.div`
+const ModalContainer = styled.div`
   position: absolute; // 절대 위치 설정
   top: 5vh; // NavBar 위쪽에 위치
   right: 0; // 아이콘과의 간격 조정
   z-index: 1000; // 다른 요소 위에 표시
 `;
 
-const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
+const StyledIoMdNotificationsOutline = styled(IoMdNotificationsOutline)`
   height: 2vw;
   width: 2vw;
   margin-left: 13vw;
+  cursor: pointer;
+  color: ${(props) => (props.active ? "#02f798" : "#ffffff")}; // active 상태에 따라 색상 변경
+  &:hover {
+    color: #02f798;
+  }
+`;
+
+const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
+  height: 2vw;
+  width: 2vw;
   cursor: pointer;
   color: ${(props) => (props.active ? "#02f798" : "#ffffff")}; // active 상태에 따라 색상 변경
   &:hover {
