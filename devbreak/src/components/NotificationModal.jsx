@@ -1,21 +1,28 @@
 import styled from "@emotion/styled";
-import PropTypes from "prop-types"; // prop-types 추가
+import PropTypes from "prop-types";
 
 const NotificationModal = ({ notifications }) => {
   return (
-    <ModalWrapper>
-      <Header>
-        <Title>Check out your new notifications! 📣</Title>
-      </Header>
-      <Content>
-        {notifications.map((notification, index) => (
-          <NotificationItem key={index}>
-            <NotificationText>{notification.text}</NotificationText>
-            <NotificationTime>{notification.time}</NotificationTime>
-          </NotificationItem>
-        ))}
-      </Content>
-    </ModalWrapper>
+    <ModalContainer>
+      <DashBoard>
+        <Header>
+          Check out your <strong>new notifications!</strong> <span>🔔</span>
+        </Header>
+        <Divider />
+        <Content>
+          {notifications.map((notification, index) => (
+            <div key={index}>
+              <NotificationItem>
+                <NotificationText>{notification.text}</NotificationText>
+                <NotificationTime>{notification.time}</NotificationTime>
+              </NotificationItem>
+              <Divider /> {/* 모든 NotificationItem 아래에 Divider 추가 */}
+            </div>
+          ))}
+        </Content>
+        <ReadMoreButton>Read more</ReadMoreButton>
+      </DashBoard>
+    </ModalContainer>
   );
 };
 
@@ -31,48 +38,85 @@ NotificationModal.propTypes = {
 
 export default NotificationModal;
 
-const ModalWrapper = styled.div`
+const ModalContainer = styled.div`
   position: absolute;
-  right: -10vw;
-  bottom: -10vh;
-  width: 20vw;
-  background: rgba(30, 30, 30, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  color: white;
-  padding: 1rem;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  top: 10vh;
+  right: 5vw;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const Header = styled.div`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
+const DashBoard = styled.div`
+  box-sizing: border-box;
+  padding: 4vh 3vw;
+  width: 40vw;
+  gap: 2vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.9);
+  border: 0.3vh solid #02f798;
+  backdrop-filter: blur(5vh);
+  border-radius: 2vh;
+  color: #ffffff;
 `;
 
-const Title = styled.h4`
-  margin: 0;
-  font-size: 1.2rem;
+const Header = styled.h2`
+  font-size: 2vh;
+  color: #ffffff;
+  text-align: left;
+  margin-bottom: 2vh;
+
+  strong {
+    color: #02f798;
+  }
+
+  span {
+    font-size: 3vh;
+  }
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0; /* Divider로 구분되므로 gap 제거 */
 `;
 
 const NotificationItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1vh 0;
 `;
 
 const NotificationText = styled.span`
-  font-size: 0.9rem;
+  font-size: 1.8vh;
+  font-weight: bold;
+  color: #ffffff;
 `;
 
 const NotificationTime = styled.span`
-  font-size: 0.8rem;
+  font-size: 1.5vh;
   color: rgba(255, 255, 255, 0.6);
+`;
+
+const Divider = styled.hr`
+  border: 0.1vh solid #ffffff;
+  margin: 0;
+`;
+
+const ReadMoreButton = styled.button`
+  background: transparent;
+  color: #ffffff;
+  padding: 1.5vh 3vw;
+  font-size: 2vh;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 2vh;
+
+  &:hover {
+    color: #02f798;
+  }
 `;

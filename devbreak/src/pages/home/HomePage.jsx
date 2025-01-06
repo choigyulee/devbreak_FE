@@ -12,7 +12,7 @@ import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 
 import Footer from "../../components/Footer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 function HomePage() {
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
@@ -145,7 +145,6 @@ const Container = styled.div`
 const BannerSlider = styled(Slider)`
   margin-top: -4vh;
   width: 100%;
-  height: 50vh; /* 슬라이더 높이를 명확히 지정 */
   overflow: hidden; /* 슬라이더 영역 밖의 요소 숨김 */
   .slick-list {
     overflow: hidden; /* 추가적으로 슬라이더 리스트의 오버플로우 숨김 */
