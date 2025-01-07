@@ -2,8 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigat
 import styled from "@emotion/styled";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineUserCircle } from "react-icons/hi2";
-import { useState, useEffect } from "react";
-import ProfileModal from "./ProfileModal"; // ProfileModal 컴포넌트
+import { useState, useEffect, useRef } from "react";
+import ProfileModal from "./ProfileModal";
 import NotificationModal from "./NotificationModal";
 // import Cookies from "js-cookie";
 
@@ -12,10 +12,10 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   // 로그인 상태를 임시로 항상 true로 설정
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // 항상 로그인 상태로 가정
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const handleLogout = () => {
-    console.log("Logout function triggered"); // 로그아웃 기능 테스트 용도
+    console.log("Logout function triggered");
     setIsLoggedIn(false);
   };
 
@@ -52,26 +52,52 @@ const NavBar = () => {
   // };
 
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
+
+  // 모달 닫힘 처리를 위한 ref
+  const profileModalRef = useRef(null);
+  const notificationModalRef = useRef(null);
+
+  // 클릭 외부 감지를 위한 useEffect
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileModalRef.current && !profileModalRef.current.contains(event.target)) {
+        setProfileModalOpen(false);
+      }
+      if (notificationModalRef.current && !notificationModalRef.current.contains(event.target)) {
+        setNotificationModalOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleProfileModal = () => {
-    setProfileModalOpen((prev) => !prev); // 프로필 모달 토글
+    setProfileModalOpen((prev) => {
+      if (!prev) setNotificationModalOpen(false); // 다른 모달 닫기
+      return !prev;
+    });
+  };
+
+  const toggleNotificationModal = () => {
+    setNotificationModalOpen((prev) => {
+      if (!prev) setProfileModalOpen(false); // 다른 모달 닫기
+      return !prev;
+    });
   };
 
   const handleWorkspaceClick = () => {
     if (!isLoggedIn) {
       alert("Login is required to access this service!\nPlease log in to continue.");
-      navigate("/login"); // 로그인 페이지로 이동
+      navigate("/login");
     }
   };
 
   const handleLogin = () => {
-    navigate("/login"); // 로그인 페이지로 이동
-  };
-
-  const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
-
-  const toggleNotificationModal = () => {
-    setNotificationModalOpen((prev) => !prev);
+    navigate("/login");
   };
 
   const notifications = [
@@ -100,7 +126,7 @@ const NavBar = () => {
       </NavItems>
       {isLoggedIn ? (
         <LoggedInContainer>
-          <LoggedInBtnContainer>
+          <LoggedInBtnContainer ref={notificationModalRef}>
             <StyledIoMdNotificationsOutlineContainer onClick={toggleNotificationModal}>
               <StyledIoMdNotificationsOutline active={isNotificationModalOpen} />
               {notifications.length > 0 && (
@@ -109,7 +135,7 @@ const NavBar = () => {
             </StyledIoMdNotificationsOutlineContainer>
             {isNotificationModalOpen && <NotificationModal notifications={notifications} />}
           </LoggedInBtnContainer>
-          <LoggedInBtnContainer>
+          <LoggedInBtnContainer ref={profileModalRef}>
             <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
             {isProfileModalOpen && (
               <ModalContainer>
