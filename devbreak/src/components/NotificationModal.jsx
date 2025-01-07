@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
 const NotificationModal = ({ notifications }) => {
-  const visibleNotifications = notifications.slice(0, 3);
+  const visibleNotifications = notifications.slice(0, 4);
 
   return (
     <ModalContainer>
@@ -104,7 +104,7 @@ const NotificationText = styled.span`
 `;
 
 const NotificationTime = styled.span`
-  font-size: 0.6vw;
+  font-size: 0.8vw;
   text-align: right;
   width: 19vw;
   color: rgba(255, 255, 255, 0.6);
