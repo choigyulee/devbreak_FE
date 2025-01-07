@@ -202,6 +202,7 @@ const StyledIoMdNotificationsOutlineContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  z-index: 1;
   cursor: pointer;
 `;
 
@@ -209,11 +210,11 @@ const NotificationBadge = styled.div`
   position: absolute;
   top: -0.3vw; // 아이콘의 상단에 위치
   right: -0.3vw; // 아이콘의 오른쪽에 위치
-  width: 0.7vw; // 빨간 원의 크기
-  height: 0.7vw;
-  background-color: red; // 빨간색
+  width: 0.5vw; // 빨간 원의 크기
+  height: 0.5vw;
+  z-index: 1000;
+  background-color: #ff4f4f; // 빨간색
   border-radius: 50%; // 원형으로 설정
-  border: 1px solid white; // 테두리로 깔끔하게 정리
   display: ${({ active, hasNotifications }) =>
     !active && hasNotifications ? "block" : "none"}; // active 상태가 아니고, 알림이 있을 때만 표시
 `;
