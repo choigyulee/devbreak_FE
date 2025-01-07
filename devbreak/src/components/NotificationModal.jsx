@@ -53,8 +53,8 @@ const ModalContainer = styled.div`
 
 const DashBoard = styled.div`
   box-sizing: border-box;
-  padding: 4.5vh 3vw 4vh 3vw;
-  width: 28vw;
+  padding: 4vh 3vw 4vh 3vw;
+  width: 25vw;
   gap: 2vh;
   display: flex;
   flex-direction: column;
@@ -107,14 +107,14 @@ const NotificationItem = styled.div`
 `;
 
 const NotificationText = styled.span`
-  font-size: 1.7vh;
+  font-size: 1.2vw;
   font-weight: 400;
   width: 80vw;
   color: #ffffff;
 `;
 
 const NotificationTime = styled.span`
-  font-size: 1.2vh;
+  font-size: 1vw;
   text-align: right;
   width: 19vw;
   color: rgba(255, 255, 255, 0.6);
@@ -128,8 +128,8 @@ const Divider = styled.hr`
 const ReadMoreButton = styled.button`
   background: transparent;
   color: #ffffff;
-  padding: 1.5vh 3vw;
-  font-size: 3vh;
+  padding: 1vh 3vw;
+  font-size: 1.5vw;
   font-weight: 700;
   cursor: pointer;
   text-align: center;
