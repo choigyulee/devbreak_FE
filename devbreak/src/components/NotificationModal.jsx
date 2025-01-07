@@ -68,8 +68,8 @@ const Header = styled.h2`
   text-align: left;
   margin-bottom: 0.5vh;
   display: flex;
-  flex-direction: column;
-  gap: 0.3vh;
+  flex-direction: row;
+  gap: 0.1vh;
 
   strong {
     font-weight: 700;
