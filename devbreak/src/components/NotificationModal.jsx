@@ -107,14 +107,14 @@ const NotificationItem = styled.div`
 `;
 
 const NotificationText = styled.span`
-  font-size: 1.2vw;
+  font-size: 1vw;
   font-weight: 400;
   width: 80vw;
   color: #ffffff;
 `;
 
 const NotificationTime = styled.span`
-  font-size: 1vw;
+  font-size: 0.6vw;
   text-align: right;
   width: 19vw;
   color: rgba(255, 255, 255, 0.6);
@@ -128,7 +128,7 @@ const Divider = styled.hr`
 const ReadMoreButton = styled.button`
   background: transparent;
   color: #ffffff;
-  padding: 1vh 3vw;
+  padding: 0.5vh 3vw;
   font-size: 1.5vw;
   font-weight: 700;
   cursor: pointer;
