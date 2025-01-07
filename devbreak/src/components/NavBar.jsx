@@ -58,7 +58,7 @@ const NavBar = () => {
   const profileModalRef = useRef(null);
   const notificationModalRef = useRef(null);
 
-  // 클릭 외부 감지를 위한 useEffect
+  // 클릭 외부 감지 및 모달 상태 초기화를 위한 useEffect
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileModalRef.current && !profileModalRef.current.contains(event.target)) {
@@ -69,11 +69,27 @@ const NavBar = () => {
       }
     };
 
+    const handleGlobalClick = () => {
+      // 전역 클릭 이벤트로 모든 모달 닫기
+      setProfileModalOpen(false);
+      setNotificationModalOpen(false);
+    };
+
+    // 외부 클릭 및 다른 동작 감지
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleGlobalClick);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleGlobalClick);
     };
   }, []);
+
+  // 네비게이션 경로 변경 시 모든 모달 닫기
+  useEffect(() => {
+    setProfileModalOpen(false);
+    setNotificationModalOpen(false);
+  }, [location]);
 
   const toggleProfileModal = () => {
     setProfileModalOpen((prev) => {
@@ -102,8 +118,14 @@ const NavBar = () => {
 
   const notifications = [
     { text: "UserName liked your Breakthrough", time: "1 min ago" },
-    { text: "A new breakthrough has been posted to BlogName you follow.", time: "3 min ago" },
-    { text: "A new breakthrough has been posted to BlogName you follow.", time: "10 hours ago" },
+    {
+      text: "A new breakthrough has been posted to BlogName you follow.",
+      time: "3 min ago",
+    },
+    {
+      text: "A new breakthrough has been posted to BlogName you follow.",
+      time: "10 hours ago",
+    },
     { text: "You have been invited to BlogName", time: "1 day ago" },
     { text: "You have been invited to BlogName", time: "2 days ago" },
   ];
