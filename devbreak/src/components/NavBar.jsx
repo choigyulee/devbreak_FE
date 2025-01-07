@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineUserCircle } from "react-icons/hi2";
@@ -13,11 +13,6 @@ const NavBar = () => {
 
   // 로그인 상태를 임시로 항상 true로 설정
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-
-  const handleLogout = () => {
-    console.log("Logout function triggered");
-    setIsLoggedIn(false);
-  };
 
   // // 쿠키 보고 로그인 상태 초기화
   // const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -51,6 +46,7 @@ const NavBar = () => {
   //   window.location.reload(); // 로그아웃 시 강제 리로드
   // };
 
+  // 모달 상태 관리
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
 
@@ -58,47 +54,47 @@ const NavBar = () => {
   const profileModalRef = useRef(null);
   const notificationModalRef = useRef(null);
 
-  // 클릭 외부 감지 및 모달 상태 초기화를 위한 useEffect
+  // 모든 모달 닫기 함수
+  const closeAllModals = () => {
+    setProfileModalOpen(false);
+    setNotificationModalOpen(false);
+  };
+
+  // 외부 클릭 감지 및 모달 상태 초기화
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (profileModalRef.current && !profileModalRef.current.contains(event.target)) {
-        setProfileModalOpen(false);
-      }
-      if (notificationModalRef.current && !notificationModalRef.current.contains(event.target)) {
-        setNotificationModalOpen(false);
+      if (
+        profileModalRef.current &&
+        !profileModalRef.current.contains(event.target) &&
+        notificationModalRef.current &&
+        !notificationModalRef.current.contains(event.target)
+      ) {
+        closeAllModals();
       }
     };
 
-    const handleGlobalClick = () => {
-      // 전역 클릭 이벤트로 모든 모달 닫기
-      setProfileModalOpen(false);
-      setNotificationModalOpen(false);
-    };
-
-    // 외부 클릭 및 다른 동작 감지
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("click", handleGlobalClick);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("click", handleGlobalClick);
     };
   }, []);
 
-  // 네비게이션 경로 변경 시 모든 모달 닫기
+  // 경로 변경 시 모든 모달 닫기
   useEffect(() => {
-    setProfileModalOpen(false);
-    setNotificationModalOpen(false);
+    closeAllModals();
   }, [location]);
 
-  const toggleProfileModal = () => {
+  // 모달 토글 함수
+  const toggleProfileModal = (event) => {
+    event.stopPropagation(); // 이벤트 버블링 방지
     setProfileModalOpen((prev) => {
       if (!prev) setNotificationModalOpen(false); // 다른 모달 닫기
       return !prev;
     });
   };
 
-  const toggleNotificationModal = () => {
+  const toggleNotificationModal = (event) => {
+    event.stopPropagation(); // 이벤트 버블링 방지
     setNotificationModalOpen((prev) => {
       if (!prev) setProfileModalOpen(false); // 다른 모달 닫기
       return !prev;
@@ -116,16 +112,15 @@ const NavBar = () => {
     navigate("/login");
   };
 
+  const handleLogout = () => {
+    console.log("Logout function triggered");
+    setIsLoggedIn(false);
+  };
+
   const notifications = [
     { text: "UserName liked your Breakthrough", time: "1 min ago" },
-    {
-      text: "A new breakthrough has been posted to BlogName you follow.",
-      time: "3 min ago",
-    },
-    {
-      text: "A new breakthrough has been posted to BlogName you follow.",
-      time: "10 hours ago",
-    },
+    { text: "A new breakthrough has been posted to BlogName you follow.", time: "3 min ago" },
+    { text: "A new breakthrough has been posted to BlogName you follow.", time: "10 hours ago" },
     { text: "You have been invited to BlogName", time: "1 day ago" },
     { text: "You have been invited to BlogName", time: "2 days ago" },
   ];
