@@ -22,7 +22,7 @@ const NotificationModal = ({ notifications }) => {
             </div>
           ))}
         </Content>
-        {notifications.length >= 4 && <ReadMoreButton>Read more</ReadMoreButton>}
+        {notifications.length > 4 && <ReadMoreButton>Read more</ReadMoreButton>}
       </DashBoard>
     </ModalContainer>
   );
@@ -56,6 +56,7 @@ const DashBoard = styled.div`
   width: 25vw;
   gap: 2vh;
   display: flex;
+  flex-direction: column;
   background: rgba(0, 0, 0, 0.5);
   border: 0.1vh solid #02f798;
   backdrop-filter: blur(5vh);
@@ -69,7 +70,7 @@ const Header = styled.h2`
   margin-bottom: 0.5vh;
   display: flex;
   flex-direction: row;
-  gap: 0.1vh;
+  gap: 0.3vh;
 
   strong {
     font-weight: 700;
