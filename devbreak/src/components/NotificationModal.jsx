@@ -87,7 +87,7 @@ const Header = styled.h2`
     }
 
     span {
-      font-size: 3vh;
+      font-size: 1.5vw;
     }
   }
 `;
