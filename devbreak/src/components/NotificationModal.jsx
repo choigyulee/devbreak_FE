@@ -54,7 +54,7 @@ const ModalContainer = styled.div`
 const DashBoard = styled.div`
   box-sizing: border-box;
   padding: 4.5vh 3vw 4vh 3vw;
-  width: 25vw;
+  width: 28vw;
   gap: 2vh;
   display: flex;
   flex-direction: column;
@@ -74,12 +74,12 @@ const Header = styled.h2`
   gap: 0.3vh;
 
   div:first-of-type {
-    font-size: 1.5vw; /* 첫 번째 문구의 크기를 1vw로 설정 */
+    font-size: 1.2vw; /* 첫 번째 문구의 크기를 1vw로 설정 */
     font-weight: 400;
   }
 
   div:last-of-type {
-    font-size: 1.8vw; /* 두 번째 문구의 크기를 2vw로 설정 */
+    font-size: 1.5vw; /* 두 번째 문구의 크기를 2vw로 설정 */
     font-weight: 400;
 
     strong {
@@ -107,14 +107,14 @@ const NotificationItem = styled.div`
 `;
 
 const NotificationText = styled.span`
-  font-size: 1.8vh;
+  font-size: 1.5vh;
   font-weight: 400;
   width: 80vw;
   color: #ffffff;
 `;
 
 const NotificationTime = styled.span`
-  font-size: 1.5vh;
+  font-size: 1.2vh;
   text-align: right;
   width: 19vw;
   color: rgba(255, 255, 255, 0.6);
