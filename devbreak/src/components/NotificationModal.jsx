@@ -54,7 +54,7 @@ const ModalContainer = styled.div`
 const DashBoard = styled.div`
   box-sizing: border-box;
   padding: 4.5vh 3vw 4vh 3vw;
-  width: 30vw;
+  width: 25vw;
   gap: 2vh;
   display: flex;
   flex-direction: column;
