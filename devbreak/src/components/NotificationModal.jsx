@@ -6,10 +6,7 @@ const NotificationModal = ({ notifications }) => {
     <ModalContainer>
       <DashBoard>
         <Header>
-          <div>Check out your</div>
-          <div>
-            <strong>new notifications!</strong> <span>🔔</span>
-          </div>
+          <strong>new notifications</strong> <span>🔔</span>
         </Header>
         <Divider />
         <Content>
@@ -23,7 +20,7 @@ const NotificationModal = ({ notifications }) => {
             </div>
           ))}
         </Content>
-        <ReadMoreButton>Read more</ReadMoreButton>
+        {notifications.length >= 4 && <ReadMoreButton>Read more</ReadMoreButton>}
       </DashBoard>
     </ModalContainer>
   );
@@ -68,34 +65,24 @@ const DashBoard = styled.div`
 const Header = styled.h2`
   color: #ffffff;
   text-align: left;
-  margin-bottom: 1vh;
+  margin-bottom: 0.5vh;
   display: flex;
   flex-direction: column;
   gap: 0.3vh;
 
-  div:first-of-type {
-    font-size: 1.2vw; /* 첫 번째 문구의 크기를 1vw로 설정 */
-    font-weight: 400;
+  strong {
+    font-weight: 700;
   }
 
-  div:last-of-type {
-    font-size: 1.5vw; /* 두 번째 문구의 크기를 2vw로 설정 */
-    font-weight: 400;
-
-    strong {
-      font-weight: 700;
-    }
-
-    span {
-      font-size: 1.5vw;
-    }
+  span {
+    font-size: 1.5vw;
   }
 `;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: -1vh;
+  margin-top: -2vh;
   gap: 0; /* Divider로 구분되므로 gap 제거 */
 `;
 
