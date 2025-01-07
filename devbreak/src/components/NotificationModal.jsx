@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
 const NotificationModal = ({ notifications }) => {
+  const visibleNotifications = notifications.slice(0, 4);
+
   return (
     <ModalContainer>
       <DashBoard>
@@ -10,7 +12,7 @@ const NotificationModal = ({ notifications }) => {
         </Header>
         <Divider />
         <Content>
-          {notifications.map((notification, index) => (
+          {visibleNotifications.map((notification, index) => (
             <div key={index}>
               <NotificationItem>
                 <NotificationText>{notification.text}</NotificationText>
@@ -54,7 +56,6 @@ const DashBoard = styled.div`
   width: 25vw;
   gap: 2vh;
   display: flex;
-  flex-direction: column;
   background: rgba(0, 0, 0, 0.5);
   border: 0.1vh solid #02f798;
   backdrop-filter: blur(5vh);
@@ -72,6 +73,7 @@ const Header = styled.h2`
 
   strong {
     font-weight: 700;
+    font-size: 1.5vw;
   }
 
   span {
