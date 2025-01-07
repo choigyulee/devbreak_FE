@@ -107,7 +107,7 @@ const NotificationItem = styled.div`
 `;
 
 const NotificationText = styled.span`
-  font-size: 1.5vh;
+  font-size: 1.7vh;
   font-weight: 400;
   width: 80vw;
   color: #ffffff;
