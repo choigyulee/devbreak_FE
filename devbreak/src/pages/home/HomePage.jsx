@@ -29,7 +29,6 @@ function HomePage() {
       // 페이지 첫 로드 시 항상 리로드
       if (!cookies.get("homePageLoaded")) {
         cookies.set("homePageLoaded", "true");
-        window.location.reload();
         return;
       }
 
