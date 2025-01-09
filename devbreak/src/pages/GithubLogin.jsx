@@ -7,11 +7,14 @@ import { useAuth } from '../context/AuthContext';
 const GithubLogin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const { login } = useAuth();
 
   const handleGithubAuth = async () => {
     try {
       // 인증 처리
       await getAuthGithub();
+
+      login();
 
       // 로그인 리디렉션 경로 (로컬 스토리지에서 경로를 가져옵니다. 없으면 기본값 '/home')
       const loginRedirectPath = localStorage.getItem('loginRedirectPath') || '/home';
