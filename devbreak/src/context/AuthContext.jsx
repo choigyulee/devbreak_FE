@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import postAuthRefresh from '../APIs/post/postAuthRefresh';
 import { Cookies } from 'react-cookie';
 import getAuthStatus from '../APIs/get/getAuthStatus';
 
@@ -7,22 +6,25 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);  // 로딩 상태 추가
   const cookies = new Cookies();
 
   // 서버에 토큰 유효성 확인 요청
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await getAuthStatus();
+        const status = await getAuthStatus();
 
-        if (response.status === 200 && response.data.isValid) {
+        if (status.loggedIn) {
           setIsLoggedIn(true);
         } else {
           setIsLoggedIn(false);
         }
       } catch (error) {
         console.error('토큰 검증 실패:', error);
-        setIsLoggedIn(false);
+        setIsLoggedIn(false);  // 에러가 발생하면 비로그인 상태로 설정
+      } finally {
+        setLoading(false);  // 로딩 상태 해제
       }
     };
 
@@ -40,20 +42,6 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false); // 로그인 상태 false로 설정
   };
 
-  // 리프레시 토큰을 이용해 액세스 토큰 갱신 후 로그인 상태 유지
-  const refreshTokenAndLogin = async () => {
-    try {
-      const accessToken = await postAuthRefresh();
-
-      setIsLoggedIn(true);
-      console.log('Successfully refreshed access token');
-      return accessToken;
-    } catch (error) {
-      console.error('Failed to refresh access token:', error);
-      logout();
-      throw error;
-    }
-  };
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout, refreshTokenAndLogin }}>
