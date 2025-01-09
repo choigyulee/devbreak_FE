@@ -77,6 +77,8 @@ LanguageToggle.defaultProps = {
   items: [],
 };
 
+export default LanguageToggle;
+
 // Styled Components
 const DropdownContainer = styled.div`
   position: relative;
@@ -138,4 +140,3 @@ const DropdownItem = styled.div`
   }
 `;
 
-export default LanguageToggle;
