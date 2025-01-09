@@ -15,20 +15,17 @@ export const AuthProvider = ({ children }) => {
       try {
         const status = await getAuthStatus();
 
-        if (status.loggedIn) {
-          setIsLoggedIn(true);
-        } else {
-          setIsLoggedIn(false);
+        if (status.loggedIn !== isLoggedIn) {
+          setIsLoggedIn(status.loggedIn);
         }
       } catch (error) {
         console.error('토큰 검증 실패:', error);
-        setIsLoggedIn(false);  // 에러가 발생하면 비로그인 상태로 설정
       } finally {
         setLoading(false);  // 로딩 상태 해제
       }
     };
 
-    checkAuthStatus();
+      checkAuthStatus();
   }, []);
 
 
