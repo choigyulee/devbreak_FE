@@ -14,10 +14,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuthStatus = async () => {
       try {
         const status = await getAuthStatus();
-
-        if (status.loggedIn !== isLoggedIn) {
-          setIsLoggedIn(status.loggedIn);
-        }
+        setIsLoggedIn(status.loggedIn);
       } catch (error) {
         console.error('토큰 검증 실패:', error);
       } finally {
@@ -25,7 +22,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-      checkAuthStatus();
+    checkAuthStatus();
   }, []);
 
 
@@ -41,7 +38,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
