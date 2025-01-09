@@ -14,7 +14,8 @@ export default async function postAuthRefresh() {
   try {
     const response = await axiosInstance.post('/api/auth/refresh',
       { 
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
+        withCredentials: true
       }
     );
 
