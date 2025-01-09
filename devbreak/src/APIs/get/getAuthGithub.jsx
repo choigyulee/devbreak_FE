@@ -22,12 +22,12 @@ export default async function getAuthGithub() {
 
 if (response.status === 200) {
       // 서버에서 액세스 토큰과 리프레시 토큰을 받았으면 쿠키에 저장
-      const { access_token, refresh_token } = response.data;
+      const { accessToken, refreshToken } = response.data;
 
-      if (access_token && refresh_token) {
+      if (accessToken && refreshToken) {
         // 쿠키에 저장 (만약 서버가 자동으로 처리하지 않는 경우)
-        setCookie("accessToken", access_token, { path: "/" });
-        setCookie("refreshToken", refresh_token, { path: "/" });
+        setCookie("accessToken", accessToken, { path: "/" });
+        setCookie("refreshToken", refreshToken, { path: "/" });
 
         console.log("GitHub 인증 성공: 토큰이 쿠키에 저장되었습니다.");
       } else {
