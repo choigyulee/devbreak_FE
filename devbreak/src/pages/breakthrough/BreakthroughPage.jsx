@@ -8,7 +8,7 @@ import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
 import getBreakthrough from "../../APIs/get/getBreakthrough";
 import { FaSearch } from "react-icons/fa";
 import Footer from "../../components/Footer";
-import Cookies from 'js-cookie';
+import { Cookies } from 'react-cookie';
 
 function BreakthroughPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,9 +19,10 @@ function BreakthroughPage() {
   const [searchQuery, setSearchQuery] = useState(""); // 검색어
   const [isComposing, setIsComposing] = useState(false); // IME 입력 상태
   const navigate = useNavigate();
+  const cookies = new Cookies();
 
   useEffect(() => {
-    const loggedIn = Cookies.get("isLoggedIn") === "true";
+    const loggedIn = cookies.get("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
 

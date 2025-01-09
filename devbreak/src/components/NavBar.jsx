@@ -5,46 +5,44 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect, useRef } from "react";
 import ProfileModal from "./ProfileModal";
 import NotificationModal from "./NotificationModal";
-// import Cookies from "js-cookie";
+import { Cookies } from "react-cookie";
 
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const cookies = new Cookies();
 
-  // 로그인 상태를 임시로 항상 true로 설정
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // 쿠키 보고 로그인 상태 초기화
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const storedAccessToken = cookies.get("accessToken");
+    const storedRefreshToken = cookies.get("refreshToken");
+    return !!storedAccessToken && !!storedRefreshToken;
+  });
 
-  // // 쿠키 보고 로그인 상태 초기화
-  // const [isLoggedIn, setIsLoggedIn] = useState(() => {
-  //   const storedAccessToken = Cookies.get("accessToken");
-  //   const storedRefreshToken = Cookies.get("refreshToken");
-  //   return !!storedAccessToken && !!storedRefreshToken;
-  // });
+  useEffect(() => {
+    // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
+    const storedAccessToken = cookies.get("accessToken");
+    const storedRefreshToken = cookies.get("refreshToken");
+    const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
 
-  // useEffect(() => {
-  //   // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
-  //   const storedAccessToken = Cookies.get("accessToken");
-  //   const storedRefreshToken = Cookies.get("refreshToken");
-  //   const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
+    // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
+    if (currentLoginStatus !== isLoggedIn) {
+      setIsLoggedIn(currentLoginStatus);
+    }
+  }, [location, isLoggedIn]);
 
-  //   // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
-  //   if (currentLoginStatus !== isLoggedIn) {
-  //     setIsLoggedIn(currentLoginStatus);
-  //   }
-  // }, [location, isLoggedIn]);
+    const handleLogout = () => {
+    // 로그아웃 시 모든 토큰 제거
+    cookies.remove("accessToken");
+    cookies.remove("refreshToken");
+    cookies.remove("isLoggedIn");
 
-  //   const handleLogout = () => {
-  //   // 로그아웃 시 모든 토큰 제거
-  //   Cookies.remove("accessToken");
-  //   Cookies.remove("refreshToken");
-  //   Cookies.remove("isLoggedIn");
+    // 강제 리로드 설정
+    cookies.set("forceReload", "true");
 
-  //   // 강제 리로드 설정
-  //   Cookies.set("forceReload", "true");
-
-  //   setIsLoggedIn(false);
-  //   window.location.reload(); // 로그아웃 시 강제 리로드
-  // };
+    setIsLoggedIn(false);
+    window.location.reload(); // 로그아웃 시 강제 리로드
+  };
 
   // 모달 상태 관리
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
@@ -110,11 +108,6 @@ const NavBar = () => {
 
   const handleLogin = () => {
     navigate("/login");
-  };
-
-  const handleLogout = () => {
-    console.log("Logout function triggered");
-    setIsLoggedIn(false);
   };
 
   const notifications = [

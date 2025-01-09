@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import postAuthRefresh from '../APIs/post/postAuthRefresh';
-import Cookies from 'js-cookie';
+import { Cookies } from 'react-cookie';
 import getAuthStatus from '../APIs/get/getAuthStatus';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const cookies = new Cookies();
 
   // 서버에 토큰 유효성 확인 요청
   useEffect(() => {
@@ -31,11 +32,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = () => {
     setIsLoggedIn(true);
-    Cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
+    cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
   };
 
   const logout = () => {
-    Cookies.remove('isLoggedIn');
+    cookies.remove('isLoggedIn');
     setIsLoggedIn(false); // 로그인 상태 false로 설정
   };
 
