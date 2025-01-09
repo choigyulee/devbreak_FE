@@ -127,9 +127,6 @@ function MakeBlogPage() {
     };
 
     try {
-      if (!isLoggedIn) {
-        await refreshTokenAndLogin();
-      }
 
       const response = await postBlog(
         blogData.blogName,
