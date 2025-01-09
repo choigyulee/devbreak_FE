@@ -103,6 +103,8 @@ ProfileModal.propTypes = {
 };
 
 
+export default ProfileModal;
+
 const ModalContainer = styled.div`
   z-index: 1000; // 모달이 다른 요소 위에 나타나도록 설정
   justify-content: end;
@@ -186,4 +188,3 @@ const AccountDelete = styled.button`
   }
 `;
 
-export default ProfileModal;
