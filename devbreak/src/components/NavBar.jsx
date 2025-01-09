@@ -29,7 +29,7 @@ const NavBar = () => {
     if (currentLoginStatus !== isLoggedIn) {
       setIsLoggedIn(currentLoginStatus);
     }
-  }, [location, isLoggedIn]);
+  }, [location]);
 
     const handleLogout = () => {
     // 로그아웃 시 모든 토큰 제거
@@ -37,11 +37,7 @@ const NavBar = () => {
     cookies.remove("refreshToken");
     cookies.remove("isLoggedIn");
 
-    // 강제 리로드 설정
-    cookies.set("forceReload", "true");
-
     setIsLoggedIn(false);
-    window.location.reload(); // 로그아웃 시 강제 리로드
   };
 
   // 모달 상태 관리
