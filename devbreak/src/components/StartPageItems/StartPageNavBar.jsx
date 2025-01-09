@@ -30,7 +30,7 @@ const NavBar = () => {
     if (currentLoginStatus !== isLoggedIn) {
       setIsLoggedIn(currentLoginStatus);
     }
-  }, [cookies]);
+  }, [location, isLoggedIn]);
 
   const handleLogout = () => {
     // 로그아웃 시 모든 토큰 제거
