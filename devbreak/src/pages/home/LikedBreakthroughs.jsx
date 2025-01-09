@@ -7,7 +7,7 @@ import Pagination from "../../components/Breakthrough/Pagination";
 import LanguageToggle from "../../components/Breakthrough/LanguageToggle";
 import { FaSearch } from "react-icons/fa";
 import getHomeArticleLike from "../../APIs/get/getHomeArticleLike";
-import Cookies from 'js-cookie';
+import { Cookies } from 'react-cookie';
 
 function LikedBreakthroughs() {
   // 로그인 상태 관리 (로컬 스토리지 사용)
@@ -19,10 +19,11 @@ function LikedBreakthroughs() {
   const [searchQuery, setSearchQuery] = useState(""); // 검색어
   const [isComposing, setIsComposing] = useState(false); // IME 입력 상태
   const navigate = useNavigate();
+  const cookies = new Cookies();
 
   // 로그인 상태를 쿠키에서 가져오기
   useEffect(() => {
-    const loggedIn = Cookies.get("isLoggedIn") === "true";
+    const loggedIn = cookies.get("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
 

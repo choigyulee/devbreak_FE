@@ -3,32 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import getAuthGithub from '../APIs/get/getAuthGithub';
 import { useAuth } from '../context/AuthContext';
-import Cookies from 'js-cookie';
 
 const GithubLogin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { login } = useAuth();
+
+  const handleGithubAuth = async () => {
+    try {
+      // 인증 처리
+      await getAuthGithub();
+
+      // 로그인 리디렉션 경로 (로컬 스토리지에서 경로를 가져옵니다. 없으면 기본값 '/home')
+      const loginRedirectPath = localStorage.getItem('loginRedirectPath') || '/home';
+      console.log("리디렉션 경로: ", loginRedirectPath);
+
+      // 리디렉션 경로로 이동
+      navigate(loginRedirectPath);
+    } catch (err) {
+      console.error('GitHub 인증 실패:', err);
+      setError('GitHub 인증에 실패했습니다.');
+      navigate('/login');  // 인증 실패 시 로그인 페이지로 리디렉션
+    } finally {
+      setLoading(false);  // 로딩 상태 해제
+    }
+  };
 
   useEffect(() => {
-    console.log("GithubLogin useEffect 실행됨"); 
-    const handleGithubAuth = async () => {
-      try {
-        await getAuthGithub();
-
-        const loginRedirectPath = Cookies.get('loginRedirectPath') || '/home';
-        console.log("리디렉션 경로: ", loginRedirectPath);
-
-        navigate(loginRedirectPath);
-      } catch (err) {
-        console.error('GitHub 인증 실패:', err);
-        navigate('/login');  
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    handleGithubAuth();
+    console.log("GithubLogin useEffect 실행됨");
+    handleGithubAuth();  // 인증을 수행
   }, [navigate]);
 
   if (loading) {

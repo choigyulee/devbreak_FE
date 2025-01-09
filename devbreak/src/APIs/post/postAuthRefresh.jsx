@@ -1,22 +1,32 @@
 // 리프레시 토큰을 사용하여 액세스 토큰 갱신
 import axiosInstance from "../axiosInstance";
+import { Cookies } from 'react-cookie';
+
+const cookies = new Cookies();
 
 export default async function postAuthRefresh() {
+  const refreshToken = cookies.get('refreshToken');
+
+  if (!refreshToken) {
+    throw new Error('No refresh token available');
+  }
+
   try {
-    const response = await axiosInstance.post('/api/auth/refresh', 
-      {
-        withCredentials: true
+    const response = await axiosInstance.post('/api/auth/refresh',
+      { 
+        refreshToken: refreshToken
       }
     );
 
-    if (response.status === 200 && response.data.accessToken) {
-      return response.data.accessToken;
-    } else {
-      throw new Error('리프레시 토큰 갱신 실패');
-    }
+    const newAccessToken = response.data.accessToken;
+
+    // 새 액세스 토큰을 쿠키에 저장
+    cookies.set('accessToken', newAccessToken, { path: '/' });
+
+    return newAccessToken;
   } catch (error) {
-    console.error('액세스 토큰 갱신 실패:', error);
-    throw error;
+    console.error("Refresh token error:", error);
+    throw error; // 에러를 다시 던져서 인터셉터에서 처리하도록
   }
-};
+}
 
