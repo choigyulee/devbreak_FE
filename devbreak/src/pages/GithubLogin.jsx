@@ -1,40 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
-import getAuthGithub from '../APIs/get/getAuthGithub';
 import { useAuth } from '../context/AuthContext';
 
 const GithubLogin = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const { login } = useAuth();
-
-  const handleGithubAuth = async () => {
-    try {
-      // 인증 처리
-      await getAuthGithub();
-
-      login();
-
-      // 로그인 리디렉션 경로 (로컬 스토리지에서 경로를 가져옵니다. 없으면 기본값 '/home')
-      const loginRedirectPath = localStorage.getItem('loginRedirectPath') || '/home';
-      console.log("리디렉션 경로: ", loginRedirectPath);
-
-      // 리디렉션 경로로 이동
-      navigate(loginRedirectPath);
-    } catch (err) {
-      console.error('GitHub 인증 실패:', err);
-      setError('GitHub 인증에 실패했습니다.');
-      navigate('/login');  // 인증 실패 시 로그인 페이지로 리디렉션
-    } finally {
-      setLoading(false);  // 로딩 상태 해제
-    }
-  };
+  const { login, isLoggedIn, loading } = useAuth();
 
   useEffect(() => {
-    console.log("GithubLogin useEffect 실행됨");
+    const handleGithubAuth = async () => {
+      // 로그인 상태가 이미 true라면 리디렉션
+      if (isLoggedIn) {
+        const loginRedirectPath = localStorage.getItem('loginRedirectPath') || '/home';
+        console.log("리디렉션 경로: ", loginRedirectPath);
+        navigate(loginRedirectPath);
+        return;
+      }
+
+      // 로그인 상태가 아니면 인증 처리
+      try {
+        login(); // 로그인 상태로 변경
+
+        const loginRedirectPath = localStorage.getItem('loginRedirectPath') || '/home';
+        console.log("리디렉션 경로: ", loginRedirectPath);
+
+        // 리디렉션 경로로 이동
+        navigate(loginRedirectPath);
+      } catch (err) {
+        console.error('GitHub 인증 실패:', err);
+        navigate('/login');  // 인증 실패 시 로그인 페이지로 리디렉션
+      }
+    };
+
     handleGithubAuth();  // 인증을 수행
-  }, [navigate]);
+  }, [isLoggedIn, navigate, login]);
 
   if (loading) {
     return (

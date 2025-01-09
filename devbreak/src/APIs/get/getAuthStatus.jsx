@@ -9,9 +9,12 @@ export default async function getAuthStatus() {
         withCredentials: true
       }
     )
-    return response;
+    return response.data;
   } catch (error) {
     console.error('에러 발생:', error);
+    if (error.response && error.response.status === 401) {
+      return { loggedIn: false, message: "Access token is missing" };
+    }
     throw error;
   }
 }
