@@ -38,6 +38,7 @@ const NavBar = () => {
     cookies.remove("isLoggedIn");
 
     setIsLoggedIn(false);
+    window.location.reload(); // 로그아웃 시 강제 리로드
   };
 
   // 모달 상태 관리
