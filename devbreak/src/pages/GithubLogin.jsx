@@ -9,23 +9,21 @@ const GithubLogin = () => {
 
   useEffect(() => {
     const handleGithubAuth = async () => {
-      // 로그인 상태라면 리디렉션
       if (isLoggedIn) {
-        navigate('/');
+        navigate('/home');
         return;
       }
 
-      // 로그인 상태가 아니면 인증 처리
       try {
-        login(); // 로그인 상태로 변경
-        navigate('/');
+        login();
+        navigate('/home');
       } catch (err) {
         console.error('GitHub 인증 실패:', err);
-        navigate('/login');  // 인증 실패 시 로그인 페이지로 리디렉션
+        navigate('/login');
       }
     };
 
-    handleGithubAuth();  // 인증을 수행
+    handleGithubAuth();
   }, [isLoggedIn, navigate, login]);
 
   if (loading) {

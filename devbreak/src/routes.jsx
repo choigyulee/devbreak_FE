@@ -16,7 +16,7 @@ import EditBlogPage from "./pages/workspace/EditBlogPage";
 
 const routes = [
   {
-    path: "/start",
+    path: "/",
     element: <StartPage />,
     name: "01. 시작 페이지",
   },
@@ -26,7 +26,7 @@ const routes = [
     name: "02. 로그인 페이지",
   },
   {
-    path: "/",
+    path: "/home",
     element: <HomePage />,
     name: "03. 홈 메인 페이지",
   },

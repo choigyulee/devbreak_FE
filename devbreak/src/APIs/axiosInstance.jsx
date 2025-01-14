@@ -11,10 +11,8 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     const cookies = new Cookies();
     const accessToken = cookies.get('accessToken');
-    console.log('AccessToken:', accessToken); // 토큰 디버깅
-    // 쿠키에서 accessToken 가져오기
     if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`; // 요청 헤더에 액세스 토큰 추가
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -42,7 +40,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest); 
       } catch (refreshError) {
         console.log('Refresh token error:', refreshError);
-        window.location.href = '/'; // 리프레시 토큰 갱신 실패 시 로그인 화면으로 리다이렉트
+        window.location.href = '/login'; // 리프레시 토큰 갱신 실패 시 로그인 화면으로 리다이렉트
       }
     }
 

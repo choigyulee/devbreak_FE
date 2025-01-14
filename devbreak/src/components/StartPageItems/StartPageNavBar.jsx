@@ -1,9 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router-dom"; // useNavigate 추가
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineUserCircle } from "react-icons/hi2";
-import { useState, useEffect } from "react";
-import ProfileModal from "../ProfileModal"; // ProfileModal 컴포넌트
-import { useAuth } from "../../context/AuthContext";
+import { useState, useEffect, useRef } from "react";
+import ProfileModal from "./ProfileModal";
+import NotificationModal from "./NotificationModal";
 import { Cookies } from "react-cookie";
 
 const NavBar = () => {
@@ -11,14 +12,12 @@ const NavBar = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
 
-  // 로그인 상태를 쿠키의 값으로 초기화
+  // 쿠키 보고 로그인 상태 초기화
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const storedAccessToken = cookies.get('accessToken');
-    const storedRefreshToken = cookies.get('refreshToken');
+    const storedAccessToken = cookies.get("accessToken");
+    const storedRefreshToken = cookies.get("refreshToken");
     return !!storedAccessToken && !!storedRefreshToken;
   });
-
-  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
   useEffect(() => {
     // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
@@ -32,28 +31,81 @@ const NavBar = () => {
     }
   }, [location, isLoggedIn]);
 
-  const handleLogout = () => {
+    const handleLogout = () => {
     // 로그아웃 시 모든 토큰 제거
-    cookies.remove('accessToken');
-    cookies.remove('refreshToken');
-    cookies.remove('isLoggedIn');
-
-    // 강제 리로드 설정
-    cookies.set('forceReload', 'true');
+    cookies.remove("accessToken");
+    cookies.remove("refreshToken");
+    cookies.remove("isLoggedIn");
 
     setIsLoggedIn(false);
-    window.location.reload(); // 로그아웃 시 강제 리로드
   };
 
+  // 모달 상태 관리
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
 
-  const toggleProfileModal = () => {
-    setProfileModalOpen((prev) => !prev); // 프로필 모달 토글
+  // 모달 닫힘 처리를 위한 ref
+  const profileModalRef = useRef(null);
+  const notificationModalRef = useRef(null);
+
+  // 모든 모달 닫기 함수
+  const closeAllModals = () => {
+    setProfileModalOpen(false);
+    setNotificationModalOpen(false);
+  };
+
+  // 외부 클릭 감지 및 모달 상태 초기화
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        profileModalRef.current &&
+        !profileModalRef.current.contains(event.target) &&
+        notificationModalRef.current &&
+        !notificationModalRef.current.contains(event.target)
+      ) {
+        closeAllModals();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // 경로 변경 시 모든 모달 닫기
+  useEffect(() => {
+    closeAllModals();
+  }, [location]);
+
+  // 모달 토글 함수
+  const toggleProfileModal = (event) => {
+    event.stopPropagation(); // 이벤트 버블링 방지
+    setProfileModalOpen((prev) => {
+      if (!prev) setNotificationModalOpen(false); // 다른 모달 닫기
+      return !prev;
+    });
+  };
+
+  const toggleNotificationModal = (event) => {
+    event.stopPropagation(); // 이벤트 버블링 방지
+    setNotificationModalOpen((prev) => {
+      if (!prev) setProfileModalOpen(false); // 다른 모달 닫기
+      return !prev;
+    });
   };
 
   const handleLogin = () => {
-    navigate("/login"); // 로그인 페이지로 이동
+    navigate("/login");
   };
 
+  const notifications = [
+    { text: "UserName liked your Breakthrough", time: "1 min ago" },
+    { text: "A new breakthrough has been posted to BlogName you follow.", time: "3 min ago" },
+    { text: "A new breakthrough has been posted to BlogName you follow.", time: "10 hours ago" },
+    { text: "You have been invited to BlogName", time: "1 day ago" },
+    { text: "You have been invited to BlogName", time: "2 days ago" },
+  ];
 
   return (
     <NavContainer>
@@ -61,20 +113,31 @@ const NavBar = () => {
         <Logo src="/image/logo.svg" alt="logo" />
       </Link>
       {isLoggedIn ? (
-        <ProfileContainer>
-          <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
-          {isProfileModalOpen && (
-            <ProfileModalContainer>
-              <ProfileModal
-                githubId="your_github_id"
-                onLogout={handleLogout}
-                onDeleteAccount={() => {
-                  console.log("Account deleted");
-                }}
-              />
-            </ProfileModalContainer>
-          )}
-        </ProfileContainer>
+        <LoggedInContainer>
+          <LoggedInBtnContainer ref={notificationModalRef}>
+            <StyledIoMdNotificationsOutlineContainer onClick={toggleNotificationModal}>
+              <StyledIoMdNotificationsOutline active={isNotificationModalOpen} />
+              {notifications.length > 0 && (
+                <NotificationBadge active={isNotificationModalOpen} hasNotifications={notifications.length > 0} />
+              )}
+            </StyledIoMdNotificationsOutlineContainer>
+            {isNotificationModalOpen && <NotificationModal notifications={notifications} />}
+          </LoggedInBtnContainer>
+          <LoggedInBtnContainer ref={profileModalRef}>
+            <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
+            {isProfileModalOpen && (
+              <ModalContainer>
+                <ProfileModal
+                  githubId="your_github_id"
+                  onLogout={handleLogout}
+                  onDeleteAccount={() => {
+                    console.log("Account deleted");
+                  }}
+                />
+              </ModalContainer>
+            )}
+          </LoggedInBtnContainer>
+        </LoggedInContainer>
       ) : (
         <ButtonContainer onClick={handleLogin}>
           <Link to="/login">Login</Link>

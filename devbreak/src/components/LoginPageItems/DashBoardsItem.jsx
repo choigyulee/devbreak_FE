@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import DashBoard from './DashBoard';
-import { useAuth } from '../../context/AuthContext';
-import { Cookies } from 'react-cookie';
 
 const DashBoardsItem = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const navigate = useNavigate();
-  const { login } = useAuth();
-  const cookies = new Cookies();
 
   const handleGitHubLogin = () => {
     const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
-
-    const currentPath = window.location.pathname;
-    cookies.set('loginRedirectPath', currentPath, { path: '/' });
 
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
     window.location.href = githubAuthUrl;
