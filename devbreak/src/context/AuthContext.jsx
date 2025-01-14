@@ -14,7 +14,16 @@ export const AuthProvider = ({ children }) => {
     const checkAuthStatus = async () => {
       try {
         const status = await getAuthStatus();
-        setIsLoggedIn(status.loggedIn);
+        if (status.loggedIn) {
+          setIsLoggedIn(true);
+          cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
+
+          // 필요한 경우 액세스 토큰과 리프레시 토큰을 쿠키에 저장
+          if (status.accessToken && status.refreshToken) {
+            cookies.set('accessToken', status.accessToken, { path: '/', expires: 7 });
+            cookies.set('refreshToken', status.refreshToken, { path: '/', expires: 7 });
+          }
+        }
       } catch (error) {
         console.error('토큰 검증 실패:', error);
       } finally {
@@ -29,11 +38,18 @@ export const AuthProvider = ({ children }) => {
   const login = () => {
     setIsLoggedIn(true);
     cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
+
+    const accessToken = cookies.get('accessToken');
+    if (accessToken) {
+      cookies.set('accessToken', accessToken, { expires: 7, path: '/' });
+    }
   };
 
   const logout = () => {
     cookies.remove('isLoggedIn');
-    setIsLoggedIn(false); // 로그인 상태 false로 설정
+    cookies.remove('accessToken');
+    cookies.remove('refreshToken');
+    setIsLoggedIn(false);
   };
 
 
