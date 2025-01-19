@@ -1,28 +1,24 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from "@emotion/styled";
 import { useAuth } from '../context/AuthContext';
 
 const GithubLogin = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const { login, isLoggedIn, loading } = useAuth();
-
-  // 로그인 이전에 방문했던 경로 추적
-  const from = location.state?.from || '/home'; // default: /home
 
   useEffect(() => {
     const handleGithubAuth = async () => {
       // 로그인 상태라면 리디렉션
       if (isLoggedIn) {
-        navigate(from);
+        navigate('/home');
         return;
       }
 
       // 로그인 상태가 아니면 인증 처리
       try {
         await login(); // 로그인 상태로 변경
-        navigate(from);  // 로그인 후 원래 페이지로 리디렉션
+        navigate('/home');  // 로그인 후 원래 페이지로 리디렉션
       } catch (err) {
         console.error('GitHub 인증 실패:', err);
         navigate('/login');  // 인증 실패 시 로그인 페이지로 리디렉션
