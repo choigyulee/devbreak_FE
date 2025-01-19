@@ -40,7 +40,6 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest); 
       } catch (refreshError) {
         console.log('Refresh token error:', refreshError);
-        window.location.href = '/login'; // 리프레시 토큰 갱신 실패 시 로그인 화면으로 리다이렉트
       }
     }
 
