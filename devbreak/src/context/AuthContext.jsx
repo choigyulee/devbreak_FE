@@ -6,13 +6,27 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);  // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
   const cookies = new Cookies();
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
 
-  // 서버에 토큰 유효성 확인 요청
   useEffect(() => {
+    // 쿠키에서 로그인 상태 확인
+    const checkLoginStatusFromCookies = () => {
+      const loggedIn = cookies.get('isLoggedIn');
+      if (loggedIn) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setLoading(false); // 쿠키 확인 후 loading 상태를 false로 설정
+    };
+
+    // 처음에 쿠키 확인 후 로그인 상태 업데이트
+    checkLoginStatusFromCookies();
+
+    // 서버로 인증 상태를 확인하는 추가 요청 (선택적)
     const checkAuthStatus = async () => {
       try {
         const status = await getAuthStatus();
@@ -21,8 +35,8 @@ export const AuthProvider = ({ children }) => {
         if (status.loggedIn) {
           setIsLoggedIn(true);
           cookies.set('isLoggedIn', 'true', { expires: expires, path: '/' });
-          cookies.set('accessToken', status.accessToken, { expires: expires, path: '/' });
-          cookies.set('refreshToken', status.refreshToken, { expires: expires, path: '/' });
+        } else {
+          setIsLoggedIn(false);
         }
       } catch (error) {
         console.error('토큰 검증 실패:', error.response ? error.response.data : error.message);
@@ -31,7 +45,11 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    checkAuthStatus();
+    // 로그인 상태가 확인되었을 때 서버로 인증 상태를 확인 (optional)
+    if (!cookies.get('isLoggedIn')) {
+      checkAuthStatus();
+    }
+
   }, []);
 
 
@@ -42,8 +60,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     cookies.remove('isLoggedIn');
-    cookies.remove('accessToken');
-    cookies.remove('refreshToken');
     setIsLoggedIn(false);
   };
 
