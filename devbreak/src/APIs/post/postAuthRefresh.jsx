@@ -22,7 +22,10 @@ export default async function postAuthRefresh() {
       }
     );
 
-    console.log('새로운 액세스 토큰 획득:', response.data.accessToken);
+    if (!response.data.accessToken) {
+      console.error('서버에서 새로운 액세스 토큰을 받지 못함');
+      throw new Error('서버에서 새로운 액세스 토큰을 받지 못했습니다.');
+    }
 
     const newAccessToken = response.data.accessToken;
 
@@ -32,7 +35,7 @@ export default async function postAuthRefresh() {
     return newAccessToken;
   } catch (error) {
     console.error("토큰 갱신 중 오류 발생:", error.response); 
-    throw error; // 에러를 다시 던져서 인터셉터에서 처리하도록
+    throw error;
   }
 }
 
