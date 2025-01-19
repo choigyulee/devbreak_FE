@@ -30,16 +30,25 @@ axiosInstance.interceptors.response.use(
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      try {
-        const newAccessToken = await postAuthRefresh(); // 리프레시 토큰 갱신 함수 호출
+      console.log('액세스 토큰 갱신 시도 중...'); 
 
-        // 원래 요청에 새로운 액세스 토큰을 추가
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+      try {
+        // 리프레시 토큰 갱신 함수 호출
+        const newAccessToken = await postAuthRefresh();
         
-        // 갱신된 토큰으로 다시 요청
-        return axiosInstance(originalRequest); 
+        if (newAccessToken) {
+          console.log('새로운 액세스 토큰 획득:', newAccessToken);  // 새로운 액세스 토큰 로그
+
+          // 원래 요청에 새로운 액세스 토큰을 추가
+          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+          // 갱신된 토큰으로 다시 요청
+          return axiosInstance(originalRequest);
+        } else {
+          console.error('액세스 토큰 갱신 실패.');
+        }
       } catch (refreshError) {
-        console.log('Refresh token error:', refreshError);
+        console.error('리프레시 토큰 갱신 오류:', refreshError); // 갱신 실패 로그
       }
     }
 
