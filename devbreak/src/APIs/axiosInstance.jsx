@@ -49,6 +49,7 @@ axiosInstance.interceptors.response.use(
         }
       } catch (refreshError) {
         console.error('리프레시 토큰 갱신 오류:', refreshError); // 갱신 실패 로그
+        alert('토큰 만료')
       }
     }
 
