@@ -131,7 +131,7 @@ export default NavBar;
 const NavContainer = styled.nav`
   display: flex;
   align-items: center;
-  padding: 10vh 13vw 5vh 13vw;
+  padding: 10vh 13vw;
   justify-content: space-between;
   width: 100%;
   position: relative; // NavContainer를 기준으로 ProfileModal 위치 설정
@@ -143,20 +143,46 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
-const ProfileContainer = styled.div`
+const LoggedInContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+`;
+
+const LoggedInBtnContainer = styled.div`
   position: relative; // 상대 위치 설정
   display: flex;
   align-items: center; // 아이콘과 모달을 수직 정렬
 `;
 
-const ProfileModalContainer = styled.div`
+const ModalContainer = styled.div`
   position: absolute; // 절대 위치 설정
   top: 5vh; // NavBar 위쪽에 위치
   right: 0; // 아이콘과의 간격 조정
   z-index: 1000; // 다른 요소 위에 표시
 `;
+const StyledIoMdNotificationsOutlineContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  cursor: pointer;
+`;
 
-const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
+const NotificationBadge = styled.div`
+  position: absolute;
+  top: -0.3vw; // 아이콘의 상단에 위치
+  right: -0.3vw; // 아이콘의 오른쪽에 위치
+  width: 0.5vw; // 빨간 원의 크기
+  height: 0.5vw;
+  z-index: 1000;
+  background-color: #ff4f4f; // 빨간색
+  border-radius: 50%; // 원형으로 설정
+  display: ${({ active, hasNotifications }) =>
+    !active && hasNotifications ? "block" : "none"}; // active 상태가 아니고, 알림이 있을 때만 표시
+`;
+
+const StyledIoMdNotificationsOutline = styled(IoMdNotificationsOutline)`
   height: 2vw;
   width: 2vw;
   margin-left: 13vw;
@@ -167,25 +193,13 @@ const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
   }
 `;
 
-const LoginButton = styled.button`
-  font-weight: 700;
-  padding: 0.5vw 1.7vw;
-  margin-left: 9vw;
-  color: white;
-  font-size: 1.5vw;
-  border-radius: 3vw;
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(40px);
+const StyledHiOutlineUserCircle = styled(HiOutlineUserCircle)`
+  height: 2vw;
+  width: 2vw;
+  cursor: pointer;
+  color: ${(props) => (props.active ? "#02f798" : "#ffffff")}; // active 상태에 따라 색상 변경
   &:hover {
     color: #02f798;
-    border: 1px solid #02f798;
-    box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
-  }
-  a {
-    text-decoration: none;
-    color: inherit; // 버튼의 색상과 동일하게 유지
-    font-size: 1.3vw; // 로그인 텍스트의 크기를 조정
   }
 `;
 
@@ -210,3 +224,4 @@ const ButtonContainer = styled.button`
     box-shadow: 0px 0px 10px rgba(2, 247, 152, 0.25);
   }
 `;
+
