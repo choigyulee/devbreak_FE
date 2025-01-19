@@ -5,42 +5,13 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect, useRef } from "react";
 import ProfileModal from "./ProfileModal";
 import NotificationModal from "./NotificationModal";
-import { Cookies } from "react-cookie";
+import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const cookies = new Cookies();
-
-  // 쿠키 보고 로그인 상태 초기화
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const storedAccessToken = cookies.get("accessToken");
-    const storedRefreshToken = cookies.get("refreshToken");
-    return !!storedAccessToken && !!storedRefreshToken;
-  });
-
-  useEffect(() => {
-    // 로그인 상태 확인 (쿠키에서 토큰 존재 여부로 판단)
-    const storedAccessToken = cookies.get("accessToken");
-    const storedRefreshToken = cookies.get("refreshToken");
-    const currentLoginStatus = !!storedAccessToken && !!storedRefreshToken;
-
-    // 현재 로그인 상태와 기존 상태가 다르면 상태 업데이트
-    if (currentLoginStatus !== isLoggedIn) {
-      setIsLoggedIn(currentLoginStatus);
-    }
-  }, [location, isLoggedIn]);
-
-    const handleLogout = () => {
-    // 로그아웃 시 모든 토큰 제거
-    cookies.remove("accessToken");
-    cookies.remove("refreshToken");
-    cookies.remove("isLoggedIn");
-
-    setIsLoggedIn(false);
-    window.location.reload(); // 로그아웃 시 강제 리로드
-  };
-
+  const { isLoggedIn, logout } = useAuth();
+ 
   // 모달 상태 관리
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
@@ -105,6 +76,11 @@ const NavBar = () => {
 
   const handleLogin = () => {
     navigate("/login");
+  };
+
+  const handleLogout = () => {
+    logout();
+    window.location.reload(); // 로그아웃 시 강제 리로드
   };
 
   const notifications = [
