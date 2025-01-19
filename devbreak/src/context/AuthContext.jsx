@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     const checkAuthStatus = async () => {
       try {
         const status = await getAuthStatus();
+        console.log('서버 응답:', status);
         if (status.loggedIn) {
           setIsLoggedIn(true);
           cookies.set('isLoggedIn', 'true', { expires: 7, path: '/' });
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
           }
         }
       } catch (error) {
-        console.error('토큰 검증 실패:', error);
+        console.error('토큰 검증 실패:', error.response ? error.response.data : error.message);
       } finally {
         setLoading(false);  // 로딩 상태 해제
       }
