@@ -10,7 +10,6 @@ export default function NotificaitonList() {
         const data = await getNotice();
         const sortedData = data
           .sort((a, b) => new Date(b.time) - new Date(a.time)) // 최신순으로 정렬
-          .slice(0, 4); // 최신 4개
 
         const formattedNotifications = sortedData.map((notice) => {
           let message = '';
