@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Cookies } from 'react-cookie';
+import { setCookie, getCookie, removeCookie } from '../auth/cookie';
 import getAuthStatus from '../APIs/get/getAuthStatus';
 
 const AuthContext = createContext(null);
@@ -15,9 +16,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // 쿠키에서 로그인 상태 확인
     const checkLoginStatusFromCookies = () => {
+
       const loggedIn = cookies.get('isLoggedIn');
       console.log('쿠키에서 로그인 상태 확인:', loggedIn);
-
+      
       if (loggedIn === 'true') {
         setIsLoggedIn(true);
       } else {
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 
           cookies.set('isLoggedIn', 'true', { expires: expires, path: '/' });
           console.log('로그인 상태 변경 후 쿠키:', cookies.get('isLoggedIn')); 
+
         } else {
           setIsLoggedIn(false);
         }
@@ -50,13 +53,12 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    // 로그인 상태가 확인되었을 때 서버로 인증 상태를 확인 (optional)
+    // 로그인 상태가 확인되었을 때 서버로 인증 상태를 확인
     if (!cookies.get('isLoggedIn')) {
       checkAuthStatus();
     }
 
   }, []);
-
 
   const login = () => {
     setIsLoggedIn(true);
@@ -65,9 +67,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    cookies.remove('isLoggedIn');
+    removeCookie('isLoggedIn');
     setIsLoggedIn(false);
     console.log('로그아웃 성공, 쿠키 삭제:', cookies.get('isLoggedIn'));
+
   };
 
 
