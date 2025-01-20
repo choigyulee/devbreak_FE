@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavbarItems/NavBar";
 import List from "../../components/Breakthrough/List";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination";

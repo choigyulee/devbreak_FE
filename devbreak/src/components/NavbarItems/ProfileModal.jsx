@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
-import getAuthInfo from "../APIs/get/getAuthInfo";
-import postAuthLogout from "../APIs/post/postAuthLogout";
-import deleteAuthDeleteAccount from "../APIs/delete/deleteAuthDeleteAccount";
+import getAuthInfo from "../../APIs/get/getAuthInfo";
+import postAuthLogout from "../../APIs/post/postAuthLogout";
+import deleteAuthDeleteAccount from "../../APIs/delete/deleteAuthDeleteAccount";
 import AccountDeleteModal from "./AccountDeleteModal";
 import { Cookies } from 'react-cookie';
 

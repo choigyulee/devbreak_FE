@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import getArticleArticleId from "../../APIs/get/getArticleArticleId";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavbarItems/NavBar";
 import styled from "@emotion/styled";
 import ActivityItem from "../../components/ContentsPageItems/ActivityItem";
 import ContentItem from "../../components/ContentsPageItems/ContentItem";
