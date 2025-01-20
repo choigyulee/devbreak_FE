@@ -1,6 +1,5 @@
 import axios from 'axios';
 import postAuthRefresh from './post/postAuthRefresh';
-import { Cookies } from "react-cookie";
 import postAuthLogout from './post/postAuthLogout';
 
 const axiosInstance = axios.create({
@@ -37,27 +36,17 @@ axiosInstance.interceptors.response.use(
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      console.log('액세스 토큰 갱신 시도 중...'); 
-
       try {
-        // 리프레시 토큰 갱신 함수 호출
-        const newAccessToken = await postAuthRefresh();
-        
-        if (newAccessToken) {
-          console.log('새로운 액세스 토큰 획득:', newAccessToken);  // 새로운 액세스 토큰 로그
-
-          // 원래 요청에 새로운 액세스 토큰을 추가
-          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        console.log('액세스 토큰 갱신 시도 중...'); 
+        await postAuthRefresh();
 
           // 갱신된 토큰으로 다시 요청
           return axiosInstance(originalRequest);
-        } else {
-          console.error('액세스 토큰 갱신 실패.');
-        }
       } catch (refreshError) {
         console.error('리프레시 토큰 갱신 오류:', refreshError.response?.data || refreshError.message);
-        alert('토큰이 만료되었습니다. 다시 로그인해주세요.')
-        logout();
+        await postAuthLogout();
+        alert('세션이 만료되었습니다. 다시 로그인하세요.');
+        window.location.reload();
       }
     }
 

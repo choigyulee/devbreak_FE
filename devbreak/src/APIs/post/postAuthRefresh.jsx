@@ -1,8 +1,5 @@
 // 리프레시 토큰을 사용하여 액세스 토큰 갱신
 import axiosInstance from "../axiosInstance";
-import { Cookies } from 'react-cookie';
-
-const cookies = new Cookies();
 
 export default async function postAuthRefresh() {
 
