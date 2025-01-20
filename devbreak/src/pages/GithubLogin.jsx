@@ -26,7 +26,7 @@ const GithubLogin = () => {
     };
 
     handleGithubAuth();  // 인증을 수행
-  }, [isLoggedIn, navigate, login, from]);
+  }, [isLoggedIn, navigate, login]);
 
   if (loading) {
     return (
