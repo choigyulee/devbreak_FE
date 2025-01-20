@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import ProfileModal from "../NavbarItems/ProfileModal";
 import { useAuth } from "../../context/AuthContext";
 import NotificationModal from "../NavbarItems/NotificationModal";
+import NotificaitonList from "../NavbarItems/NotificaitonList";
 
 const NavBar = () => {
   const location = useLocation();
@@ -15,6 +16,9 @@ const NavBar = () => {
   // 모달 상태 관리
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
+
+    // 알림 상태 관리
+    const notifications = NotificaitonList();
 
   // 모달 닫힘 처리를 위한 ref
   const profileModalRef = useRef(null);
@@ -75,15 +79,6 @@ const NavBar = () => {
     logout();
     window.location.reload(); // 로그아웃 시 강제 리로드
   };
-
-
-  const notifications = [
-    { text: "UserName liked your Breakthrough", time: "1 min ago" },
-    { text: "A new breakthrough has been posted to BlogName you follow.", time: "3 min ago" },
-    { text: "A new breakthrough has been posted to BlogName you follow.", time: "10 hours ago" },
-    { text: "You have been invited to BlogName", time: "1 day ago" },
-    { text: "You have been invited to BlogName", time: "2 days ago" },
-  ];
 
   return (
     <NavContainer>

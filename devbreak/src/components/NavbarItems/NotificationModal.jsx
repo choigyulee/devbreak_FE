@@ -116,6 +116,7 @@ const NotificationItem = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 3vh 0;
+  cursor: pointer;
 `;
 
 const NotificationText = styled.span`
