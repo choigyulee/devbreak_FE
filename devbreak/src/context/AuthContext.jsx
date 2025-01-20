@@ -29,6 +29,10 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (error) {
         console.error('토큰 검증 실패:', error.response ? error.response.data : error.message);
+        setIsLoggedIn(false);
+        cookies.remove('isLoggedIn', { path: '/' });
+        alert('세션이 만료되었습니다. 다시 로그인하세요.');
+        window.location.reload();
       } finally {
         setLoading(false);
       }
@@ -46,9 +50,9 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await postAuthLogout();
-      setIsLoggedIn(false); 
+      setIsLoggedIn(false);
       cookies.remove('isLoggedIn', { path: '/' });
-      window.location.reload(); 
+      window.location.reload();
     } catch (logoutError) {
       console.error('로그아웃 요청 실패:', logoutError.response?.data || logoutError.message);
     }
