@@ -87,24 +87,6 @@ const NavBar = () => {
     window.location.reload(); // 로그아웃 시 강제 리로드
   };
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const notices = await getNotice();
-        const sortedNotices = notices
-          .sort((a, b) => new Date(b.time) - new Date(a.time)) // 최신순으로 정렬
-          .slice(0, 4); // 최신 4개만
-        setNotifications(sortedNotices); // 상태에 알림 데이터 저장
-      } catch (error) {
-        console.error('알림 데이터를 불러오는 중 오류가 발생했습니다:', error);
-      }
-    };
-
-    if (isLoggedIn) {
-      fetchNotifications(); // 로그인 상태일 때만 알림 데이터 가져오기
-    }
-  }, [isLoggedIn]);
-
   return (
     <NavContainer>
       <Link to="/">
