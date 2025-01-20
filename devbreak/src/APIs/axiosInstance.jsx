@@ -1,7 +1,6 @@
 import axios from 'axios';
 import postAuthRefresh from './post/postAuthRefresh';
 import { Cookies } from "react-cookie";
-import { useAuth } from '../context/AuthContext';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
@@ -57,7 +56,7 @@ axiosInstance.interceptors.response.use(
         }
       } catch (refreshError) {
         console.error('리프레시 토큰 갱신 오류:', refreshError); // 갱신 실패 로그
-        alert('토큰 만료')
+        alert('토큰이 만료되었습니다. 다시 로그인해주세요.')
         logout();
       }
     }
