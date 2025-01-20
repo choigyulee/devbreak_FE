@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const status = await getAuthStatus();
         console.log('서버 응답:', status);
+        console.log('로그인 상태:', isLoggedIn);
 
         if (status.loggedIn) {
           setIsLoggedIn(true);
