@@ -18,6 +18,7 @@ const GithubLogin = () => {
       // 로그인 상태가 아니면 인증 처리
       try {
         await login(); // 로그인 상태로 변경
+        setCookie('isLoggedIn', 'true');  
         navigate('/home');  // 로그인 후 원래 페이지로 리디렉션
       } catch (err) {
         console.error('GitHub 인증 실패:', err);
@@ -26,7 +27,7 @@ const GithubLogin = () => {
     };
 
     handleGithubAuth();  // 인증을 수행
-  }, [isLoggedIn, navigate, login, from]);
+  }, [isLoggedIn, navigate, login]);
 
   if (loading) {
     return (

@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     // 쿠키에서 로그인 상태 확인
     const checkLoginStatusFromCookies = () => {
       const loggedIn = cookies.get('isLoggedIn');
+      console.log('쿠키에서 로그인 상태 확인:', loggedIn); 
       if (loggedIn) {
         setIsLoggedIn(true);
       } else {
@@ -35,7 +36,6 @@ export const AuthProvider = ({ children }) => {
         if (status.loggedIn) {
           setIsLoggedIn(true);
           cookies.set('isLoggedIn', 'true', { expires: expires, path: '/' });
-          console.log('로그인 상태:', isLoggedIn);
         } else {
           setIsLoggedIn(false);
         }
@@ -46,22 +46,23 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    // 로그인 상태가 확인되었을 때 서버로 인증 상태를 확인 (optional)
+    // 로그인 상태가 확인되었을 때 서버로 인증 상태를 확인
     if (!cookies.get('isLoggedIn')) {
       checkAuthStatus();
     }
 
   }, []);
 
-
   const login = () => {
     setIsLoggedIn(true);
     cookies.set('isLoggedIn', 'true', { expires: expires, path: '/' });
+    console.log('로그인 성공, 쿠키 설정 완료');
   };
 
   const logout = () => {
     cookies.remove('isLoggedIn');
     setIsLoggedIn(false);
+    console.log('로그아웃 성공, 쿠키 삭제');
   };
 
 
