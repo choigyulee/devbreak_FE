@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import getNotifications from '../../APIs/get/getNotifications';
+import getNotice from '../../APIs/get/getNotice';
 
 export default function NotificaitonList() {
   const [notifications, setNotifications] = useState([]);
@@ -7,7 +7,7 @@ export default function NotificaitonList() {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const data = await getNotifications();
+        const data = await getNotice();
         const sortedData = data
           .sort((a, b) => new Date(b.time) - new Date(a.time)) // 최신순으로 정렬
           .slice(0, 4); // 최신 4개
