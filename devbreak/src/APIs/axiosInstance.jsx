@@ -34,9 +34,12 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error('리프레시 토큰 갱신 오류:', refreshError.response?.data || refreshError.message);
+
         await postAuthLogout();
+        
         alert('세션이 만료되었습니다. 다시 로그인하세요.');
         window.location.reload();
+        return Promise.reject(refreshError);
       }
     }
 
