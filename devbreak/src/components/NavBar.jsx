@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import ProfileModal from "./ProfileModal";
 import NotificationModal from "./NotificationModal";
 import { useAuth } from '../context/AuthContext';
+import getNotice from "../APIs/get/getNotice";
 
 const NavBar = () => {
   const location = useLocation();
@@ -15,6 +16,9 @@ const NavBar = () => {
   // 모달 상태 관리
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
+
+  // 알림 상태 관리
+  const [notifications, setNotifications] = useState([]);
 
   // 모달 닫힘 처리를 위한 ref
   const profileModalRef = useRef(null);
@@ -83,13 +87,23 @@ const NavBar = () => {
     window.location.reload(); // 로그아웃 시 강제 리로드
   };
 
-  const notifications = [
-    { text: "UserName liked your Breakthrough", time: "1 min ago" },
-    { text: "A new breakthrough has been posted to BlogName you follow.", time: "3 min ago" },
-    { text: "A new breakthrough has been posted to BlogName you follow.", time: "10 hours ago" },
-    { text: "You have been invited to BlogName", time: "1 day ago" },
-    { text: "You have been invited to BlogName", time: "2 days ago" },
-  ];
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const notices = await getNotice();
+        const sortedNotices = notices
+          .sort((a, b) => new Date(b.time) - new Date(a.time)) // 최신순으로 정렬
+          .slice(0, 4); // 최신 4개만
+        setNotifications(sortedNotices); // 상태에 알림 데이터 저장
+      } catch (error) {
+        console.error('알림 데이터를 불러오는 중 오류가 발생했습니다:', error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchNotifications(); // 로그인 상태일 때만 알림 데이터 가져오기
+    }
+  }, [isLoggedIn]);
 
   return (
     <NavContainer>
