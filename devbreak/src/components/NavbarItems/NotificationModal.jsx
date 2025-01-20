@@ -1,7 +1,29 @@
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const NotificationModal = ({ notifications }) => {
+
+  const navigate = useNavigate();  // navigate 훅을 사용하여 페이지 이동
+
+  // 알림 클릭 시 해당 알림에 맞는 페이지로 이동
+  const handleNotificationClick = (notice) => {
+    switch (notice.type) {
+      case "블로그 초대":
+      case "블로그 즐겨찾기":
+        // 블로그 페이지로 이동 (blogId 사용)
+        navigate(`/blog/${notice.relatedId.blogId}`);
+        break;
+      case "글 좋아요":
+        // 글 페이지로 이동 (articleId 사용)
+        navigate(`/breakthrough/${notice.relatedId.articleId}`);
+        break;
+      default:
+        console.log("Notification clicked, but no specific page for this type.");
+        break;
+    }
+  };
+
   const visibleNotifications = notifications.slice(0, 4);
 
   return (
@@ -14,7 +36,7 @@ const NotificationModal = ({ notifications }) => {
         <Content>
           {visibleNotifications.map((notification, index) => (
             <div key={index}>
-              <NotificationItem>
+              <NotificationItem onClick={() => handleNotificationClick(notification)}>
                 <NotificationText>{notification.message}</NotificationText>
                 <NotificationTime>{notification.time}</NotificationTime>
               </NotificationItem>
