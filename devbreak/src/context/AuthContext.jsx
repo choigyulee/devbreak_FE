@@ -9,14 +9,17 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const cookies = new Cookies();
+
   const expires = new Date();
   expires.setDate(expires.getDate() + 7);
 
   useEffect(() => {
     // 쿠키에서 로그인 상태 확인
     const checkLoginStatusFromCookies = () => {
-      const loggedIn = getCookie('isLoggedIn');
-      console.log('쿠키에서 로그인 상태 확인:', loggedIn); 
+
+      const loggedIn = cookies.get('isLoggedIn');
+      console.log('쿠키에서 로그인 상태 확인:', loggedIn);
+      
       if (loggedIn === 'true') {
         setIsLoggedIn(true);
       } else {
@@ -36,7 +39,10 @@ export const AuthProvider = ({ children }) => {
 
         if (status.loggedIn) {
           setIsLoggedIn(true);
-          setCookie('isLoggedIn', 'true', { expires: expires, path: '/' });
+
+          cookies.set('isLoggedIn', 'true', { expires: expires, path: '/' });
+          console.log('로그인 상태 변경 후 쿠키:', cookies.get('isLoggedIn')); 
+
         } else {
           setIsLoggedIn(false);
         }
@@ -56,14 +62,15 @@ export const AuthProvider = ({ children }) => {
 
   const login = () => {
     setIsLoggedIn(true);
-    setCookie('isLoggedIn', 'true', { expires: expires, path: '/' });
-    console.log('로그인 성공, 쿠키 설정 완료');
+    cookies.set('isLoggedIn', 'true', { expires: expires, path: '/' });
+    console.log('로그인 성공, 쿠키 설정 완료:', cookies.get('isLoggedIn'));
   };
 
   const logout = () => {
     removeCookie('isLoggedIn');
     setIsLoggedIn(false);
-    console.log('로그아웃 성공, 쿠키 삭제');
+    console.log('로그아웃 성공, 쿠키 삭제:', cookies.get('isLoggedIn'));
+
   };
 
 
