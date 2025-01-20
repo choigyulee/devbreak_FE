@@ -4,7 +4,7 @@ const cookies = new Cookies()
 
 
 export const setCookie = (name, value) =>{
-    return cookies.set(name,value)
+    cookies.set(name, value, { expires, path: '/' });  
 }
 
 export const getCookie = (name) =>{
@@ -12,5 +12,5 @@ export const getCookie = (name) =>{
 }
 
 export const removeCookie = (name)=>{
-    return cookies.remove(name)
+    cookies.remove(name, { path: '/' }); 
 }
