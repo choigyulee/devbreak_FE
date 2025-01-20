@@ -5,8 +5,8 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect, useRef } from "react";
 import ProfileModal from "./ProfileModal";
 import NotificationModal from "./NotificationModal";
-import { useAuth } from '../context/AuthContext';
-import getNotice from "../APIs/get/getNotice";
+import { useAuth } from '../../context/AuthContext';
+import NotificaitonList from "./NotificaitonList";
 
 const NavBar = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const NavBar = () => {
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
 
   // 알림 상태 관리
-  const [notifications, setNotifications] = useState([]);
+  const notifications = NotificaitonList();
 
   // 모달 닫힘 처리를 위한 ref
   const profileModalRef = useRef(null);

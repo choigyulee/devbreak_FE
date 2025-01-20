@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavbarItems/NavBar";
 import { useAuth } from "../../context/AuthContext";
 import getHomeBlogLike from "../../APIs/get/getHomeBlogLike";
 

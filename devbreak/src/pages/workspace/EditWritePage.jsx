@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavbarItems/NavBar";
 import GoToButton from "../../components/GoToButton";
 import FormField from "../../components/Workspace/FormField";
 import GitTitleDropdown from "../../components/WritePageItem/GitTitleDropdown";
