@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 import getAuthStatus from '../APIs/get/getAuthStatus';
+import postAuthLogout from '../APIs/post/postAuthLogout';
 
 const AuthContext = createContext(null);
 
@@ -42,10 +43,15 @@ export const AuthProvider = ({ children }) => {
     console.log('isLoggedIn 쿠키 설정:', cookies.get('isLoggedIn'));
   };
 
-  const logout = () => {
-    cookies.remove('isLoggedIn', { path: '/' });
-    setIsLoggedIn(false);
-    console.log('isLoggedIn 쿠키 제거됨:', cookies.get('isLoggedIn'));
+  const logout = async () => {
+    try {
+      await postAuthLogout();
+      setIsLoggedIn(false); 
+      cookies.remove('isLoggedIn', { path: '/' });
+      window.location.reload(); 
+    } catch (logoutError) {
+      console.error('로그아웃 요청 실패:', logoutError.response?.data || logoutError.message);
+    }
   };
 
   // 디버깅용 상태 확인 로그
