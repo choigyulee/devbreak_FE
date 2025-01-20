@@ -15,7 +15,7 @@ const NotificationModal = ({ notifications }) => {
           {visibleNotifications.map((notification, index) => (
             <div key={index}>
               <NotificationItem>
-                <NotificationText>{notification.text}</NotificationText>
+                <NotificationText>{notification.message}</NotificationText>
                 <NotificationTime>{notification.time}</NotificationTime>
               </NotificationItem>
               <Divider /> {/* 모든 NotificationItem 아래에 Divider 추가 */}
@@ -32,7 +32,7 @@ const NotificationModal = ({ notifications }) => {
 NotificationModal.propTypes = {
   notifications: PropTypes.arrayOf(
     PropTypes.shape({
-      text: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
       time: PropTypes.string.isRequired,
     })
   ).isRequired,
