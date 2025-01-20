@@ -22,16 +22,6 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    const logout = async () => {
-      try {
-        await postAuthLogout();
-        console.log('로그아웃 완료');
-        window.location.reload(); // 세션 만료 후 새로고침
-      } catch (logoutError) {
-        console.error('로그아웃 요청 실패:', logoutError.response?.data || logoutError.message);
-      }
-    };
-
     // 401 Unauthorized 상태 처리
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
