@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import getNotice from '../../APIs/get/getNotice';
 import getBlogBlogId from '../../APIs/get/getBlogBlogId';
 import getArticleArticleId from '../../APIs/get/getArticleArticleId';
 
 export default function NotificationList() {
   const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNotifications = async () => {
