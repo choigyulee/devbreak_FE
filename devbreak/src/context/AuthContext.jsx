@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { setCookie, getCookie, removeCookie } from 'react-cookie';
+import { setCookie, getCookie, removeCookie } from '../auth/cookie';
 import getAuthStatus from '../APIs/get/getAuthStatus';
 
 const AuthContext = createContext(null);
