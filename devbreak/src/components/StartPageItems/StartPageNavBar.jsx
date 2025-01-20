@@ -3,9 +3,9 @@ import styled from "@emotion/styled";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { useState, useEffect, useRef } from "react";
-import ProfileModal from "../ProfileModal"; // ProfileModal 컴포넌트
+import ProfileModal from "../NavbarItems/ProfileModal";
 import { useAuth } from "../../context/AuthContext";
-import NotificationModal from "../NotificationModal";
+import NotificationModal from "../NavbarItems/NotificationModal";
 
 const NavBar = () => {
   const location = useLocation();

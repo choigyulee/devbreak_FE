@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavbarItems/NavBar";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { useAuth } from "../context/AuthContext"; // 로그인 관련 훅

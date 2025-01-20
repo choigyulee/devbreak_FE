@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick"; // 슬라이더 라이브러리 임포트
-import NavBar from "../../components/NavBar";
+import NavBar from "../../components/NavbarItems/NavBar";
 import BreakthroughTenList from "../../components/HomePageItems/BreakthroughTenList";
 import BlogTenList from "../../components/HomePageItems/BlogTenList";
 import MyBreakthroughList from "../../components/HomePageItems/MyBreakthroughList";
