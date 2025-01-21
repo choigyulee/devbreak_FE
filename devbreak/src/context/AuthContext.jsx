@@ -21,11 +21,11 @@ export const AuthProvider = ({ children }) => {
         if (status.loggedIn) {
           setIsLoggedIn(true);
           cookies.set('isLoggedIn', 'true', { expires: expires, path: '/' });
-          console.log('로그인 성공 - 쿠키 설정됨:', cookies.get('isLoggedIn'));
+          console.log('로그인 - 쿠키 설정됨:', cookies.get('isLoggedIn'));
         } else {
           setIsLoggedIn(false);
           cookies.remove('isLoggedIn', { path: '/' });
-          console.log('로그인 실패 - 쿠키 제거됨:', cookies.get('isLoggedIn'));
+          console.log('로그아웃 - 쿠키 제거됨:', cookies.get('isLoggedIn'));
         }
       } catch (error) {
         console.error('토큰 검증 실패:', error.response ? error.response.data : error.message);
