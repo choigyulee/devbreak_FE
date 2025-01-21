@@ -13,6 +13,7 @@ export default async function postAuthRefresh() {
 
     if (response.status === 200) {
       console.log('새로운 액세스 토큰이 HttpOnly 쿠키로 설정되었습니다.');
+      return response.data;
     } else {
       console.error('토큰 갱신 실패:', response.data);
       throw new Error('토큰 갱신 실패');
