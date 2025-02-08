@@ -12,45 +12,14 @@ import getHomeBlog from "../../APIs/get/getHomeBlog"; // 블로그 데이터를 
 import Footer from "../../components/Footer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Cookies } from "react-cookie";
+import { useAuth } from "../../context/AuthContext";
 
 function HomePage() {
   const [data, setData] = useState({ breakthroughs: [], blogs: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const cookies = new Cookies();
+  const { isLoggedIn, logout } = useAuth();
 
-  // 로그인 상태 확인 및 강제 리로드 로직 개선
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const accessToken = cookies.get("accessToken");
-
-      // 페이지 첫 로드 시 항상 리로드
-      if (!cookies.get("homePageLoaded")) {
-        cookies.set("homePageLoaded", "true");
-        return;
-      }
-
-      // 로그인 상태 확인
-      if (accessToken) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    };
-
-    checkLoginStatus();
-  }, []);
-
-  // 로그아웃 함수 수정
-  const onLogout = () => {
-    cookies.remove("accessToken");
-    cookies.remove("refreshToken");
-    cookies.remove("homePageLoaded"); // 로그아웃 시 리로드 상태 초기화
-    setIsLoggedIn(false);
-    window.location.reload(); // 로그아웃 후 리로드
-  };
 
   // 홈 데이터 가져오기
   useEffect(() => {
@@ -96,7 +65,7 @@ function HomePage() {
 
   return (
     <>
-      <NavBar onLogout={onLogout} isLoggedIn={isLoggedIn} />
+      <NavBar logout={logout} isLoggedIn={isLoggedIn} />
       <Container>
         <BannerSlider {...sliderSettings}>
           {bannerImages.map((banner, index) => (
