@@ -61,7 +61,7 @@ axiosInstance.interceptors.response.use(
 
         await postAuthLogout();
         alert('세션이 만료되었습니다. 다시 로그인하세요.');
-        window.location.reload();
+        // window.location.reload();
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false; // 리프레시 상태 해제
