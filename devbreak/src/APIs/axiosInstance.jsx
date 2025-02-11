@@ -7,6 +7,24 @@ const axiosInstance = axios.create({
   timeout: 100000,
 });
 
+// 세션 상태 관리
+let isSessionExpired = false;
+
+// 세션 만료 처리 함수
+const handleSessionExpiration = async () => {
+  if (!isSessionExpired) {
+    isSessionExpired = true;
+    try {
+      await postAuthLogout();
+    } catch (error) {
+      console.error('로그아웃 처리 중 오류:', error);
+    } finally {
+      alert('세션이 만료되었습니다. 다시 로그인하세요.');
+      window.location.href = '/login';
+    }
+  }
+};
+
 axiosInstance.interceptors.request.use(  
   async (config) => {
     config.withCredentials = true; 
@@ -22,26 +40,27 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // 401 Unauthorized 상태 처리
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    // 리프레시 토큰 갱신 요청 자체는 재시도하지 않음
+    if (originalRequest.url?.includes('auth/refresh')) {
+      return Promise.reject(error);
+    }
+
+    // 401 에러 && 첫 시도인 경우에만 토큰 갱신 시도
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        console.log('액세스 토큰 갱신 시도 중...'); 
+        console.log('액세스 토큰 갱신 시도 중...');
         await postAuthRefresh();
-
-          // 갱신된 토큰으로 다시 요청
-          return axiosInstance(originalRequest);
+        return axiosInstance(originalRequest);
       } catch (refreshError) {
-        console.error('리프레시 토큰 갱신 오류:', refreshError.response?.data || refreshError.message);
-
-        await postAuthLogout();
-        
-        alert('세션이 만료되었습니다. 다시 로그인하세요.');
+        console.error('토큰 갱신 실패:', refreshError.response?.data || refreshError.message);
+        await handleSessionExpiration();
         return Promise.reject(refreshError);
       }
     }
 
+    // 그 외 에러는 그대로 반환
     return Promise.reject(error);
   }
 );
