@@ -90,6 +90,11 @@ const routes = [
     element: <GithubLogin />,
     name: "11. GitHub 인증 페이지",
   },
+  {
+    path: "/notification",
+    element: <NotificationPage />,
+    name: "12. 알림 전체 보기 페이지",
+  },
 ];
 
 export default routes;
