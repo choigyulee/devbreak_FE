@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import NavBar from "../../components/NavbarItems/NavBar";
 import List from "../../components/Breakthrough/List"; // 알림 목록을 표시하는 컴포넌트
-import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Breakthrough/Pagination"; // 페이지네이션 컴포넌트
 import { Cookies } from 'react-cookie';
 import Footer from "../../components/Footer";
-import getNotifications from "../../APIs/get/getNotifications"; // 알림 데이터 API
+import getNotifications from "../../APIs/get/getNotice";
 
 function NotificationPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
