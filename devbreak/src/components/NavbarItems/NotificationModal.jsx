@@ -44,7 +44,7 @@ const NotificationModal = ({ notifications }) => {
             </div>
           ))}
         </Content>
-        {notifications.length > 4 && <ReadMoreButton onClick={ navigate(`/notificaiton`)}>Read more</ReadMoreButton>}
+        {notifications.length > 4 && <ReadMoreButton onClick={()=>navigate(`/notificaiton`)}>Read more</ReadMoreButton>}
       </DashBoard>
     </ModalContainer>
   );
