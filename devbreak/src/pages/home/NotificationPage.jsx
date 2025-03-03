@@ -4,7 +4,7 @@ import NavBar from "../../components/NavbarItems/NavBar";
 import Pagination from "../../components/Breakthrough/Pagination";
 import { Cookies } from 'react-cookie';
 import Footer from "../../components/Footer";
-import getNotifications from "../../APIs/get/getNotice";
+import getNotice from "../../APIs/get/getNotice";
 import NotificationList from "../../components/NavbarItems/NotificaitonList";
 
 function NotificationPage() {
@@ -25,7 +25,7 @@ function NotificationPage() {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const data = await getNotifications();
+            const data = await getNotice();
             setFormData(data);
           } catch (error) {
             console.error("데이터 로딩 실패:", error);
