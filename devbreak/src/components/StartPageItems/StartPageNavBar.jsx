@@ -189,8 +189,8 @@ const StyledIoMdNotificationsOutlineContainer = styled.div`
 
 const NotificationBadge = styled.div`
   position: absolute;
-  top: -0.6vw; // 아이콘의 상단에 위치
-  right: -0.6vw; // 아이콘의 오른쪽에 위치
+  top: -0.4vw; // 아이콘의 상단에 위치
+  right: -0.3vw; // 아이콘의 오른쪽에 위치
   width: 1vw; // 빨간 원의 크기
   height: 1vw;
   z-index: 1000;
@@ -201,8 +201,9 @@ const NotificationBadge = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 0.75vw; // 숫자 크기
+  font-size: 0.85vw; // 숫자 크기
   font-weight: normal;
+  text-align: center;
 `;
 
 const StyledIoMdNotificationsOutline = styled(IoMdNotificationsOutline)`
