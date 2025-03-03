@@ -4,7 +4,6 @@ import NavBar from "../../components/NavbarItems/NavBar";
 import Pagination from "../../components/Breakthrough/Pagination";
 import { Cookies } from 'react-cookie';
 import Footer from "../../components/Footer";
-import getNotice from "../../APIs/get/getNotice";
 import NotificationList from "../../components/NavbarItems/NotificaitonList";
 
 function NotificationPage() {
@@ -14,6 +13,8 @@ function NotificationPage() {
 
   const itemsPerPage = 15; // 1페이지당 아이템 수
 
+  const notifications = NotificationList();
+
   const cookies = new Cookies();
 
   useEffect(() => {
@@ -21,19 +22,6 @@ function NotificationPage() {
     setIsLoggedIn(loggedIn);
 
   }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const data = await getNotice();
-            setFormData(data);
-          } catch (error) {
-            console.error("데이터 로딩 실패:", error);
-          }
-        };
-  
-      fetchData();
-    }, []);
 
     const handleNotificationClick = (notice) => {
       switch (notice.type) {
@@ -64,7 +52,7 @@ function NotificationPage() {
         <BreakthroughContainer>
           <Title>List of all your notifications</Title>
           <NotificationList
-            notifications={formData}
+            notifications={notifications}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
@@ -72,7 +60,7 @@ function NotificationPage() {
           />
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(formData.length / itemsPerPage)}
+            totalPages={Math.ceil(notifications.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
         </BreakthroughContainer>
