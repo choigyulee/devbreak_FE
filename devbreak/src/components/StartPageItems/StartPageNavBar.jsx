@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import ProfileModal from "../NavbarItems/ProfileModal";
 import { useAuth } from "../../context/AuthContext";
 import NotificationModal from "../NavbarItems/NotificationModal";
-import NotificaitonList from "../NavbarItems/NotificaitonList";
+import NotificationList from "../NavbarItems/NotificationList";
 
 const NavBar = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const NavBar = () => {
   const [isNotificationModalOpen, setNotificationModalOpen] = useState(false);
 
     // 알림 상태 관리
-    const notifications = NotificaitonList();
+    const notifications = NotificationList();
 
   // 모달 닫힘 처리를 위한 ref
   const profileModalRef = useRef(null);
