@@ -15,7 +15,7 @@ const NotificationList = ({ notifications = [], currentPage = 1, itemsPerPage = 
   const handleNotificationClick = (notice) => {
     switch (notice.type) {
       case "블로그 초대":
-      case "블로그 즐겨찾기":ㄴ
+      case "블로그 즐겨찾기":
         // 블로그 페이지로 이동 (blogId 사용)
         navigate(`/blog/${notice.relatedId.blogId}`);
         break;
