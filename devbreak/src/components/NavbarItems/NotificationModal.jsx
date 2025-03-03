@@ -19,9 +19,9 @@ const NotificationModal = ({ notifications, onNotificationClick }) => {
     };
 
     fetchUnreadCount();
-  }, []); 
+  }, []);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleNotificationClick = async (notice) => {
 
@@ -56,7 +56,7 @@ const NotificationModal = ({ notifications, onNotificationClick }) => {
     <ModalContainer>
       <DashBoard>
         <Header>
-          <strong>{`${unreadCount} new notifications`}</strong> <span>🔔</span>
+          <strong>{unreadCount > 0 ? `${unreadCount} new notifications` : "No new notifications"}</strong> <span>🔔</span>
         </Header>
         <Divider />
         <Content>
@@ -70,7 +70,7 @@ const NotificationModal = ({ notifications, onNotificationClick }) => {
             </div>
           ))}
         </Content>
-        {notifications.length > 4 && <ReadMoreButton onClick={()=>navigate(`/notification`)}>Read more</ReadMoreButton>}
+        {notifications.length > 4 && <ReadMoreButton onClick={() => navigate(`/notification`)}>Read more</ReadMoreButton>}
       </DashBoard>
     </ModalContainer>
   );
