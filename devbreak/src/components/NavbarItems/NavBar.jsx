@@ -237,10 +237,10 @@ const StyledIoMdNotificationsOutlineContainer = styled.div`
 
 const NotificationBadge = styled.div`
   position: absolute;
-  top: -0.4vw; // 아이콘의 상단에 위치
+  top: -0.5vw; // 아이콘의 상단에 위치
   right: -0.3vw; // 아이콘의 오른쪽에 위치
-  width: 1vw; // 빨간 원의 크기
-  height: 1vw;
+  width: 1.1vw; // 빨간 원의 크기
+  height: 1.1vw;
   z-index: 1000;
   background-color: #ff4f4f; // 빨간색
   border-radius: 50%; // 원형으로 설정
