@@ -11,11 +11,13 @@ function NotificationPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState([]); // 전체 데이터
   const navigate = useNavigate();
+
   const cookies = new Cookies();
 
   useEffect(() => {
     const loggedIn = cookies.get("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
+
   }, []);
 
     useEffect(() => {
@@ -31,9 +33,12 @@ function NotificationPage() {
       fetchData();
     }, []);
 
+
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
 
   return (
     <>
