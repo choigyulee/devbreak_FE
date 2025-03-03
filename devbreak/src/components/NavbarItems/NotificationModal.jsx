@@ -1,8 +1,24 @@
 import styled from "@emotion/styled";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import getNoticeCount from "../../APIs/get/getNoticeCount";
 
 const NotificationModal = ({ notifications }) => {
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const count = await getNoticeCount();
+        setUnreadCount(count);
+      } catch (error) {
+        console.error('Error fetching unread count:', error);
+      }
+    };
+
+    fetchUnreadCount();
+  }, []); 
 
   const navigate = useNavigate();  // navigate 훅을 사용하여 페이지 이동
 
@@ -30,7 +46,7 @@ const NotificationModal = ({ notifications }) => {
     <ModalContainer>
       <DashBoard>
         <Header>
-          <strong>new notifications</strong> <span>🔔</span>
+          <strong>{`${unreadCount} new notifications`}</strong> <span>🔔</span>
         </Header>
         <Divider />
         <Content>
@@ -44,7 +60,7 @@ const NotificationModal = ({ notifications }) => {
             </div>
           ))}
         </Content>
-        {notifications.length > 4 && <ReadMoreButton onClick={()=>navigate(`/notificaiton`)}>Read more</ReadMoreButton>}
+        {notifications.length > 4 && <ReadMoreButton onClick={()=>navigate(`/notification`)}>Read more</ReadMoreButton>}
       </DashBoard>
     </ModalContainer>
   );
