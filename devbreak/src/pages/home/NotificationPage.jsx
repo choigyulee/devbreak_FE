@@ -7,7 +7,6 @@ import getArticleArticleId from "../../APIs/get/getArticleArticleId";
 import NavBar from "../../components/NavbarItems/NavBar";
 import Footer from "../../components/Footer";
 import Pagination from "../../components/Breakthrough/Pagination";
-import Pagination from "../../components/Breakthrough/Pagination";
 
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
