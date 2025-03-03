@@ -1,5 +1,5 @@
 // 미확인 알림 개수 카운트
-import axiosInstance from 'axiosInstance';
+import axiosInstance from '../axiosInstance';
 
   export default async function getNoticeCount(){
     try {
