@@ -10,7 +10,9 @@ import NotificationList from "../../components/NavbarItems/NotificaitonList";
 function NotificationPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState([]); // 전체 데이터
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1); // 상태로 현재 페이지 관리
+
+  const itemsPerPage = 15; // 1페이지당 아이템 수
 
   const cookies = new Cookies();
 
@@ -47,7 +49,7 @@ function NotificationPage() {
         <BreakthroughContainer>
           <Title>List of all your notifications</Title>
           <NotificationList
-            items={formData}
+            notifications={formData}
             currentPage={currentPage}
             itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
