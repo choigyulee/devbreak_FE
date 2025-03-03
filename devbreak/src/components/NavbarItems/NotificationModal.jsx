@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import getNoticeCount from "../../APIs/get/getNoticeCount";
+import putNoticeNoticeId from "../../APIs/put/putNoticeNoticeId"
 
-const NotificationModal = ({ notifications }) => {
+const NotificationModal = ({ notifications, onNotificationClick }) => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
@@ -20,10 +21,19 @@ const NotificationModal = ({ notifications }) => {
     fetchUnreadCount();
   }, []); 
 
-  const navigate = useNavigate();  // navigate 훅을 사용하여 페이지 이동
+  const navigate = useNavigate(); 
 
-  // 알림 클릭 시 해당 알림에 맞는 페이지로 이동
-  const handleNotificationClick = (notice) => {
+  const handleNotificationClick = async (notice) => {
+    
+    if (!notice.isViewed) {
+      try {
+        await putNoticeNoticeId(notice.noticeId);
+        onNotificationClick(notice.noticeId); // 부모 컴포넌트로 상태 업데이트 요청
+      } catch (error) {
+        console.error('알림 상태 업데이트 실패:', error);
+      }
+    }
+
     switch (notice.type) {
       case "블로그 초대":
       case "블로그 즐겨찾기":
