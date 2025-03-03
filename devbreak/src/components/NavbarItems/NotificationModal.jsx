@@ -149,7 +149,7 @@ const NotificationText = styled.span`
   font-size: 1vw;
   font-weight: 400;
   width: 80vw;
-  color: #ffffff;
+  color: ${(props) => (props.isNew ? '#ffffff' : 'rgba(255, 255, 255, 0.6)')};
 
   &:hover {
     color: ${(props) => (props.isNew ? '#02f798' : 'inherit')};
