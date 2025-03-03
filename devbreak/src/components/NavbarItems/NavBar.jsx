@@ -41,6 +41,11 @@ const NavBar = () => {
     setUnreadCount(newUnreadCount);
   };
 
+  const handleNotificationClick = (noticeId) => {
+    // 알림 클릭 후 unreadCount 갱신
+    updateUnreadCount();
+  };
+
   // 모달 닫힘 처리를 위한 ref
   const profileModalRef = useRef(null);
   const notificationModalRef = useRef(null);
@@ -136,7 +141,7 @@ const NavBar = () => {
               </NotificationBadge>
               )}
             </StyledIoMdNotificationsOutlineContainer>
-            {isNotificationModalOpen && <NotificationModal notifications={notifications} onNotificationClick={updateUnreadCount}/>}
+            {isNotificationModalOpen && <NotificationModal notifications={notifications} onNotificationClick={handleNotificationClick}/>}
           </LoggedInBtnContainer>
           <LoggedInBtnContainer ref={profileModalRef}>
             <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
@@ -237,7 +242,7 @@ const StyledIoMdNotificationsOutlineContainer = styled.div`
 
 const NotificationBadge = styled.div`
   position: absolute;
-  top: -0.6vw; // 아이콘의 상단에 위치
+  top: -0.8vw; // 아이콘의 상단에 위치
   right: -0.3vw; // 아이콘의 오른쪽에 위치
   width: 1.1vw; // 빨간 원의 크기
   height: 1.1vw;
