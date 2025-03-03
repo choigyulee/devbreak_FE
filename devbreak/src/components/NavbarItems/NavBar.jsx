@@ -19,6 +19,13 @@ const NavBar = () => {
 
   // 알림 상태 관리
   const notifications = NotificationList();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const updateUnreadCount = () => {
+    // 알림 클릭 후 읽지 않은 알림 수를 업데이트
+    const newUnreadCount = notifications.filter((notice) => !notice.isViewed).length;
+    setUnreadCount(newUnreadCount);
+  };
 
   // 모달 닫힘 처리를 위한 ref
   const profileModalRef = useRef(null);
@@ -112,7 +119,7 @@ const NavBar = () => {
                 <NotificationBadge active={isNotificationModalOpen} hasNotifications={notifications.length > 0} />
               )}
             </StyledIoMdNotificationsOutlineContainer>
-            {isNotificationModalOpen && <NotificationModal notifications={notifications} />}
+            {isNotificationModalOpen && <NotificationModal notifications={notifications} onNotificationClick={updateUnreadCount}/>}
           </LoggedInBtnContainer>
           <LoggedInBtnContainer ref={profileModalRef}>
             <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
