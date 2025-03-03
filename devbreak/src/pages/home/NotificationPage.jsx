@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
-import { getNotice } from "../../APIs/get/getNotice";
+import getNotice from "../../APIs/get/getNotice";
 import Pagination from "../../components/Breakthrough/Pagination";
 
 const NotificationPage = () => {
