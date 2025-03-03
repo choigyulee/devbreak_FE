@@ -7,6 +7,7 @@ import ProfileModal from "./ProfileModal";
 import NotificationModal from "./NotificationModal";
 import { useAuth } from '../../context/AuthContext';
 import NotificationList from "./NotificationList";
+import getNoticeCount from "../../APIs/get/getNoticeCount";
 
 const NavBar = () => {
   const location = useLocation();
@@ -20,6 +21,19 @@ const NavBar = () => {
   // 알림 상태 관리
   const notifications = NotificationList();
   const [unreadCount, setUnreadCount] = useState(0);
+
+    useEffect(() => {
+      const fetchUnreadCount = async () => {
+        try {
+          const data = await getNoticeCount();
+          setUnreadCount(data.unreadCount);
+        } catch (error) {
+          console.error('Error fetching unread count:', error);
+        }
+      };
+  
+      fetchUnreadCount();
+    }, []); 
 
   const updateUnreadCount = () => {
     // 알림 클릭 후 읽지 않은 알림 수를 업데이트
@@ -116,7 +130,10 @@ const NavBar = () => {
             <StyledIoMdNotificationsOutlineContainer onClick={toggleNotificationModal}>
               <StyledIoMdNotificationsOutline active={isNotificationModalOpen} />
               {notifications.length > 0 && (
-                <NotificationBadge active={isNotificationModalOpen} hasNotifications={notifications.length > 0} />
+                // <NotificationBadge active={isNotificationModalOpen} hasNotifications={notifications.length > 0} />
+                <NotificationBadge active={isNotificationModalOpen} hasNotifications={unreadCount > 0}>
+                {unreadCount}
+              </NotificationBadge>
               )}
             </StyledIoMdNotificationsOutlineContainer>
             {isNotificationModalOpen && <NotificationModal notifications={notifications} onNotificationClick={updateUnreadCount}/>}
@@ -222,13 +239,18 @@ const NotificationBadge = styled.div`
   position: absolute;
   top: -0.3vw; // 아이콘의 상단에 위치
   right: -0.3vw; // 아이콘의 오른쪽에 위치
-  width: 0.5vw; // 빨간 원의 크기
-  height: 0.5vw;
+  width: 1.5vw; // 빨간 원의 크기
+  height: 1.5vw;
   z-index: 1000;
   background-color: #ff4f4f; // 빨간색
   border-radius: 50%; // 원형으로 설정
   display: ${({ active, hasNotifications }) =>
     !active && hasNotifications ? "block" : "none"}; // active 상태가 아니고, 알림이 있을 때만 표시
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 0.75vw; // 숫자 크기
+  font-weight: normal;
 `;
 
 const StyledIoMdNotificationsOutline = styled(IoMdNotificationsOutline)`
