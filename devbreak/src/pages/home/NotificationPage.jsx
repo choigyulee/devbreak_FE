@@ -112,7 +112,7 @@ const NotificationPage = () => {
         </NotificationList>
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(filteredData.length / itemsPerPage)}
+          totalPages={Math.ceil(notifications.length / itemsPerPage)}
           onPageChange={handlePageChange}
         />
       </Container>
