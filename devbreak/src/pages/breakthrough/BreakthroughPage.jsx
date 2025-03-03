@@ -142,7 +142,6 @@ function BreakthroughPage() {
 
 export default BreakthroughPage;
 
-// Styled Components
 const Container = styled.div`
   font-family: "Pretendard";
   color: #ffffff;
