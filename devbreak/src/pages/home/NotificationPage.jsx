@@ -4,7 +4,7 @@ import NavBar from "../../components/NavbarItems/NavBar";
 import Pagination from "../../components/Breakthrough/Pagination";
 import { Cookies } from 'react-cookie';
 import Footer from "../../components/Footer";
-import NotificationList from "../../components/NavbarItems/NotificaitonList";
+import NotificationList from "../../components/NavbarItems/NotificationList";
 
 function NotificationPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
