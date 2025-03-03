@@ -10,8 +10,8 @@ const NotificationModal = ({ notifications }) => {
   useEffect(() => {
     const fetchUnreadCount = async () => {
       try {
-        const count = await getNoticeCount();
-        setUnreadCount(count);
+        const data = await getNoticeCount();
+        setUnreadCount(data.unreadCount);
       } catch (error) {
         console.error('Error fetching unread count:', error);
       }
