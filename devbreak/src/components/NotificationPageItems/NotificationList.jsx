@@ -2,15 +2,12 @@ import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-
-
-const NotificationList = ({ notifications = [], currentPage = 1, itemsPerPage = 15, maxWidth = "933px", onItemClick }) => {
+const NotificationList = ({ notifications = [], currentPage = 1, itemsPerPage = 15, maxWidth = "933px" }) => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = notifications.slice(indexOfFirstItem, indexOfLastItem);
 
   const navigate = useNavigate();
-
 
   const handleNotificationClick = (notice) => {
     switch (notice.type) {
@@ -32,25 +29,22 @@ const NotificationList = ({ notifications = [], currentPage = 1, itemsPerPage = 
   return (
     <ListContainer maxWidth={maxWidth}>
       <ListItemsContainer>
-      {currentItems.map((notification, index) => (
-            <ListItem key={index}>
-              <ListItem onClick={() => handleNotificationClick(notification)}>
-                <Title>{notification.message}</Title>
-                <Info>{notification.time}</Info>
-              </ListItem>
-            </ListItem>
-          ))}
+        {currentItems.map((notification) => (
+          <ListItem key={notification.id} onClick={() => handleNotificationClick(notification)}>
+            <Title>{notification.message}</Title>
+            <Info>{notification.time}</Info>
+          </ListItem>
+        ))}
       </ListItemsContainer>
     </ListContainer>
   );
 };
 
 NotificationList.propTypes = {
-  items: PropTypes.array.isRequired,
+  notifications: PropTypes.array.isRequired,  // Changed from 'items' to 'notifications' for consistency
   currentPage: PropTypes.number.isRequired,
   itemsPerPage: PropTypes.number.isRequired,
   maxWidth: PropTypes.string,
-  onItemClick: PropTypes.func.isRequired,
 };
 
 const ListContainer = styled.div`
