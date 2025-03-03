@@ -24,7 +24,7 @@ const NotificationModal = ({ notifications, onNotificationClick }) => {
   const navigate = useNavigate(); 
 
   const handleNotificationClick = async (notice) => {
-    
+
     if (!notice.isViewed) {
       try {
         await putNoticeNoticeId(notice.noticeId);
@@ -62,8 +62,8 @@ const NotificationModal = ({ notifications, onNotificationClick }) => {
         <Content>
           {visibleNotifications.map((notification, index) => (
             <div key={index}>
-              <NotificationItem onClick={() => handleNotificationClick(notification)}>
-                <NotificationText>{notification.message}</NotificationText>
+              <NotificationItem onClick={() => handleNotificationClick(notification)} isNew={!notification.isViewed}>
+                <NotificationText isNew={!notification.isViewed}>{notification.message}</NotificationText>
                 <NotificationTime>{notification.time}</NotificationTime>
               </NotificationItem>
               <Divider /> {/* 모든 NotificationItem 아래에 Divider 추가 */}
@@ -150,6 +150,10 @@ const NotificationText = styled.span`
   font-weight: 400;
   width: 80vw;
   color: #ffffff;
+
+  &:hover {
+    color: ${(props) => (props.isNew ? '#02f798' : 'inherit')};
+  }
 `;
 
 const NotificationTime = styled.span`
