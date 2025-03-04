@@ -34,10 +34,15 @@ const NavBar = () => {
       fetchUnreadCount();
     }, []); 
 
-  const updateUnreadCount = () => {
-    // 알림 클릭 후 읽지 않은 알림 수를 업데이트
-    const newUnreadCount = notifications.filter((notice) => !notice.isViewed).length;
-    setUnreadCount(newUnreadCount);
+    const updateUnreadCount = (noticeId) => {
+      // 클릭한 알림의 상태를 업데이트하여 unreadCount 감소
+      const newUnreadCount = notifications.filter((notice) => !notice.isViewed).length - 1;
+      setUnreadCount(newUnreadCount);
+    };
+
+  const handleNotificationClick = (noticeId) => {
+    // 알림 클릭 후 unreadCount 갱신
+    updateUnreadCount(noticeId);
   };
 
   // 모달 닫힘 처리를 위한 ref
@@ -117,7 +122,7 @@ const NavBar = () => {
               </NotificationBadge>
               )}
             </StyledIoMdNotificationsOutlineContainer>
-            {isNotificationModalOpen && <NotificationModal notifications={notifications} onNotificationClick={updateUnreadCount}/>}
+            {isNotificationModalOpen && <NotificationModal notifications={notifications} onNotificationClick={handleNotificationClick}/>}
           </LoggedInBtnContainer>
           <LoggedInBtnContainer ref={profileModalRef}>
             <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
