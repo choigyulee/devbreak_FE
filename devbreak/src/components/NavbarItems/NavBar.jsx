@@ -9,7 +9,7 @@ import { useAuth } from '../../context/AuthContext';
 import NotificationList from "./NotificationList";
 import getNoticeCount from "../../APIs/get/getNoticeCount";
 
-const NavBar = () => {
+const NavBar = ({type}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
@@ -126,6 +126,7 @@ const NavBar = () => {
       <Link to="/">
         <Logo src="/image/logo.svg" alt="logo" />
       </Link>
+      {type !== "startpage" && ( 
       <NavItems>
         <NavItem active={location.pathname.startsWith("/home")}>
           <Link to="/home">Home</Link>
@@ -137,6 +138,7 @@ const NavBar = () => {
           <Link to="/workspace">Workspace</Link>
         </NavItem>
       </NavItems>
+      )}
       {isLoggedIn ? (
         <LoggedInContainer>
           <LoggedInBtnContainer ref={notificationModalRef}>

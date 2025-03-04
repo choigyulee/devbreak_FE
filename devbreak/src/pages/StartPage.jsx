@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css, keyframes } from '@emotion/react';
 import CopywritingItem from "../components/StartPageItems/CopywritingItem";
-import StartPageNavBar from "../components/StartPageItems/StartPageNavBar";
+import NavBar from "../components/NavbarItems/NavBar";
 import { useAuth } from "../context/AuthContext";
 import { BsArrowRight } from "react-icons/bs";
 import { Link } from "react-router-dom"; 
@@ -12,7 +12,7 @@ function StartPage() {
 
   return (
     <>
-      <StartPageNavBar isLoggedIn={isLoggedIn} />
+      <NavBar type="startpage" isLoggedIn={isLoggedIn} />
       <Container>
         <TextContainer>
           <TitleBox>
