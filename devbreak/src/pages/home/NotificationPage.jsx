@@ -9,6 +9,7 @@ import Footer from "../../components/Footer";
 import Pagination from "../../components/Breakthrough/Pagination";
 
 const NotificationPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
