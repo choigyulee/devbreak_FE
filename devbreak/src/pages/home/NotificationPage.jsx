@@ -122,11 +122,13 @@ const NotificationPage = () => {
                 ))}
             </NotificationitemList>
           </NotificationList>
+          <PaginationContainer>
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(notifications.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
+          </PaginationContainer>
         </BreakthroughContainer>
       </Container>
       <Footer />
@@ -215,3 +217,8 @@ const Title = styled.div`
   flex-direction: row;
   margin-bottom: 3vh;
 `;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
