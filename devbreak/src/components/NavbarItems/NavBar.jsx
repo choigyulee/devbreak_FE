@@ -151,7 +151,7 @@ const NavBar = ({type}) => {
               </NotificationBadge>
               )}
             </StyledIoMdNotificationsOutlineContainer>
-            {isNotificationModalOpen && <NotificationModal notifications={notifications} unreadCount={unreadCount} setUnreadCount={setUnreadCount} onNotificationClick={handleNotificationClick}/>}
+            {isNotificationModalOpen && <NotificationModal notifications={notifications} unreadCount={unreadCount} onNotificationClick={handleNotificationClick}/>}
           </LoggedInBtnContainer>
           <LoggedInBtnContainer ref={profileModalRef}>
             <StyledHiOutlineUserCircle onClick={toggleProfileModal} active={isProfileModalOpen} />
