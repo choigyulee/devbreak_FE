@@ -36,15 +36,23 @@ const NavBar = () => {
     }, []); 
 
     const updateUnreadCount = (noticeId) => {
-      // 클릭한 알림의 상태를 업데이트하여 unreadCount 감소
-      const newUnreadCount = notifications.filter((notice) => !notice.isViewed).length - 1;
-      setUnreadCount(newUnreadCount);
+      // 클릭한 알림을 확인하고 상태 업데이트
+      const updatedNotifications = notifications.map((notice) => {
+        if (notice.noticeId === noticeId && !notice.isViewed) {
+          notice.isViewed = true; // 알림 상태 업데이트
+          return notice;
+        }
+        return notice;
+      });
+  
+      // unreadCount 갱신 (isViewed가 false인 알림만 세기)
+      const newUnreadCount = updatedNotifications.filter((notice) => !notice.isViewed).length;
+      setUnreadCount(newUnreadCount); // unreadCount 업데이트
     };
-
-  const handleNotificationClick = (noticeId) => {
-    // 알림 클릭 후 unreadCount 갱신
-    updateUnreadCount(noticeId);
-  };
+  
+    const handleNotificationClick = (noticeId) => {
+      updateUnreadCount(noticeId); // 알림 클릭 시 unreadCount 갱신
+    };
 
   // 모달 닫힘 처리를 위한 ref
   const profileModalRef = useRef(null);
