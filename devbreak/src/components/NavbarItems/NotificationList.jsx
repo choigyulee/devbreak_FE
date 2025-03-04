@@ -29,7 +29,7 @@ export default function NotificationList() {
               }
             }
 
-            if (notice.type === "글 좋아요") {
+            if (notice.type === "글 좋아요" || notice.type === '새로운 댓글') {
               try {
                 const articleData = await getArticleArticleId(notice.relatedId.articleId);
                 articleTitle = articleData.title;
@@ -49,7 +49,7 @@ export default function NotificationList() {
                 message = `${notice.instigator} liked your article '${articleTitle}'.`;
                 break;
               default:
-                message = `${notice.instigator} commented on your article '${articleId}'.`;
+                message = `${notice.instigator} commented on your article '${articleTitle}'.`;
                 break;
             }
 
