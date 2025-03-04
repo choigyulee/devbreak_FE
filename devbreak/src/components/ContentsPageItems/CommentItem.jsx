@@ -18,6 +18,7 @@ function CommentItem({ comments, onAddComment, onEditComment, onDeleteComment, i
   const handleInputChange = (e) => {
     if (!isLoggedIn) {
       alert("Login is required to access this service!\nPlease log in to continue.");
+      navigate("/login");
       return;
     }
     setNewComment(e.target.value);
