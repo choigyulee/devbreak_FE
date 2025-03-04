@@ -28,7 +28,7 @@ const NotificationModal = ({ notifications, onNotificationClick }) => {
     if (!notice.isViewed) {
       // 알림이 아직 읽히지 않은 경우
       onNotificationClick(notice.noticeId); // 부모 컴포넌트로 상태 업데이트 요청
-      setUnreadCount(prevCount => prevCount -1);
+      // setUnreadCount(prevCount => prevCount -1);
     }
 
     switch (notice.type) {
