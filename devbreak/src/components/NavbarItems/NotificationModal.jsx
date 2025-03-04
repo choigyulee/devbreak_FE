@@ -37,6 +37,7 @@ const NotificationModal = ({ notifications, unreadCount, onNotificationClick }) 
         navigate(`/blog/${notice.relatedId.blogId}`);
         break;
       case "글 좋아요":
+      case "새로운 댓글":
         // 글 페이지로 이동 (articleId 사용)
         navigate(`/breakthrough/${notice.relatedId.articleId}`);
         break;
