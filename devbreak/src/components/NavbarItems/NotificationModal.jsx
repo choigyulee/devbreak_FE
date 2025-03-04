@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import getNoticeCount from "../../APIs/get/getNoticeCount";
 import putNoticeNoticeId from "../../APIs/put/putNoticeNoticeId"
 
-const NotificationModal = ({ notifications, unreadCount, setUnreadCount, onNotificationClick }) => {
+const NotificationModal = ({ notifications, unreadCount, onNotificationClick }) => {
 
   useEffect(() => {
     const fetchUnreadCount = async () => {
@@ -52,7 +52,7 @@ const NotificationModal = ({ notifications, unreadCount, setUnreadCount, onNotif
     <ModalContainer>
       <DashBoard>
         <Header>
-          <strong>{unreadCount > 0 ? `${unreadCount} new notifications` : "No new notifications"}</strong> <span>🔔</span>
+          <strong>{unreadCount > 0 ? `new notifications` : "No new notifications"}</strong> <span>🔔</span>
         </Header>
         <Divider />
         <Content>
