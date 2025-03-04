@@ -49,7 +49,7 @@ export default function NotificationList() {
                 message = `${notice.instigator} liked your article '${articleTitle}'.`;
                 break;
               default:
-                message = `${notice.instigator} commented on your article '${articleTitle}'.`;
+                message = `${notice.instigator} commented on your article '${articleId}'.`;
                 break;
             }
 
