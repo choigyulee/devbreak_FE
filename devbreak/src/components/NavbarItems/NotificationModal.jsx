@@ -6,7 +6,6 @@ import getNoticeCount from "../../APIs/get/getNoticeCount";
 import putNoticeNoticeId from "../../APIs/put/putNoticeNoticeId"
 
 const NotificationModal = ({ notifications, unreadCount, setUnreadCount, onNotificationClick }) => {
-  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     const fetchUnreadCount = async () => {
