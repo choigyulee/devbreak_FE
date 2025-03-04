@@ -175,7 +175,7 @@ const NotificationItem = styled.div`
   }
 `;
 
-const NotificationText = styled.span`
+const NotificationText = styled.div`
   color: ${(props) => (props.isNew ? '#ffffff' : 'rgba(255, 255, 255, 0.6)')};
 
 &:hover {
@@ -189,7 +189,7 @@ const NotificationText = styled.span`
   line-height: 1.2;
 `;
 
-const NotificationTime = styled.span`
+const NotificationTime = styled.div`
   color: rgba(255, 255, 255, 0.6);
   font-size: 2.5vh;
 `;
