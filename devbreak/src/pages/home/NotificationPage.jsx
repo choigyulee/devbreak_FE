@@ -7,19 +7,21 @@ import getArticleArticleId from "../../APIs/get/getArticleArticleId";
 import NavBar from "../../components/NavbarItems/NavBar";
 import Footer from "../../components/Footer";
 import Pagination from "../../components/Breakthrough/Pagination";
+import { Cookies } from 'react-cookie';
 
 const NotificationPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const cookies = new Cookies();
 
   useEffect(() => {
     const loggedIn = cookies.get("isLoggedIn") === "true";
     setIsLoggedIn(loggedIn);
   }, []);
 
-  
+
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
