@@ -7,7 +7,7 @@ const Footer = () => {
     <FooterWrapper>
       <FooterContainer>
         <Favicon src="image/favicon.ico" alt="Favicon" />
-        <FooterCopyright>Copyright © 2024 devBreak | Catch Errorping. All rights reserved.</FooterCopyright>
+        <FooterCopyright>Copyright © 2025 devBreak | Catch Errorping. All rights reserved.</FooterCopyright>
 
         <FooterLinks>
           <FooterLink href="#" target="_blank">
