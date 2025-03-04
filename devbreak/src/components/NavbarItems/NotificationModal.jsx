@@ -26,12 +26,8 @@ const NotificationModal = ({ notifications, onNotificationClick }) => {
   const handleNotificationClick = async (notice) => {
 
     if (!notice.isViewed) {
-      try {
-        await putNoticeNoticeId(notice.noticeId);
-        onNotificationClick(notice.noticeId); // 부모 컴포넌트로 상태 업데이트 요청
-      } catch (error) {
-        console.error('알림 상태 업데이트 실패:', error);
-      }
+      // 알림이 아직 읽히지 않은 경우
+      onNotificationClick(notice.noticeId); // 부모 컴포넌트로 상태 업데이트 요청
     }
 
     switch (notice.type) {
