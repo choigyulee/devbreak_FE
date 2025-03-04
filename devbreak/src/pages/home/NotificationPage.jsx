@@ -220,5 +220,5 @@ const Title = styled.div`
 
 const PaginationContainer = styled.div`
   display: flex;
-  justify-content: center;
+  padding: 0 20vw;
 `
