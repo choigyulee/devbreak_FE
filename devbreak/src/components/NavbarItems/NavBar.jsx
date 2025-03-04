@@ -35,7 +35,7 @@ const NavBar = () => {
       fetchUnreadCount();
     }, []); 
 
-  const updateUnreadCount = () => {
+  const updateUnreadCount = (noticeId) => {
     // 알림 클릭 후 읽지 않은 알림 수를 업데이트
     const newUnreadCount = notifications.filter((notice) => !notice.isViewed).length;
     setUnreadCount(newUnreadCount);
