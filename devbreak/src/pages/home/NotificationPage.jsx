@@ -97,24 +97,28 @@ const NotificationPage = () => {
 
   return (
     <>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <Container>
-        <Title>All Notifications</Title>
-        <NotificationList>
-          {notifications
-            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .map((notification, index) => (
-              <NotificationItem key={index} onClick={() => handleNotificationClick(notification)}>
-                <NotificationText isNew={!notification.isViewed}>{notification.message}</NotificationText>
-                <NotificationTime>{notification.time}</NotificationTime>
-              </NotificationItem>
-            ))}
-        </NotificationList>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(notifications.length / itemsPerPage)}
-          onPageChange={handlePageChange}
-        />
+        <BreakthroughContainer>
+          <Title>All Notifications</Title>
+          <NotificationList>
+            <NotificationitemList>
+              {notifications
+                .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                .map((notification, index) => (
+                  <NotificationItem key={index} onClick={() => handleNotificationClick(notification)}>
+                    <NotificationText isNew={!notification.isViewed}>{notification.message}</NotificationText>
+                    <NotificationTime>{notification.time}</NotificationTime>
+                  </NotificationItem>
+                ))}
+            </NotificationitemList>
+          </NotificationList>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(notifications.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+          />
+        </BreakthroughContainer>
       </Container>
       <Footer />
     </>
@@ -124,33 +128,81 @@ const NotificationPage = () => {
 export default NotificationPage;
 
 const Container = styled.div`
-  padding: 2vw;
-`;
-
-const Title = styled.h2`
+  font-family: "Pretendard";
   color: #ffffff;
-  font-size: 2vw;
-  text-align: center;
-  margin-bottom: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const NotificationList = styled.div`
+  font-family: "Urbanist", sans-serif;
+  color: #ffffff;
+  width: 100%;
+  max-width: ${({ maxWidth }) => maxWidth};
+`;
+
+const NotificationitemList = styled.div`
+  margin: 0 auto;
+  min-width: 930px;
+  width: 75vw;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 3vh;
 `;
 
 const NotificationItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 2vh 0;
+  width: 57vw;
+  padding-left: 3vh;
+  border-left: 2px solid #ffffff;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  &:hover {
+    border-left: 4px solid #71ffc9;
+    color: #71ffc9;
+  }
 `;
 
 const NotificationText = styled.span`
   color: ${(props) => (props.isNew ? '#ffffff' : 'rgba(255, 255, 255, 0.6)')};
+
+&:hover {
+  color: ${(props) => (props.isNew ? '#02f798' : 'inherit')};
+}
+  font-size: 2.5vh;
+  margin-bottom: 17px;
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.2;
 `;
 
 const NotificationTime = styled.span`
   color: rgba(255, 255, 255, 0.6);
+  font-size: 2.5vh;
+`;
+
+const BreakthroughContainer = styled.div`
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: baseline;
+  flex-grow: 1;
+  margin: 0vh 24vw 10vh 24vw;
+`;
+
+const Title = styled.div`
+  color: #ffffff;
+  font-size: 3vh;
+  white-space: nowrap; // 줄바꿈 방지
+  align-items: baseline;
+  text-align: left;
+  justify-content: baseline;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3vh;
 `;
