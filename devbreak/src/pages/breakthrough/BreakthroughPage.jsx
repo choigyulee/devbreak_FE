@@ -128,11 +128,13 @@ function BreakthroughPage() {
             onPageChange={handlePageChange}
             onItemClick={handleItemClick}
           />
+          <PaginationContainer>
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(filteredData.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
+          </PaginationContainer>
         </BreakthroughContainer>
       </Container>
       <Footer />
@@ -222,3 +224,8 @@ const Title = styled.div`
   flex-direction: row;
   margin-bottom: 3vh;
 `;
+
+const PaginationContainer = styled.div`
+  display: flex;
+  padding: 0 2vw;
+`
