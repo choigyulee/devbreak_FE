@@ -15,6 +15,12 @@ const NotificationPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const loggedIn = cookies.get("isLoggedIn") === "true";
+    setIsLoggedIn(loggedIn);
+  }, []);
+
+  
+  useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const data = await getNotice();
